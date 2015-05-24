@@ -15,6 +15,8 @@ return array(
     'yii\\codeception\\' => array($vendorDir . '/yiisoft/yii2-codeception'),
     'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
+    'kartik\\growl\\' => array($vendorDir . '/kartik-v/yii2-widget-growl'),
+    'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'himiklab\\jqgrid\\' => array($vendorDir . '/himiklab/yii2-jqgrid-widget'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
 );

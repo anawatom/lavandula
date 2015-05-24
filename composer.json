@@ -27,7 +27,8 @@
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-faker": "*",
+        "kartik-v/yii2-widget-growl": "*"
     },
     "config": {
         "process-timeout": 1800

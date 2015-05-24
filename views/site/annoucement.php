@@ -1,0 +1,1 @@
+<font size="6" color="#ffff00" style="background-color: rgb(255, 0, 0);">ข้อความประชาสัมพันธ์</font>

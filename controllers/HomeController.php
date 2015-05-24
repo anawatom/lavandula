@@ -11,6 +11,8 @@ use app\models\WA_PROVINCE;
 
 class HomeController extends \yii\web\Controller
 {
+	public $title = 'E-Warning System';
+	
     public function actionIndex()
     {
 		try {

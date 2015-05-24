@@ -15,7 +15,7 @@ AppAsset::register($this);
 
 // if (Yii::$app->user->identity == "") {
 //echo '<script type="text/javascript">alert("'.(empty(Yii::$app->user->identity->IS_LDAP_AUTHEN)?'':Yii::$app->user->identity->IS_LDAP_AUTHEN).'");</script>';
-if (!Authentication::isLoggedIn()) {
+// if (!Authentication::isLoggedIn()) {
     
 ?><!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -67,8 +67,8 @@ if (!Authentication::isLoggedIn()) {
 </html>
 <?php $this->endPage() ?>
 <?php 
-}
-else{
-include(dirname(__FILE__).'/../layouts/menu.php');
-}
+// }
+// else{
+// include(dirname(__FILE__).'/../layouts/menu.php');
+// }
  ?>

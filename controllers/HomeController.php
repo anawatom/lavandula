@@ -11,19 +11,34 @@ use app\models\WA_PROVINCE;
 
 class HomeController extends \yii\web\Controller
 {
-	public $title = 'E-Warning System';
+	public $title = 'ACI';
 	
     public function actionIndex()
     {
+    	$this->layout = 'main2';
 		try {
 			// this is a error code
-			$result = WA_PROVINCE::find()->where('aaaaaaaaaaaaaaaaaaaaaaaaa', aaa);
+			//$result = WA_PROVINCE::find()->where('aaaaaaaaaaaaaaaaaaaaaaaaa', aaa);
 		}
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}
 		finally {
 			return $this->render('index');
+		}
+    }
+	
+    public function actionSite()
+    {
+		try {
+			
+			
+		}
+		catch (ErrorException $e) {
+			$this->handlerError($e);
+		}
+		finally {
+			return $this->render('site');
 		}
     }
 

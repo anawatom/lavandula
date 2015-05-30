@@ -19,7 +19,8 @@ class HomeController extends \yii\web\Controller
 		try {
 			// this is a error code
 			//$result = WA_PROVINCE::find()->where('aaaaaaaaaaaaaaaaaaaaaaaaa', aaa);
-		}
+		//TESTSSETET 
+		} 
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}

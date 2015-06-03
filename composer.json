@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "himiklab/yii2-jqgrid-widget": "*",
-        "yiisoft/yii2-jui": "*"
+        "yiisoft/yii2-jui": "*",
+        "ramsey/uuid": "~2.8"
     },
     "require-dev": {
         "yiisoft/yii2": "*",
@@ -27,7 +28,8 @@
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-faker": "*",
-        "kartik-v/yii2-widget-growl": "*"
+        "kartik-v/yii2-widget-growl": "*",
+        "ramsey/uuid": "~2.8"
     },
     "config": {
         "process-timeout": 1800

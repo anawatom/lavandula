@@ -6,13 +6,13 @@
 
 <style type="text/css">
 body{
-	background-color: #F5F5F5;
+	background: rgba(172,188,147,0.5) 100%
 }
 div.page{
-	width:<?=DOC_WIDTH?>px;
-	margin: 0 auto;
-	padding: 0;
-	border-top: solid #F5F5F5 7px;
+	/*width:<?=DOC_WIDTH?>px;*/
+	/*margin: 0 auto;
+	padding: 0;*/
+	/*border-top: solid #F5F5F5 7px;*/
 }
 div.page div.header{
 	color: white;
@@ -111,10 +111,19 @@ div.country-list img{
 	margin-right: 4px;
 	margin-top: -4px;
 }
+a.nav-link {
+	border: 0 !important;
+	border-radius: 0 !important;
+	color: white !important;
+	margin: 0 !important;
+}
+a.nav-link:hover {
+	color: black !important;
+}
 </style>
 
 
-<div class="country-list" style="display:none;position:absolute;top:50px;right:80px;z-index:6;">
+<!-- <div class="country-list" style="display:none;position:absolute;top:50px;right:80px;z-index:6;">
 	<ul>
 		<li><a href="#"><img src="<?=Url::to('@web/images/country-icon/brunei-darussalam.png')?>" />BRUNIE DARUSSALAM</a></li>
 		<li><a href="#"><img src="<?=Url::to('@web/images/country-icon/cambodia.png')?>" />CAMBODIA</a></li>
@@ -127,246 +136,308 @@ div.country-list img{
 		<li><a href="#"><img src="<?=Url::to('@web/images/country-icon/thailand.png')?>" />THAILAND</a></li>
 		<li><a href="#"><img src="<?=Url::to('@web/images/country-icon/vietnam.png')?>" />VIETNAM</a></li>
 	</ul>
-</div>
+</div> -->
 
-<div class="page">
+<div class="container page">
+	<!-- Header -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+				<div style="float: left; width:320px; overflow:hidden; background-color:lightgray;"><img src="<?= Url::to('@web/images/aec-logo.png') ?>"></div>
+				<div class="country-button" style="float:right; cursor:pointer;" >
+					<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
+				</div>
+				<!-- <div class="country-button" style="float:right; cursor:pointer;" ><b>Select Country :</b> Thailand <span class="glyphicon glyphicon-triangle-bottom" ></span></div> -->
+			</div>
+			<div class="img-slider" style="clear: both;position:relative;">
+				<nav class="navbar navbar-default nav-top" style="padding: 0;min-height: initial;border: 0;margin: 0;background: rgba(172,188,147,0.5) 100%;border-radius: 0;">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
 
-	<div class="header">
-		<div style="float: left; width:320px; overflow:hidden; background-color:lightgray;"><img src="<?= Url::to('@web/images/aec-logo.png') ?>"></div>
-		<div class="country-button" style="float:right; cursor:pointer;" ><b>Select Country :</b> Thailand <span class="glyphicon glyphicon-triangle-bottom" ></span></div>
-	</div>
-	
-	<div class="img-slider" style="clear: both;position:relative;">
-		<div class="nav-top" style="position:absolute;z-index:5;left:100px;">
-			<ul>
-				<li class="bg-green"><a href="#">HOME</a></li>
-				<li class="bg-yellow"><a href="#">ABOUT</a></li>
-				<li class="bg-red"><a href="#">CRITERIA</a></li>
-				<li class="bg-sky"><a href="#">JOURNAL SUBMISSION</a></li>
-				<li class="bg-purple"><a href="#">CONTACT</a></li>
-			</ul>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
+						<ul class="nav nav-tabs nav-justified" style="padding: 0;">
+							<li class="bg-green">
+								<a class="nav-link" href="#">HOME <span class="sr-only">(current)</span></a>
+							</li>
+							<li class="bg-yellow">
+								<a class="nav-link" href="#">ABOUT</a>
+							</li>
+							<li class="bg-red">
+								<a class="nav-link" href="#">CRITERIA</a>
+							</li>
+							<li class="bg-sky">
+								<a class="nav-link" href="#">JOURNAL SUBMISSION</a>
+							</li>
+							<li class="bg-purple">
+								<a class="nav-link" href="#">CONTACT</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+
+				<!-- <div class="nav-top" style="position:absolute;z-index:5;left:100px;">
+					<ul>
+						<li class="bg-green"><a href="#">HOME</a></li>
+						<li class="bg-yellow"><a href="#">ABOUT</a></li>
+						<li class="bg-red"><a href="#">CRITERIA</a></li>
+						<li class="bg-sky"><a href="#">JOURNAL SUBMISSION</a></li>
+						<li class="bg-purple"><a href="#">CONTACT</a></li>
+					</ul>
+				</div> -->
+				<div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden; ">
+					<!-- Loading Screen -->
+					<div u="loading" style="position: absolute; top: 0px; left: 0px;">
+						<div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
+							background-color: #000000; top: 0px; left: 0px;width: 100%;height:100%;">
+						</div>
+						<div style="position: absolute; display: block; background: url(<?= Url::to('@web/images/loading.gif') ?>) no-repeat center center;
+							top: 0px; left: 0px;width: 100%;height:100%;">
+						</div>
+					</div>
+					<div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden;">
+						<div>
+							<img u="image" src="<?= Url::to('@web/images/lanscape/slide1.jpg') ?>" />
+						</div>
+						<div>
+							<img u="image" src="<?= Url::to('@web/images/lanscape/slide2.jpg') ?>" />
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden; ">
-
-	        <!-- Loading Screen -->
-	        <div u="loading" style="position: absolute; top: 0px; left: 0px;">
-	            <div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
-	                background-color: #000000; top: 0px; left: 0px;width: 100%;height:100%;">
-	            </div>
-	            <div style="position: absolute; display: block; background: url(<?= Url::to('@web/images/loading.gif') ?>) no-repeat center center;
-	                top: 0px; left: 0px;width: 100%;height:100%;">
-	            </div>
-	        </div>
-			<div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden;">
-	            <div>
-	                <img u="image" src="<?= Url::to('@web/images/lanscape/slide1.jpg') ?>" />
-	            </div>
-	            <div>
-	                <img u="image" src="<?= Url::to('@web/images/lanscape/slide2.jpg') ?>" />
-	            </div>
-	        </div>
-	    </div>
 	</div>
-	
-	<div class="search-box" style="clear: both;position:relative;">
-		<form action="<?=Url::to('search');?>" method="post">
-			<div id="frmsearchbox">
-				<div style="padding:0 0 2px 5px;font-size:16px;color:darkblue;">Searchable 9,003,241 items</div>
-				<div class="search-contianer pull-left">
-					<div class="row">
-						<div class="col-md-12">
-							<form>
-								<div class="input-group">
-									<input type="text" class="form-control" style="height:50px;font-size:18px;" placeholder="Search for...">
-									<span class="input-group-btn">
-										<button class="btn btn-default" style="height:50px;" type="button">
-											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-										</button>
-									</span>
+	<!-- End Header -->
+	<!-- Search -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="search-box" style="clear: both;position:relative;">
+				<form action="<?=Url::to('search');?>" method="post">
+					<div id="frmsearchbox">
+						<div style="padding:0 0 2px 5px;font-size:16px;color:darkblue;">Searchable 9,003,241 items</div>
+						<div class="search-contianer pull-left">
+							<div class="row">
+								<div class="col-md-12">
+									<form>
+										<div class="input-group">
+											<input type="text" class="form-control" style="height:50px;font-size:18px;" placeholder="Search for...">
+											<span class="input-group-btn">
+												<button class="btn btn-default" style="height:50px;" type="button">
+													<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+												</button>
+											</span>
+										</div>
+									</form>
 								</div>
-							</form>
+							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
-		</form>
+		</div>
 	</div>
-	
-	<div class="recenly-article" style="clear: both;position:relative;">
-		<div class="row content">
-			<div class="col-md-4">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-warning dummy-data">
-							<div class="panel-heading">
-								<h3 class="panel-title">Categories</h3>
-							</div>
-							<div class="panel-body">
-								<ul class="nav nav-pills nav-stacked">
-									<li role="presentation">
-										<a href="#">Chemistry</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Energy</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Education & Language</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Economics</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Chermistry</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Meterials</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Physics</a>
-									</li>
-									<li role="presentation">
-										<a href="#">Statistics</a>
-									</li>
-								</ul>
-							</div>
+	<!-- End Search -->
+	<!-- Body -->
+	<div class="row content">
+		<div class="col-md-4">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-warning dummy-data">
+						<div class="panel-heading">
+							<h3 class="panel-title">Categories</h3>
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-warning dummy-data">
-							<div class="panel-heading">
-								<h3 class="panel-title">Browse <span class="browse-result">9,003,241</span> resources</h3>
-							</div>
-							<table class="table table-browse-resource">
-								<body>
-									<tr>
-										<td class="resource">Articles</td>
-										<td class="value">5,336,028</td>
-									</tr>
-									<tr>
-										<td class="resource">Chapters</td>
-										<td class="value">3,162,140</td>
-									</tr>
-									<tr>
-										<td class="resource">Reference Work Entries</td>
-										<td class="value">466,468</td>
-									</tr>
-									<tr>
-										<td class="resource">Protocols</td>
-										<td class="value">28,605</td>
-									</tr>
-								</body>
-							</table>
+						<div class="panel-body">
+							<ul class="nav nav-pills nav-stacked">
+								<li role="presentation">
+									<a href="#">Chemistry</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Energy</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Education & Language</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Economics</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Chermistry</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Meterials</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Physics</a>
+								</li>
+								<li role="presentation">
+									<a href="#">Statistics</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-8">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-warning dummy-data">
-							<div class="panel-heading">
-								<h3 class="panel-title">Announcement and Events</h3>
-							</div>
-							<div class="panel-body">
-								<ul class="nav nav-pills nav-stacked">
-									<li role="presentation">
-										<a href="#">ASIA: ASEAN May Create Research Citation Index(05 December 2010)</a>
-									</li>
-									<li role="presentation">
-										<a href="#">The 3nd ACT Steering Committee Meeting</a>
-									</li>
-									<li role="presentation">
-										<a href="#">The 2nd ACT Steering Committee Meeting</a>
-									</li>
-									<li role="presentation">
-										<a href="#">The 1nd ACT Steering Committee Meeting</a>
-									</li>
-								</ul>
-							</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-warning dummy-data">
+						<div class="panel-heading">
+							<h3 class="panel-title">Browse <span class="browse-result">9,003,241</span> resources</h3>
+						</div>
+						<table class="table table-browse-resource">
+							<body>
+								<tr>
+									<td class="resource">Articles</td>
+									<td class="value">5,336,028</td>
+								</tr>
+								<tr>
+									<td class="resource">Chapters</td>
+									<td class="value">3,162,140</td>
+								</tr>
+								<tr>
+									<td class="resource">Reference Work Entries</td>
+									<td class="value">466,468</td>
+								</tr>
+								<tr>
+									<td class="resource">Protocols</td>
+									<td class="value">28,605</td>
+								</tr>
+							</body>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-warning dummy-data">
+						<div class="panel-heading">
+							<h3 class="panel-title">Announcement and Events</h3>
+						</div>
+						<div class="panel-body">
+							<ul class="nav nav-pills nav-stacked">
+								<li role="presentation">
+									<a href="#">ASIA: ASEAN May Create Research Citation Index(05 December 2010)</a>
+								</li>
+								<li role="presentation">
+									<a href="#">The 3nd ACT Steering Committee Meeting</a>
+								</li>
+								<li role="presentation">
+									<a href="#">The 2nd ACT Steering Committee Meeting</a>
+								</li>
+								<li role="presentation">
+									<a href="#">The 1nd ACT Steering Committee Meeting</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="panel panel-warning dummy-data">
-							<div class="panel-heading">
-								<h3 class="panel-title">Recently Articles</h3>
-							</div>
-							<div class="panel-body">
-								<ul class="article-list-container">
-									<li class="article-container">
-										<div class="row">
-											<div class="col-md-10">
-												<a class="article-link" href="#">Small Bowel Turnors: Pathology And Management</a>
-												<p class="article-description">
-													Journal of The Medical Association Of Thailand, 2014
-													Williamson, J.M.L, Noel Williamson, R.C.N.
-												</p>
-											</div>
-											<div class="col-md-2">
-												<p class="article-release">1 min ago</p>
-											</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-warning dummy-data">
+						<div class="panel-heading">
+							<h3 class="panel-title">Recently Articles</h3>
+						</div>
+						<div class="panel-body">
+							<ul class="article-list-container">
+								<li class="article-container">
+									<div class="row">
+										<div class="col-md-10">
+											<a class="article-link" href="#">Small Bowel Turnors: Pathology And Management</a>
+											<p class="article-description">
+												Journal of The Medical Association Of Thailand, 2014
+												Williamson, J.M.L, Noel Williamson, R.C.N.
+											</p>
 										</div>
-									</li>
-									<li class="article-container">
-										<div class="row">
-											<div class="col-md-10">
-												<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
-												<p class="article-description">
-													Journal of The Medical Association Of Thailand, 2014
-													Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
-												</p>
-											</div>
-											<div class="col-md-2">
-												<p class="article-release">2 min ago</p>
-											</div>
+										<div class="col-md-2">
+											<p class="article-release">1 min ago</p>
 										</div>
-									</li>
-									<li class="article-container">
-										<div class="row">
-											<div class="col-md-10">
-												<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
-												<p class="article-description">
-													Journal of The Medical Association Of Thailand, 2014
-													Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
-												</p>
-											</div>
-											<div class="col-md-2">
-												<p class="article-release">2 min ago</p>
-											</div>
+									</div>
+								</li>
+								<li class="article-container">
+									<div class="row">
+										<div class="col-md-10">
+											<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
+											<p class="article-description">
+												Journal of The Medical Association Of Thailand, 2014
+												Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
+											</p>
 										</div>
-									</li>
-									<li class="article-container">
-										<div class="row">
-											<div class="col-md-10">
-												<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
-												<p class="article-description">
-													Journal of The Medical Association Of Thailand, 2014
-													Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
-												</p>
-											</div>
-											<div class="col-md-2">
-												<p class="article-release">5 min ago</p>
-											</div>
+										<div class="col-md-2">
+											<p class="article-release">2 min ago</p>
 										</div>
-									</li>
-								</ul>
-							</div>
+									</div>
+								</li>
+								<li class="article-container">
+									<div class="row">
+										<div class="col-md-10">
+											<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
+											<p class="article-description">
+												Journal of The Medical Association Of Thailand, 2014
+												Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
+											</p>
+										</div>
+										<div class="col-md-2">
+											<p class="article-release">2 min ago</p>
+										</div>
+									</div>
+								</li>
+								<li class="article-container">
+									<div class="row">
+										<div class="col-md-10">
+											<a class="article-link" href="#">The Treatment Outcome Of Redical Radiotherapy In Laryngeal Cencer</a>
+											<p class="article-description">
+												Journal of The Medical Association Of Thailand, 2014
+												Srikawin, J., Pukanhapan, N., Klunklin, P., Sittitrai
+											</p>
+										</div>
+										<div class="col-md-2">
+											<p class="article-release">5 min ago</p>
+										</div>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div class="footer" style="clear: both;position:relative;height:120px;background-color:#31353d;margin-top:20px;color:#79808f;">
-		<div style="text-align:center;"><span style="color:#8dbf41; font-size: 18px;">© COPYRIGHT ASEAN CITATION INDEX 2014</span><br />
-ACI Secretariat: c/o 5th Floor, School of Energy Environment and Materials, King Mongkut’s University of Technology Thonburi<br />
-126 Prachautid Road, Bangmod, Thung Khru, Bangkok 10140, Thailand<br />
-Tel. and Fax +66 2470 8647 Email: aci.cites@gmail.com</div>
+	<!-- End Body -->
+	<!-- Footer -->
+	<div class="row">
+		<div class="col-md-12">
+			<div class="footer" style="clear: both;position:relative;height:120px;background-color:#31353d;margin-top:20px;color:#79808f;">
+				<div style="text-align:center;">
+					<span style="color:#8dbf41; font-size: 18px;">© COPYRIGHT ASEAN CITATION INDEX 2014</span><br />
+					ACI Secretariat: c/o 5th Floor, School of Energy Environment and Materials, King Mongkut’s University of Technology Thonburi<br />
+					126 Prachautid Road, Bangmod, Thung Khru, Bangkok 10140, Thailand<br />
+					Tel. and Fax +66 2470 8647 Email: aci.cites@gmail.com
+				</div>
+			</div>
+		</div>
 	</div>
+
+	<!-- <div class="page"> -->
+
+		
+		
+		
+		
+		<!-- <div class="recenly-article" style="clear: both;position:relative;">
+			
+		</div> -->
+		
+		
+	<!-- </div> -->
 </div>
 
 <script type="text/javascript">
@@ -454,15 +525,15 @@ jQuery(document).ready(function ($) {
 		  });
     });
 
-    jQuery('div.country-list li').mouseenter(function(){
-		jQuery(this).find('a').css('color', 'white');
-    });
-    jQuery('div.country-list li').mouseleave(function(){
-		jQuery(this).find('a').css('color', 'inherit');
-    });
+  //   jQuery('div.country-list li').mouseenter(function(){
+		// jQuery(this).find('a').css('color', 'white');
+  //   });
+  //   jQuery('div.country-list li').mouseleave(function(){
+		// jQuery(this).find('a').css('color', 'inherit');
+  //   });
 
-    jQuery('div.country-button').click(function(){
-		jQuery('div.country-list').toggle('fade', {}, 200);
-    });
+  //   jQuery('div.country-button').click(function(){
+		// jQuery('div.country-list').toggle('fade', {}, 200);
+  //   });
 });
 </script>

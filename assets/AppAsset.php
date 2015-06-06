@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle {
     public $js = [
 //     'assets/js/jquery-2.1.1.js',
     'web-assets/jquery-ui/jquery-ui.js',
+    'vendor/bower/bootstrap/dist/js/bootstrap.min.js',
    // 'assets/mmenu/src/js/jquery.mmenu.min.all.js',
 // 	'web-assets/metisMenu/js/metismenu.min.js',
 // 	'web-assets/metisMenu/js/bootstrap.min.js',
@@ -45,6 +46,8 @@ class AppAsset extends AssetBundle {
     'web-assets/js/loading.js'
     		];
     public $css = [
+       'vendor/bower/bootstrap/dist/css/bootstrap.min.css',
+       'vendor/bower/bootstrap/dist/css/bootstrap-theme.min.css',
        'css/site.css',
 //        'web-assets/mmenu/src/css/jquery.mmenu.all.css',
        'web-assets/jquery-ui/jquery-ui.css',

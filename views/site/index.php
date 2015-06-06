@@ -7,7 +7,7 @@ use yii\web\Session;
 
 AppAsset::register($this);
 if (!Authentication::isLoggedIn()) {
-	\Yii::$app->getResponse()->redirect(['site/login']);
+	\Yii::$app->getResponse()->redirect(['home/index']);
 }
 
 ?>

@@ -44,11 +44,10 @@ class AppAsset extends AssetBundle {
     'web-assets/jssorslider/js/jssor.js',
     'web-assets/jssorslider/js/jssor.slider.js',
     'web-assets/js/loading.js'
-    		];
+    ];
     public $css = [
        'vendor/bower/bootstrap/dist/css/bootstrap.min.css',
        'vendor/bower/bootstrap/dist/css/bootstrap-theme.min.css',
-       'css/site.css',
 //        'web-assets/mmenu/src/css/jquery.mmenu.all.css',
        'web-assets/jquery-ui/jquery-ui.css',
 //        'web-assets/mmenu/css/demo.css',
@@ -59,8 +58,8 @@ class AppAsset extends AssetBundle {
 //        'web-assets/metisMenu/css/bootstrap.min.css',
 //        'web-assets/metisMenu/css/bootstrap-dialog.min.css',
        'web-assets/select2/select2.css',
-       'css/loading.css'
-       
+       'css/loading.css',
+       'assets/css/main.css',
     ];
 
 

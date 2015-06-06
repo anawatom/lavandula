@@ -15,7 +15,7 @@ class HomeController extends \yii\web\Controller
 	
     public function actionIndex()
     {
-    	$this->layout = 'main2';
+    	$this->layout = 'home';
 		try {
 			// this is a error code
 			//$result = WA_PROVINCE::find()->where('aaaaaaaaaaaaaaaaaaaaaaaaa', aaa);

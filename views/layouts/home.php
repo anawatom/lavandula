@@ -21,12 +21,12 @@
 		<link rel="shortcut icon" type="image/ico" href="<?php echo Url::to('@web/images/favicon.ico'); ?>"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<?= Html::csrfMetaTags() ?>
-		<title>E-Warning System</title>
+		<title>ACI</title>
 		<?php $this->head() ?>
 	</head>
 	<body>
 		<?php $this->beginBody(); ?>
-		<div class="container">
+		<div class="container main-container" style="padding-left: 0px; padding-right:0px;">
 			<?php
 				//Get all flash messages and loop through them
 				foreach (Yii::$app->session->getAllFlashes() as $message) {

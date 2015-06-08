@@ -38,15 +38,9 @@ $config = [
                 ],
             ],
         ],
- /*       'assetManager' => [
-       		'bundles' => [
-	        // you can override AssetBundle configs here
-	        'yii\web\js' => [
-	        'sourcePath' => null,
-	        'js' => ['jquery-2.1.1.js']
-	      	 ],
-	      ],
-      ],*/
+	    'authManager' => [
+	         'class' => 'yii\rbac\DbManager',
+        ],
         'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,

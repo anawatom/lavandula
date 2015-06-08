@@ -58,8 +58,8 @@ class AppAsset extends AssetBundle {
 //        'web-assets/metisMenu/css/bootstrap.min.css',
 //        'web-assets/metisMenu/css/bootstrap-dialog.min.css',
        'web-assets/select2/select2.css',
-       'css/loading.css',
-       'assets/css/main.css',
+       'web-assets/css/loading.css',
+       'web-assets/css/main.css',
     ];
 
 

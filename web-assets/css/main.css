@@ -1,9 +1,29 @@
 body {
-	background: rgba(172,188,147,0.5) 100%
+/* 	backgaround: rgba(172,188,147,0.5) 100% */
 }
 /* Header */
 div.header {
 	
+}
+.main-container{
+/* 	border-top: 3px solid black; */
+/*   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000), to(transparent)); */
+/*   background-image: -webkit-linear-gradient(#000, transparent); */
+/*   background-image: */
+/*       -moz-linear-gradient(#000, transparent), */
+/*       -moz-linear-gradient(#000, transparent); */
+/*   background-image: */
+/*       -o-linear-gradient(#000, transparent), */
+/*       -o-linear-gradient(#000, transparent); */
+/*   background-image:  */
+/*       linear-gradient(#000, transparent), */
+/*       linear-gradient(#000, transparent); */
+/*   -moz-background-size: 3px 100%; */
+/*   background-size: 3px 100%; */
+/*   background-position: 0 0, 100% 0; */
+/*   background-repeat: no-repeat;  */
+border-left: 2px solid gray;
+border-right: 2px solid gray;
 }
 .logo-contianer {
 	color: white;
@@ -37,7 +57,7 @@ div.header {
 	border-radius: 0;
 }
 .slider-contianer {
-	margin: 0 0 20px 0;
+	margin: 0;
 }
 div.nav-top ul{
     list-style-type: none;
@@ -85,10 +105,10 @@ div.nav-top li a{
 .search-container{
 	margin: 0 0 20px 0;
 	padding: 40px 0;
-	background-color: white;
+	background-color: #f2f2f3;
 	height: 170px;
-	border-top: solid #3b3f46 4px;
-	border-bottom: solid #3b3f46 4px;
+/* 	border-top: solid #3b3f46 4px; */
+/* 	border-bottom: solid #3b3f46 4px; */
 }
 #frmsearchbox{
 	margin: 0 auto;

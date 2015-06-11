@@ -25,6 +25,18 @@ div.header {
 border-left: 2px solid gray;
 border-right: 2px solid gray;
 }
+.language-contianer {
+	background: rgba(104,173,0,1) 0%;
+	text-align: right;
+	padding: 5px;
+	color: #fff;
+}
+.language-contianer a {
+	color: #fff;
+}
+.language-contianer a.active {
+	font-weight: 900;
+}
 .logo-contianer {
 	color: white;
 	padding: 20px 20px;

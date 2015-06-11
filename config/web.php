@@ -42,6 +42,28 @@ $config = [
 	         'class' => 'yii\rbac\DbManager',
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'i18n' => [
+            'translations' => [
+                    'app*' => [
+                        'class' => 'yii\i18n\PhpMessageSource',
+                        'basePath' => '@app/messages',
+                        'sourceLanguage' => 'th',
+                        'fileMap' => [
+                            'app' => 'app.php',
+                            'app/frontend' => 'frontend.php',
+                        ],
+                    ],
+                    'app*' => [
+                        'class' => 'yii\i18n\PhpMessageSource',
+                        'basePath' => '@app/messages',
+                        'sourceLanguage' => 'en-US',
+                        'fileMap' => [
+                            'app' => 'app.php',
+                            'app/frontend' => 'frontend.php',
+                        ],
+                    ],
+                ],
+            ],
     ],
     'params' => $params,
 ];

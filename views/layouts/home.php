@@ -12,6 +12,11 @@
 
 	AppAsset::register($this);
 	define('DOC_WIDTH', 1316);
+
+	$language = Yii::$app->session->get('app.language');
+	if (!$language) {
+		$language = Yii::$app->language;
+	}
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -54,6 +59,11 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="header">
+						<!-- Language bar -->
+						<div class="language-contianer">
+							<a href="<?= Url::to(['home/set-language', 'lang' => 'en-US']); ?>" class="<?= ($language=='en-US')? 'active':''; ?>">Eng</a> | 
+							<a href="<?= Url::to(['home/set-language', 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
+						</div><!-- End Language bar -->
 						<!-- Logo -->
 						<div class="logo-contianer">
 							<div class="logo">
@@ -79,19 +89,19 @@
 							<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
 								<ul class="nav nav-tabs nav-justified">
 									<li class="bg-green">
-										<a class="nav-link" href="#">HOME <span class="sr-only">(current)</span></a>
+										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
 									</li>
 									<li class="bg-yellow">
-										<a class="nav-link" href="#">ABOUT</a>
+										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'ABOUT'); ?></a>
 									</li>
 									<li class="bg-red">
-										<a class="nav-link" href="#">CRITERIA</a>
+										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CRITERIA'); ?></a>
 									</li>
 									<li class="bg-sky">
-										<a class="nav-link" href="#">JOURNAL SUBMISSION</a>
+										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'JOURNAL SUBMISSION'); ?></a>
 									</li>
 									<li class="bg-purple">
-										<a class="nav-link" href="#">CONTACT</a>
+										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
 									</li>
 								</ul>
 							</div>

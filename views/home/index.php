@@ -13,7 +13,7 @@
 							<div class="col-md-12">
 								<form>
 									<div class="input-group">
-										<input type="text" class="form-control" style="height:50px;font-size:18px;" placeholder="Search for...">
+										<input type="text" class="form-control" style="height:50px;font-size:18px;" placeholder="<?= Yii::t('app/frontend', 'Search...'); ?>">
 										<span class="input-group-btn">
 											<button class="btn btn-success" style="height:50px;" type="button">
 												<span class="glyphicon glyphicon-search" aria-hidden="true"></span>

@@ -13,6 +13,17 @@ class HomeController extends \yii\web\Controller
 {
 	public $title = 'ACI';
 	
+
+	public function init()
+    {
+        parent::init();
+
+        $language = \Yii::$app->session->get('app.language');
+        if ($language) {
+			Yii::$app->language = $language;
+        }
+    }
+
     public function actionIndex()
     {
     	$this->layout = 'home';
@@ -41,6 +52,20 @@ class HomeController extends \yii\web\Controller
 		finally {
 			return $this->render('site');
 		}
+    }
+
+    public function actionSetLanguage() {
+		try {
+			$request = \Yii::$app->getRequest();
+
+			$lang = $request->getQueryParam('lang');
+			\Yii::$app->session->set('app.language', $lang);
+		}
+		catch (ErrorException $e) {
+			$this->handlerError($e);
+		}
+
+		return $this->redirect(['home/index']);
     }
 
     public function handlerError($ex) {

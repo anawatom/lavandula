@@ -71,6 +71,7 @@
 							</div>
 							<div class="member-contianer">
 								<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
+								<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
 							</div>
 						</div>
 						<!-- End logo -->

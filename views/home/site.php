@@ -2,6 +2,7 @@
 	use yii\helpers\Url;
 	
 	define('DOC_WIDTH', 1316);
+	
 ?>
 
 <style type="text/css">

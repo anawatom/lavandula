@@ -13,6 +13,15 @@ class HomeController extends \yii\web\Controller
 {
 	public $title = 'ACI';
 	
+// 	public function actions()
+// 	{
+// 		return [
+// 				'error' => [
+// 						'class' => 'yii\web\ErrorAction',
+// 				]];
+				
+// 	}
+	
 
 	public function init()
     {

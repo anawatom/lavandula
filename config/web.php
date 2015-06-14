@@ -63,7 +63,11 @@ $config = [
                         ],
                     ],
                 ],
-            ],
+        ],
+         'user' => [
+            'identityClass' => 'app\models\User',
+            'enableAutoLogin' => false,
+        ],
     ],
     'params' => $params,
 ];

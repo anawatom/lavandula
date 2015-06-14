@@ -71,6 +71,7 @@
 							</div>
 							<div class="member-contianer">
 								<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
+								<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
 							</div>
 						</div>
 						<!-- End logo -->
@@ -102,6 +103,21 @@
 									</li>
 									<li class="bg-purple">
 										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
+									</li>
+									<li class="bg-sky">
+										<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
+											<?= Yii::t('app/frontend', 'NEW MENU'); ?>
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">Action</a></li>
+											<li><a href="#">Another action</a></li>
+											<li><a href="#">Something else here</a></li>
+											<li class="divider"></li>
+											<li><a href="#">Separated link</a></li>
+											<li class="divider"></li>
+											<li><a href="#">One more separated link</a></li>
+										</ul>
 									</li>
 								</ul>
 							</div>

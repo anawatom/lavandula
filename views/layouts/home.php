@@ -88,7 +88,7 @@
 							</div>
 							<!-- Collect the nav links, forms, and other content for toggling -->
 							<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
-								<ul class="nav nav-tabs nav-justified">
+								<ul class="nav navbar-nav nav-tabs nav-justified">
 									<li class="bg-green">
 										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
 									</li>

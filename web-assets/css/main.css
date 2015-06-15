@@ -1,10 +1,14 @@
 body {
 /* 	backgaround: rgba(172,188,147,0.5) 100% */
 }
-/* Header */
-div.header {
-	
+/* Layout */
+.header-container,
+.content-container,
+.footer-contianer {
+	padding: 0;
 }
+/* End Layout */
+/* Header */
 .main-container{
 /* 	border-top: 3px solid black; */
 /*   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000), to(transparent)); */

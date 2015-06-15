@@ -31,7 +31,7 @@
 	</head>
 	<body>
 		<?php $this->beginBody(); ?>
-		<div class="container main-container" style="padding-left: 0px; padding-right:0px;">
+		<div class="container main-container">
 			<?php
 				//Get all flash messages and loop through them
 				foreach (Yii::$app->session->getAllFlashes() as $message) {
@@ -57,114 +57,114 @@
 			?>
 			<!-- Header -->
 			<div class="row">
-				<div class="col-md-12">
-					<div class="header">
-						<!-- Language bar -->
-						<div class="language-contianer">
-							<a href="<?= Url::to(['home/set-language', 'lang' => 'en-US']); ?>" class="<?= ($language=='en-US')? 'active':''; ?>">Eng</a> | 
-							<a href="<?= Url::to(['home/set-language', 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
-						</div><!-- End Language bar -->
-						<!-- Logo -->
-						<div class="logo-contianer">
-							<div class="logo">
-								<img src="<?= Url::to('@web/images/aec-logo.png') ?>">
-							</div>
-							<div class="member-contianer">
-								<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
-								<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
-							</div>
+				<div class="col-sm-12 col-md-12 header-container">
+					<!-- Language bar -->
+					<div class="language-contianer">
+						<a href="<?= Url::to(['home/set-language', 'lang' => 'en-US']); ?>" class="<?= ($language=='en-US')? 'active':''; ?>">Eng</a> | 
+						<a href="<?= Url::to(['home/set-language', 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
+					</div><!-- End Language bar -->
+					<!-- Logo -->
+					<div class="logo-contianer">
+						<div class="logo">
+							<img src="<?= Url::to('@web/images/aec-logo.png') ?>">
 						</div>
-						<!-- End logo -->
-						<!-- Navbar -->
-						<nav class="navbar navbar-default nav-top navbar-contianer">
-							<!-- Brand and toggle get grouped for better mobile display -->
-							<div class="navbar-header">
-								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-									<span class="sr-only">Toggle navigation</span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-									<span class="icon-bar"></span>
-								</button>
-							</div>
-							<!-- Collect the nav links, forms, and other content for toggling -->
-							<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
-								<ul class="nav navbar-nav nav-tabs nav-justified">
-									<li class="bg-green">
-										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
-									</li>
-									<li class="bg-yellow">
-										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'ABOUT'); ?></a>
-									</li>
-									<li class="bg-red">
-										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CRITERIA'); ?></a>
-									</li>
-									<li class="bg-sky">
-										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'JOURNAL SUBMISSION'); ?></a>
-									</li>
-									<li class="bg-purple">
-										<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
-									</li>
-									<li class="bg-sky">
-										<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
-											<?= Yii::t('app/frontend', 'NEW MENU'); ?>
-											<span class="caret"></span>
-										</a>
-										<ul class="dropdown-menu" role="menu">
-											<li><a href="#">Action</a></li>
-											<li><a href="#">Another action</a></li>
-											<li><a href="#">Something else here</a></li>
-											<li class="divider"></li>
-											<li><a href="#">Separated link</a></li>
-											<li class="divider"></li>
-											<li><a href="#">One more separated link</a></li>
-										</ul>
-									</li>
-								</ul>
-							</div>
-						</nav>
-						<!-- End Navbar -->
-						<!-- Slider -->
-						<div class="slider-contianer">
-							<div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden; ">
-								<!-- Loading Screen -->
-								<div u="loading" style="position: absolute; top: 0px; left: 0px;">
-									<div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
-										background-color: #000000; top: 0px; left: 0px;width: 100%;height:100%;">
-									</div>
-									<div style="position: absolute; display: block; background: url(<?= Url::to('@web/images/loading.gif') ?>) no-repeat center center;
-										top: 0px; left: 0px;width: 100%;height:100%;">
-									</div>
-								</div>
-								<div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden;">
-									<div>
-										<img u="image" src="<?= Url::to('@web/images/lanscape/slide1.jpg') ?>" />
-									</div>
-									<div>
-										<img u="image" src="<?= Url::to('@web/images/lanscape/slide2.jpg') ?>" />
-									</div>
-								</div>
-							</div>
+						<div class="member-contianer">
+							<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
+							<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
 						</div>
-						<!-- End Slider -->
 					</div>
+					<!-- End logo -->
+					<!-- Navbar -->
+					<nav class="navbar navbar-default nav-top navbar-contianer">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
+							<ul class="nav navbar-nav nav-tabs nav-justified">
+								<li class="bg-green">
+									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
+								</li>
+								<li class="bg-yellow">
+									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'ABOUT'); ?></a>
+								</li>
+								<li class="bg-red">
+									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CRITERIA'); ?></a>
+								</li>
+								<li class="bg-sky">
+									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'JOURNAL SUBMISSION'); ?></a>
+								</li>
+								<li class="bg-purple">
+									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
+								</li>
+								<li class="bg-sky">
+									<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
+										<?= Yii::t('app/frontend', 'NEW MENU'); ?>
+										<span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="#">Action</a></li>
+										<li><a href="#">Another action</a></li>
+										<li><a href="#">Something else here</a></li>
+										<li class="divider"></li>
+										<li><a href="#">Separated link</a></li>
+										<li class="divider"></li>
+										<li><a href="#">One more separated link</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</nav>
+					<!-- End Navbar -->
+					<!-- Slider -->
+					<div class="slider-contianer">
+						<div id="slider1_container" style="position: relative; top: 0px; left: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden; ">
+							<!-- Loading Screen -->
+							<div u="loading" style="position: absolute; top: 0px; left: 0px;">
+								<div style="filter: alpha(opacity=70); opacity:0.7; position: absolute; display: block;
+									background-color: #000000; top: 0px; left: 0px;width: 100%;height:100%;">
+								</div>
+								<div style="position: absolute; display: block; background: url(<?= Url::to('@web/images/loading.gif') ?>) no-repeat center center;
+									top: 0px; left: 0px;width: 100%;height:100%;">
+								</div>
+							</div>
+							<div u="slides" style="cursor: move; position: absolute; left: 0px; top: 0px; width: <?=DOC_WIDTH?>px; height: 400px; overflow: hidden;">
+								<div>
+									<img u="image" src="<?= Url::to('@web/images/lanscape/slide1.jpg') ?>" />
+								</div>
+								<div>
+									<img u="image" src="<?= Url::to('@web/images/lanscape/slide2.jpg') ?>" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Slider -->
 				</div>
 			</div>
 			<!-- End Header -->
 			<!-- Content -->
-			<?php echo $content; ?>
+			<div class="row">
+				<div class="col-sm-12 col-md-12 content-contianer">
+					<?php echo $content; ?>
+				</div>
+			</div>
 			<!-- End Content -->
 			<!-- Footer -->
 			<div class="row">
-				<div class="col-md-12">
-					<div class="footer-contianer">
-						<div class="coppyright-contianer">
-							© COPYRIGHT ASEAN CITATION INDEX 2014
-						</div>
-						<div class="address-contianer">
-							ACI Secretariat: c/o 5th Floor, School of Energy Environment and Materials, King Mongkut’s University of Technology Thonburi<br />
-							126 Prachautid Road, Bangmod, Thung Khru, Bangkok 10140, Thailand<br />
-							Tel. and Fax +66 2470 8647 Email: aci.cites@gmail.com
-						</div>
+				<div class="col-sm-12 col-md-12 footer-contianer">
+					<div class="coppyright-contianer">
+						© COPYRIGHT ASEAN CITATION INDEX 2014
+					</div>
+					<div class="address-contianer">
+						ACI Secretariat: c/o 5th Floor, School of Energy Environment and Materials, King Mongkut’s University of Technology Thonburi<br />
+						126 Prachautid Road, Bangmod, Thung Khru, Bangkok 10140, Thailand<br />
+						Tel. and Fax +66 2470 8647 Email: aci.cites@gmail.com
 					</div>
 				</div>
 			</div>

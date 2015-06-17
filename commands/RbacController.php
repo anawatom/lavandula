@@ -10,31 +10,38 @@ class RbacController extends Controller
     {
         $auth = Yii::$app->authManager;
 
-        // add "createPost" permission
-        $createPost = $auth->createPermission('createPost');
-        $createPost->description = 'Create a post';
-        $auth->add($createPost);
+        // add "createData" permission
+        $createData = $auth->createPermission('createData');
+        $createData->description = 'Create a data';
+        $auth->add($createData);
 
-        // add "updatePost" permission
-        $updatePost = $auth->createPermission('updatePost');
-        $updatePost->description = 'Update post';
-        $auth->add($updatePost);
+        // add "updateData" permission
+        $updateData = $auth->createPermission('updateData');
+        $updateData->description = 'Update a data';
+        $auth->add($updateData);
 
-        // add "author" role and give this role the "createPost" permission
-        $author = $auth->createRole('author');
-        $auth->add($author);
-        $auth->addChild($author, $createPost);
+        // add "operation" role and give this role the "createData" permission
+        $operation = $auth->createRole('operation');
+        $auth->add($operation);
+        $auth->addChild($operation, $createData);
 
-        // add "admin" role and give this role the "updatePost" permission
+        // add "administrator" role and give this role the "updateData" permission
         // as well as the permissions of the "author" role
-        $admin = $auth->createRole('admin');
-        $auth->add($admin);
-        $auth->addChild($admin, $updatePost);
-        $auth->addChild($admin, $author);
+        $administrator = $auth->createRole('administrator');
+        $auth->add($administrator);
+        $auth->addChild($administrator, $updateData);
+        $auth->addChild($administrator, $operation);
+
+        // add "superadmin" role and give this role the "administrator" permission
+        // as well as the permissions of the "author" role
+        $superadmin = $auth->createRole('superadmin');
+        $auth->add($superadmin);
+        $auth->addChild($superadmin, $administrator);
 
         // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()
         // usually implemented in your User model.
-        $auth->assign($author, 2);
-        $auth->assign($admin, 1);
+        $auth->assign($superadmin, 1);
+        $auth->assign($administrator, 2);
+        $auth->assign($operation, 3);
     }
 }

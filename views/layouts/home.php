@@ -17,6 +17,8 @@
 	if (!$language) {
 		$language = Yii::$app->language;
 	}
+
+	$currentUser = \Yii::$app->user->getIdentity();
 ?>
 <?php $this->beginPage(); ?>
 <!DOCTYPE html>
@@ -69,7 +71,8 @@
 							<img src="<?= Url::to('@web/images/aec-logo.png') ?>">
 						</div>
 						<div class="member-contianer">
-							<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span>
+							<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span><br />
+							<span><?php echo $currentUser->username.' ('.$currentUser->role->name.') '; ?></span><br />
 							<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
 						</div>
 					</div>
@@ -148,6 +151,14 @@
 				</div>
 			</div>
 			<!-- End Header -->
+			<?php if (\Yii::$app->user->can('updateData')) { ?>
+				<div class="row">
+					<div class="col-sm-12 col-md-12">
+						<h1>This User can update a data!!!</h1>
+
+					</div>
+				</div>
+			<?php } ?>
 			<!-- Content -->
 			<div class="row">
 				<div class="col-sm-12 col-md-12 content-contianer">

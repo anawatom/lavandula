@@ -63,6 +63,7 @@ border-right: 2px solid gray;
 .member-contianer {
 	float: right;
 	cursor: pointer;
+	text-align: right;
 }
 .navbar-contianer {
 	padding: 0;

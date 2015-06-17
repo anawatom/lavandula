@@ -5,8 +5,9 @@ namespace app\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
-use yii\helpers\Security;
 use yii\web\IdentityInterface;
+use yii\base\Security;
+use app\models\Role;
 
 /**
  * This is the model class for table "user".
@@ -84,8 +85,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
-        /** INCLUDE USER LOGIN VALIDATION FUNCTIONS**/
-        /**
+    /** INCLUDE USER LOGIN VALIDATION FUNCTIONS**/
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)
@@ -175,15 +176,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->password === sha1($password);
     }
 
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Security::generatePasswordHash($password);
-    }
+    // /**
+    //  * Generates password hash from password and sets it to the model
+    //  *
+    //  * @param string $password
+    //  */
+    // public function setPassword($password)
+    // {
+    //     $this->password_hash = Security::generatePasswordHash($password);
+    // }
 
     /**
      * Generates "remember me" authentication key

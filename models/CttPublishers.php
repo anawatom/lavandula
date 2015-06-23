@@ -24,6 +24,9 @@ use Yii;
  * @property string $created_dtm
  * @property string $modified_by
  * @property string $modified_dtm
+ *
+ * @property CttStaticdataCountrys $country0
+ * @property CttStaticdataLanguages $lang0
  */
 class CttPublishers extends \yii\db\ActiveRecord
 {
@@ -41,8 +44,8 @@ class CttPublishers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['lang_id', 'lang', 'aliasid', 'main_publisher', 'editor', 'address', 'country_id', 'country', 'phone', 'website', 'email', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'required'],
             [['lang_id', 'country_id'], 'integer'],
-            [['lang', 'aliasid', 'main_publisher', 'editor', 'address', 'country_id', 'country', 'phone', 'website', 'email', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'required'],
             [['name'], 'string'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],
@@ -76,5 +79,21 @@ class CttPublishers extends \yii\db\ActiveRecord
             'modified_by' => Yii::t('app', 'Modified By'),
             'modified_dtm' => Yii::t('app', 'Modified Dtm'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry0()
+    {
+        return $this->hasOne(CttStaticdataCountrys::className(), ['id' => 'country_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLang0()
+    {
+        return $this->hasOne(CttStaticdataLanguages::className(), ['id' => 'lang_id']);
     }
 }

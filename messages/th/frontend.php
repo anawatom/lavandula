@@ -22,5 +22,7 @@ return [
 	'CRITERIA' => 'กฎเกณฑ์',
 	'JOURNAL SUBMISSION' => 'วารสารที่ส่งเข้ามา',
 	'CONTACT' => 'ติดต่อ',
-    'Search...' => 'ค้นหา...'
+    'Search...' => 'ค้นหา...',
+    'Create' => 'สร้าง',
+    'Update' => 'อัพเดท',
 ];

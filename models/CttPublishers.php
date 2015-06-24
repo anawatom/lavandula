@@ -44,7 +44,7 @@ class CttPublishers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lang_id', 'lang', 'aliasid', 'main_publisher', 'editor', 'address', 'country_id', 'country', 'phone', 'website', 'email', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'required'],
+            [['lang_id', 'lang', 'aliasid', 'main_publisher', 'editor', 'address', 'country_id', 'country', 'phone', 'website', 'email', 'created_by', 'modified_by'], 'required'],
             [['lang_id', 'country_id'], 'integer'],
             [['name'], 'string'],
             [['created_dtm', 'modified_dtm'], 'safe'],

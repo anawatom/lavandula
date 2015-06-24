@@ -14,6 +14,8 @@ use Yii;
  * @property string $created_dtm
  * @property string $modified_by
  * @property string $modified_dtm
+ *
+ * @property CttPublishers[] $cttPublishers
  */
 class CttStaticdataLanguages extends \yii\db\ActiveRecord
 {
@@ -31,7 +33,7 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['short_name', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'required'],
+            [['short_name', 'created_by', 'modified_by'], 'required'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['name'], 'string', 'max' => 50],
             [['short_name'], 'string', 'max' => 10],
@@ -53,5 +55,13 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
             'modified_by' => Yii::t('app', 'Modified By'),
             'modified_dtm' => Yii::t('app', 'Modified Dtm'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCttPublishers()
+    {
+        return $this->hasMany(CttPublishers::className(), ['lang_id' => 'id']);
     }
 }

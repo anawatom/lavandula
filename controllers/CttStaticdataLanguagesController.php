@@ -74,7 +74,7 @@ class CttStaticdataLanguagesController extends Controller
                 return $this->redirect(['index']);
             } else {
                 // Handler error in here.
-                FlashMessage::showError(['msg' => 'Saved failed.']);
+                FlashMessage::showError(['msg' => 'Save failed.']);
                 return $this->render('create', [
                     'model' => $model,
                 ]);
@@ -105,7 +105,7 @@ class CttStaticdataLanguagesController extends Controller
                 return $this->redirect(['index']);
             } else {
                 // Handler error in here.
-                FlashMessage::showError(['msg' => 'Updated failed.']);
+                FlashMessage::showError(['msg' => 'Update failed.']);
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -125,7 +125,11 @@ class CttStaticdataLanguagesController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($this->findModel($id)->delete()) {
+            FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
+        } else {
+            FlashMessage::showSuccess(['msg' => 'Delete failed.']);
+        }
 
         return $this->redirect(['index']);
     }

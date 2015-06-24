@@ -70,6 +70,9 @@ $config = [
         ],
     ],
     'params' => $params,
+    'as AccessBehavior' => [
+        'class' => 'app\components\AccessBehavior'
+    ],
 ];
 
 if (YII_DEBUG && YII_ENV_DEV) {

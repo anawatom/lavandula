@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Ctt Staticdata Languages'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app/ctt-staticdata-language', 'Create Ctt Staticdata Languages'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,13 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'name',
             'short_name',
-            'created_by',
-            'created_dtm',
-            // 'modified_by',
-            // 'modified_dtm',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

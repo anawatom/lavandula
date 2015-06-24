@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\components\FlashMessage;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataLanguagesSearch;
 use yii\web\Controller;
@@ -14,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class CttStaticdataLanguagesController extends Controller
 {
+    public $layout = 'home';
+
     public function behaviors()
     {
         return [
@@ -62,8 +65,20 @@ class CttStaticdataLanguagesController extends Controller
     {
         $model = new CttStaticdataLanguages();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                // return $this->redirect(['view', 'id' => $model->id]);
+                FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                return $this->redirect(['index']);
+            } else {
+                // Handler error in here.
+                FlashMessage::showError(['msg' => 'Saved failed.']);
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,8 +96,20 @@ class CttStaticdataLanguagesController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                // return $this->redirect(['view', 'id' => $model->id]);
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['index']);
+            } else {
+                // Handler error in here.
+                FlashMessage::showError(['msg' => 'Updated failed.']);
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

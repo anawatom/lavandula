@@ -39,11 +39,11 @@
 				foreach (Yii::$app->session->getAllFlashes() as $message) {
 					echo Growl::widget([
 						'type' => (!empty($message['type'])) ? $message['type'] : 'danger',
-						// 'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
-						// 'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
+						'title' => (!empty($message['title'])) ? Html::encode($message['title']) : 'Title Not Set!',
+						'icon' => (!empty($message['icon'])) ? $message['icon'] : 'fa fa-info',
 						'body' => (!empty($message['message'])) ? Html::encode($message['message']) : 'Message Not Set!',
-						'showSeparator' => true,
-						'delay' => 500, //This delay is how long before the message shows
+						'showSeparator' => $message['showSeparator'],
+						'delay' => (!empty($message['delay'])) ? $message['delay'] : 300,
 						'pluginOptions' => [
 							'showProgressbar' => true,
 							'delay' => (!empty($message['duration'])) ? $message['duration'] : 3000, //This delay is how long the message shows for
@@ -152,12 +152,6 @@
 			</div>
 			<!-- End Header -->
 			<?php if (\Yii::$app->user->can('updateData')) { ?>
-				<div class="row">
-					<div class="col-sm-12 col-md-12">
-						<h1>This User can update a data!!!</h1>
-
-					</div>
-				</div>
 			<?php } ?>
 			<!-- Content -->
 			<div class="row">

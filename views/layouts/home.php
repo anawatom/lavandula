@@ -153,6 +153,18 @@
 			<!-- End Header -->
 			<?php if (\Yii::$app->user->can('updateData')) { ?>
 			<?php } ?>
+			<!-- Breadcrumbs -->
+			<div class="row">
+				<?=
+					Breadcrumbs::widget([
+						'homeLink' => [
+							'label' => Yii::t('app/frontend', 'HOME'),
+							'url' => Yii::$app->homeUrl,
+							],
+						'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+					])
+				?>
+			</div><!-- End Breadcrumbs -->
 			<!-- Content -->
 			<div class="row">
 				<div class="col-sm-12 col-md-12 content-contianer">

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Langu
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="ctt-staticdata-languages-update">
+<div class="ctt-staticdata-languages-update create-page-container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

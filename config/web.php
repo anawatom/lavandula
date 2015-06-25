@@ -7,6 +7,17 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
 	'language' => 'th',
+    'modules' => [
+        // More information http://demos.krajee.com/grid#installation
+       'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+            // enter optional module parameters below - only if you need to
+            // use your own export download action or custom translation
+            // message source
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => []
+        ]
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

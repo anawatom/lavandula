@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 $currentUser = \Yii::$app->user->getIdentity();
 ?>
 
-<div class="ctt-staticdata-languages-form">
+<div class="ctt-staticdata-languages-form form-container">
 
     <?php $form = ActiveForm::begin(); ?>
 

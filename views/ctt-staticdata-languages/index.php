@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CttStaticdataLanguagesSearch */
@@ -10,14 +10,8 @@ use yii\grid\GridView;
 $this->title = Yii::t('app', 'Ctt Staticdata Languages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ctt-staticdata-languages-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="ctt-staticdata-languages-index index-page-container">
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a(Yii::t('app/ctt-staticdata-language', 'Create Ctt Staticdata Languages'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,6 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'panel'=>[
+            'type' => GridView::TYPE_PRIMARY.' no-margin no-border-radius',
+            'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> '.Html::encode($this->title).'</h3>',
+            'headingOptions' => ['class' => 'no-border-radius'],
+        ],
+        'bordered' => true,
+        'striped' => false,
+        'condensed' => false,
+        'responsive' => true,
+        'hover' => true,
     ]); ?>
-
 </div>

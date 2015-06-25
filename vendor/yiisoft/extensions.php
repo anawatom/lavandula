@@ -21,15 +21,6 @@ return array (
       '@yii/jui' => $vendorDir . '/yiisoft/yii2-jui',
     ),
   ),
-  'himiklab/yii2-jqgrid-widget' => 
-  array (
-    'name' => 'himiklab/yii2-jqgrid-widget',
-    'version' => '1.1.7.0',
-    'alias' => 
-    array (
-      '@himiklab/jqgrid' => $vendorDir . '/himiklab/yii2-jqgrid-widget',
-    ),
-  ),
   'yiisoft/yii2-bootstrap' => 
   array (
     'name' => 'yiisoft/yii2-bootstrap',
@@ -75,15 +66,6 @@ return array (
       '@yii/faker' => $vendorDir . '/yiisoft/yii2-faker',
     ),
   ),
-  'kartik-v/yii2-krajee-base' => 
-  array (
-    'name' => 'kartik-v/yii2-krajee-base',
-    'version' => '1.7.6.0',
-    'alias' => 
-    array (
-      '@kartik/base' => $vendorDir . '/kartik-v/yii2-krajee-base',
-    ),
-  ),
   'kartik-v/yii2-widget-growl' => 
   array (
     'name' => 'kartik-v/yii2-widget-growl',
@@ -91,6 +73,51 @@ return array (
     'alias' => 
     array (
       '@kartik/growl' => $vendorDir . '/kartik-v/yii2-widget-growl',
+    ),
+  ),
+  'himiklab/yii2-jqgrid-widget' => 
+  array (
+    'name' => 'himiklab/yii2-jqgrid-widget',
+    'version' => '1.1.9.0',
+    'alias' => 
+    array (
+      '@himiklab/jqgrid' => $vendorDir . '/himiklab/yii2-jqgrid-widget',
+    ),
+  ),
+  'kartik-v/yii2-krajee-base' => 
+  array (
+    'name' => 'kartik-v/yii2-krajee-base',
+    'version' => '1.7.7.0',
+    'alias' => 
+    array (
+      '@kartik/base' => $vendorDir . '/kartik-v/yii2-krajee-base',
+    ),
+  ),
+  'kartik-v/yii2-helpers' => 
+  array (
+    'name' => 'kartik-v/yii2-helpers',
+    'version' => '1.3.1.0',
+    'alias' => 
+    array (
+      '@kartik/helpers' => $vendorDir . '/kartik-v/yii2-helpers',
+    ),
+  ),
+  'kartik-v/yii2-grid' => 
+  array (
+    'name' => 'kartik-v/yii2-grid',
+    'version' => '3.0.4.0',
+    'alias' => 
+    array (
+      '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
+    ),
+  ),
+  'kartik-v/yii2-mpdf' => 
+  array (
+    'name' => 'kartik-v/yii2-mpdf',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@kartik/mpdf' => $vendorDir . '/kartik-v/yii2-mpdf',
     ),
   ),
 );

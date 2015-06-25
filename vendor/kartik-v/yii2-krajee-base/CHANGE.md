@@ -1,3 +1,10 @@
+version 1.7.7
+=============
+**Date:** 16-Jun-2015
+
+- (enh #37): Set range input caption to change during slide.
+- (enh #38): Update to use `Json::htmlEncode` as per yii release v2.0.4.
+
 version 1.7.6
 =============
 **Date:** 09-May-2015

@@ -4,7 +4,7 @@
  * @package   yii2-krajee-base
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   1.7.6
+ * @version   1.7.7
  */
 
 namespace kartik\base;
@@ -115,8 +115,8 @@ class Html5Input extends InputWidget
         Html5InputAsset::register($view);
         $caption = 'jQuery("#' . $this->options['id'] . '")';
         $input = 'jQuery("#' . $this->html5Options['id'] . '")';
-        $js = "{$caption}.change(function(){ {$input}.val(this.value)} );\n" .
-            "{$input}.change(function(){ {$caption}.val(this.value); {$caption}.trigger('change');} );";
+        $js = "{$caption}.on('change',function(){{$input}.val(this.value)});\n" .
+            "{$input}.on('input change',function(e){{$caption}.val(this.value);if(e.type=='change'){{$caption}.trigger('change');}});";
         $view->registerJs($js);
     }
 

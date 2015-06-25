@@ -21,10 +21,18 @@
 }
 .ui-jqgrid > .ui-jqgrid-view {
 	position: relative;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 	left: 0;
 	top: 0;
 	padding: 0;
 	font-size: 11px;
+}
+.ui-jqgrid > .ui-jqgrid-view *,
+.ui-jqgrid > .ui-jqgrid-view *:before,
+.ui-jqgrid > .ui-jqgrid-view *:after {
+	box-sizing: inherit;
 }
 
 /* caption of grid and title of ui-jqdialog */
@@ -117,17 +125,19 @@
 	height: auto;
 	padding: 0 2px 0 2px;
 }
-.ui-jqgrid .ui-jqgrid-htable th div {
+.ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th div {
 	overflow: hidden;
 	position: relative;
 	height: auto;
 	margin: 2px 2px;
 }
-.ui-jqgrid-labels .ui-th-column,
+.ui-jqgrid-labels .ui-th-column-header,
 .ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
 	overflow: hidden;
 	white-space: nowrap;
 	text-align: center;
+}
+.ui-jqgrid .ui-jqgrid-labels th.ui-th-column {
 	border-top: 0 none;
 	border-bottom: 0 none;
 }
@@ -165,7 +175,7 @@
 	height: 21px;
 	width: .3em;
 	position: relative;
-	cursor: e-resize;
+	cursor: col-resize;
 	-webkit-touch-callout: none;
 	-khtml-user-select: none;
 	-ms-user-select: none;
@@ -304,8 +314,13 @@
 	margin: 0;
 	border: 0 none;
 }
+.ui-jqgrid .ui-jqgrid-btable td.jqgrid-rownum {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: inherit;
+}
 .ui-jqgrid .jqgrow > td.td_cbox {
-	padding: 2px;
+	padding: 0;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -316,11 +331,10 @@
 .ui-jqgrid .jqgrow > td > .cbox {
 	vertical-align: middle;
 }
-.ui-jqgrid .ui-jqgrid-resize-mark {
-	width: 2px;
+.ui-jqgrid > .ui-jqgrid-resize-mark,
+body > .ui-jqgrid-resize-mark {
+	width: 0px;
 	left: 0;
-	background-color: #777;
-	cursor: e-resize;
 	cursor: col-resize;
 	-webkit-touch-callout: none;
 	-khtml-user-select: none;
@@ -331,10 +345,11 @@
 	user-select: none;
 	position: absolute;
 	top: 0;
-	height: 100px;
+	/*height: 100px;*/
 	overflow: hidden;
 	display: none;
-	border: 0 none;
+	border-left-width: 1px;
+	border-right-width: 1px;
 	z-index: 99999;
 }
 
@@ -366,6 +381,9 @@ span.ui-jqgrid-cell-wrapper {
 	border-top-width: 1px;
 	border-top-color: inherit;
 	border-top-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: inherit;
 }
 .ui-jqgrid tr.footrow-ltr td {
 	text-align: left;
@@ -388,10 +406,18 @@ span.ui-jqgrid-cell-wrapper {
 	margin: 0;
 	padding: 0;
 	position: relative;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 	height: auto;
 	min-height: 22px;
 	overflow: hidden;
 	font-size: 11px;
+}
+.ui-jqgrid > .ui-jqgrid-pager *,
+.ui-jqgrid > .ui-jqgrid-pager *:before,
+.ui-jqgrid > .ui-jqgrid-pager *:after {
+	box-sizing: inherit;
 }
 .ui-jqgrid .ui-jqgrid-toppager .ui-pager-control,
 .ui-jqgrid .ui-jqgrid-pager .ui-pager-control {
@@ -424,7 +450,6 @@ span.ui-jqgrid-cell-wrapper {
 .ui-jqgrid .ui-pg-table .ui-pg-selbox {
 	height: auto;
 	width: auto;
-	font-size: .8em;
 	margin: 0;
 	line-height: inherit;
 }
@@ -956,4 +981,24 @@ a.clearsearchclass {
 .ui-jqgrid-rtl .ui-resizable-se.fa {
 	left: 0;
 	bottom: 1px;
+}
+
+/* classes for jquery.contextmenu-ui.js plugin we included here */
+.jqContextMenu .ui-menu .ui-menu-item a.ui-state-hover {
+	font-weight: normal;
+	margin: -1px;
+}
+.jqContextMenu .ui-menu .ui-menu-item.ui-state-hover {
+	font-weight: normal;
+	margin: -1px;
+}
+.jqContextMenu .ui-menu-icons > .ui-menu-item {
+	font-size: 11px;
+}
+/* classes for jQuery.jqGrid.showHideColumnMenu.js plugin */
+.ui-jqgrid-showHideColumnMenu .ui-menu-item:hover {
+	font-weight: normal;
+}
+.ui-jqgrid-disablePointerEvents {
+	pointer-events: none;
 }

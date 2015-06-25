@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/himiklab/yii2-jqgrid-widget
- * @copyright Copyright (c) 2014 HimikLab
+ * @copyright Copyright (c) 2014-2015 HimikLab
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -200,7 +200,7 @@ class JqGridWidget extends Widget
 
     protected function preparePagerSettings($pagerUserSettings)
     {
-        if (empty($pagerUserSettings)) {
+        if ($pagerUserSettings === false) {
             return '{}';
         }
 
@@ -278,5 +278,18 @@ class JqGridWidget extends Widget
         }
 
         return Json::encode($filterToolbarSettings, $this->jsonSettings);
+    }
+
+    /**
+     * @param array|\yii\db\ActiveRecord $array
+     * @return string
+     */
+    public static function optionsGenerate($array)
+    {
+        $result = ':';
+        foreach ($array as $key => $option) {
+            $result .= ";{$key}:{$option}";
+        }
+        return $result;
     }
 }

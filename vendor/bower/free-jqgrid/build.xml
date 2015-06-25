@@ -12,9 +12,9 @@
 		<concat destfile="${distdir}/${target}">
 			<fileset file="js/grid.base.js"/>
 			<fileset file="js/grid.custom.js"/>
-			<fileset file="js/jqModal.js"/>
-			<fileset file="js/jqDnR.js"/>
-			<fileset file="js/JsonXml.js"/>
+			<fileset file="js/jqmodal.js"/>
+			<fileset file="js/jqdnr.js"/>
+			<fileset file="js/jsonxml.js"/>
 			<fileset file="js/jquery.fmatter.js"/>
 			<fileset file="js/grid.common.js"/>
 			<fileset file="js/grid.filter.js"/>
@@ -49,16 +49,33 @@
 		</apply>
 		<copy todir="${srcdir}" overwrite="true">
 			<fileset dir="${distdir}">
-				<include name="jquery.jqGrid.*" />
+				<include name="jquery.jqgrid.*" />
 			</fileset>
 		</copy>
 		<echo message="${target.min} built." />
 	</target>
 
-	<target name="minfiles">
-		<mkdir dir="${distdir}/min" />
-		<apply executable="java" parallel="false" verbose="true" failonerror="true" dest="${distdir}/min">
-			<fileset dir="${srcdir}">
+	<target name="mini18nfiles">
+		<mkdir dir="${distdir}/i18n/min" />
+		<apply executable="java" parallel="false" verbose="true" failonerror="true" dest="${distdir}/i18n/min">
+			<fileset dir="${srcdir}/i18n">
+				<include name="*.js" />
+			</fileset>
+			<arg line="-jar" />
+			<arg path="${GoogleCompiler}" />
+			<arg value="--warning_level" />
+			<arg value="QUIET" />
+			<arg value="--js_output_file" />
+			<targetfile />
+			<arg value="--js" />
+			<mapper type="glob" from="*.js" to="*.js" />
+		</apply>
+	</target>
+
+	<target name="minplugins">
+		<mkdir dir="${distdir}/plugins/min" />
+		<apply executable="java" parallel="false" verbose="true" failonerror="true" dest="${distdir}/plugins/min">
+			<fileset dir="${srcdir}/../plugins">
 				<include name="*.js" />
 			</fileset>
 			<arg line="-jar" />
@@ -81,7 +98,7 @@
 		</copy>
 	</target>
 
-	<target name="build" depends="jqgrid, jqgrid.min, i18n, minfiles"/>
+	<target name="build" depends="jqgrid, jqgrid.min, i18n, mini18nfiles, minplugins"/>
 
 	<target name="clean">
 		<delete dir="${distdir}" />

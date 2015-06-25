@@ -10,7 +10,7 @@ $this->title = Yii::t('app', 'Create Ctt Staticdata Languages');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Languages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ctt-staticdata-languages-create">
+<div class="ctt-staticdata-languages-create create-page-container">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

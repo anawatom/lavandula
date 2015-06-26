@@ -23,6 +23,7 @@ return [
 	'JOURNAL SUBMISSION' => 'วารสารที่ส่งเข้ามา',
 	'CONTACT' => 'ติดต่อ',
     'Search...' => 'ค้นหา...',
+    'Search' => 'ค้นหา',
     'Create' => 'สร้าง',
     'Update' => 'อัพเดท',
 ];

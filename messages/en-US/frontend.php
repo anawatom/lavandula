@@ -23,6 +23,7 @@ return [
 	'JOURNAL SUBMISSION' => 'JOURNAL SUBMISSION',
 	'CONTACT' => 'CONTACT',
     'Search...' => 'Search...',
+    'Search' => 'Search',
     'Create' => 'Create',
     'Update' => 'Update',
 ];

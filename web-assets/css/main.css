@@ -201,10 +201,17 @@ a.nav-link:hover {
 	border-radius: 0px
 }
 /* End Override Bootstrap */
+
+/* Override Yii CSS */
+/* End Override Yii CSS */
+
 /* Utils class */
 .no-margin {
 	margin: 0;
 }
 .no-border-radius {
 	border-radius: 0;
+}
+.center-content {
+	text-align: center;
 }

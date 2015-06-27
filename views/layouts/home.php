@@ -108,17 +108,23 @@
 								</li>
 								<li class="bg-sky">
 									<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
-										<?= Yii::t('app/frontend', 'NEW MENU'); ?>
+										<?= Yii::t('app/frontend', 'Admin'); ?>
 										<span class="caret"></span>
 									</a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#">Action</a></li>
-										<li><a href="#">Another action</a></li>
-										<li><a href="#">Something else here</a></li>
 										<li class="divider"></li>
-										<li><a href="#">Separated link</a></li>
+										<li><a href="?r=ctt-articles">Article Management</a></li>
+										<li><a href="#">Author Management</a></li>
+										<li><a href="#">Journal Management</a></li>
+										<li><a href="#">Publisher Management</a></li>
+										<li class="divider">Static Data</li>
+										<li><a href="#">Country Management</a></li>
+										<li><a href="?r=ctt-staticdata-languages">Language Management</a></li>
+										<li><a href="#">Subject Area Management</a></li>
+										<li><a href="#">Affiliation Management</a></li>
+										<li><a href="#">Document Type Management</a></li>
+										<li><a href="#">Issue Management</a></li>
 										<li class="divider"></li>
-										<li><a href="#">One more separated link</a></li>
 									</ul>
 								</li>
 							</ul>

@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle {
     public $js = [
 //     'assets/js/jquery-2.1.1.js',
     'web-assets/jquery-ui/jquery-ui.js',
-    'vendor/bower/bootstrap/dist/js/bootstrap.min.js',
+    'vendor/bower/bootstrap/dist/js/bootstrap.js',
    // 'assets/mmenu/src/js/jquery.mmenu.min.all.js',
 // 	'web-assets/metisMenu/js/metismenu.min.js',
 // 	'web-assets/metisMenu/js/bootstrap.min.js',

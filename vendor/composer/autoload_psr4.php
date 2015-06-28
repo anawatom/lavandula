@@ -19,6 +19,7 @@ return array(
     'kartik\\helpers\\' => array($vendorDir . '/kartik-v/yii2-helpers'),
     'kartik\\growl\\' => array($vendorDir . '/kartik-v/yii2-widget-growl'),
     'kartik\\grid\\' => array($vendorDir . '/kartik-v/yii2-grid'),
+    'kartik\\detail\\' => array($vendorDir . '/kartik-v/yii2-detail-view'),
     'kartik\\base\\' => array($vendorDir . '/kartik-v/yii2-krajee-base'),
     'himiklab\\jqgrid\\' => array($vendorDir . '/himiklab/yii2-jqgrid-widget'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),

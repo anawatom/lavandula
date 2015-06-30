@@ -9,6 +9,7 @@ use app\models\CttStaticdataLanguagesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * CttStaticdataLanguagesController implements the CRUD actions for CttStaticdataLanguages model.
@@ -74,7 +75,7 @@ class CttStaticdataLanguagesController extends Controller
                 return $this->redirect(['index']);
             } else {
                 // Handler error in here.
-                FlashMessage::showError(['msg' => 'Save failed.']);
+                Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
                 return $this->render('create', [
                     'model' => $model,
                 ]);
@@ -105,7 +106,7 @@ class CttStaticdataLanguagesController extends Controller
                 return $this->redirect(['index']);
             } else {
                 // Handler error in here.
-                FlashMessage::showError(['msg' => 'Update failed.']);
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
                 return $this->render('update', [
                     'model' => $model,
                 ]);

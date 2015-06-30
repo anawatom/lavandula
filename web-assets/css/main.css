@@ -190,6 +190,7 @@ a.nav-link:hover {
 }
 .address-contianer {
 }/* End Footer */
+
 /* Override Bootstrap */
 .navbar-nav {
 	margin: 0;
@@ -201,6 +202,15 @@ a.nav-link:hover {
 	border-radius: 0px
 }
 /* End Override Bootstrap */
+
+/* Override krajee */
+.kv-buttons-1 a {
+	color: #fff;
+}
+.kv-buttons-1 a:hover {
+	color: #fff;
+}
+/* End Override krajee */
 
 /* Override Yii CSS */
 /* End Override Yii CSS */
@@ -215,3 +225,4 @@ a.nav-link:hover {
 .center-content {
 	text-align: center;
 }
+

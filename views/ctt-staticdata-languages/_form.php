@@ -1,7 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use kartik\helpers\Html;
+use kartik\detail\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CttStaticdataLanguages */
@@ -10,22 +11,36 @@ use yii\widgets\ActiveForm;
 $currentUser = \Yii::$app->user->getIdentity();
 ?>
 
-<div class="ctt-staticdata-languages-form form-container">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'short_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'created_by')->hiddenInput(['value' => $currentUser->email])->label(false) ?>
-
-    <?= $form->field($model, 'modified_by')->hiddenInput(['value' => $currentUser->email])->label(false) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app/frontend', 'Create') : Yii::t('app/frontend', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+<?= DetailView::widget([
+    'model'=> $model,
+    'condensed' => true,
+    'hover' => true,
+    'mode' => ($mode == 'create')? DetailView::MODE_EDIT: DetailView::MODE_EDIT,
+    'panel'=>[
+        'heading' => $title,
+        'type' => DetailView::TYPE_PRIMARY ,
+    ],
+    'attributes' => [
+        'name',
+        'short_name',
+        [
+			'attribute' => 'created_by',
+            'options' => [
+                            'readonly' => 'readonly',
+                            'value' => $currentUser->email,
+                        ],
+        ],
+        [
+			'attribute' => 'modified_by',
+            'options' => [
+                            'readonly' => 'readonly',
+                            'value' => $currentUser->email,
+                        ],
+        ],
+    ],
+    'buttons2' => ($mode == 'create')? '{reset}{save}': '{reset}{save}',
+    'resetOptions' => [
+        'label' => '<span class="glyphicon glyphicon-ban-circle"></span>'
+    ],
+]);
+?>

@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'year')->textInput() ?>
 
-    <?= $form->field($model, 'journal_d')->textInput() ?>
+    <?= $form->field($model, 'journal_id')->textInput() ?>
 
     <?= $form->field($model, 'publisher_id')->textInput() ?>
 

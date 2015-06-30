@@ -19,7 +19,7 @@ use Yii;
  * @property string $abbrev_title
  * @property string $title_fulltext
  * @property integer $year
- * @property integer $journal_d
+ * @property integer $journal_id
  * @property integer $publisher_id
  * @property string $journal
  * @property integer $volume
@@ -34,6 +34,7 @@ use Yii;
  * @property integer $affiliation_id
  * @property string $affiliation
  * @property string $abstract
+ * @property string $abstract_fulltext
  * @property string $author_keyword
  * @property string $auto_keyword
  * @property string $funding
@@ -63,9 +64,9 @@ class CttArticles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'lang_id', 'title'], 'required'],
-            [['id', 'lang_id', 'documenttype_id', 'docsource_id', 'year', 'journal_d', 'publisher_id', 'volume', 'issue_id', 'page_start', 'page_end', 'page_count', 'cited', 'affiliation_id'], 'integer'],
-            [['title_fulltext', 'abstract', 'author_keyword', 'auto_keyword'], 'string'],
+            [['id', 'lang_id', 'title', 'abstract_fulltext'], 'required'],
+            [['id', 'lang_id', 'documenttype_id', 'docsource_id', 'year', 'journal_id', 'publisher_id', 'volume', 'issue_id', 'page_start', 'page_end', 'page_count', 'cited', 'affiliation_id'], 'integer'],
+            [['title_fulltext', 'abstract', 'abstract_fulltext', 'author_keyword', 'auto_keyword'], 'string'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],
             [['documenttype', 'abbrev_title'], 'string', 'max' => 100],
@@ -94,7 +95,7 @@ class CttArticles extends \yii\db\ActiveRecord
             'abbrev_title' => 'Abbrev Title',
             'title_fulltext' => 'Title Fulltext',
             'year' => 'Year',
-            'journal_d' => 'Journal D',
+            'journal_id' => 'Journal ID',
             'publisher_id' => 'Publisher ID',
             'journal' => 'Journal',
             'volume' => 'Volume',
@@ -109,6 +110,7 @@ class CttArticles extends \yii\db\ActiveRecord
             'affiliation_id' => 'Affiliation ID',
             'affiliation' => 'Affiliation',
             'abstract' => 'Abstract',
+            'abstract_fulltext' => 'Abstract Fulltext',
             'author_keyword' => 'Author Keyword',
             'auto_keyword' => 'Auto Keyword',
             'funding' => 'Funding',

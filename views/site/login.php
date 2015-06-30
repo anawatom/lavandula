@@ -51,7 +51,7 @@ $model = new LoginForm();
       }
       .form-header{
       	height: 100px;
-      	background: url("images/banner-login.png");
+/*       	background: url("images/banner-login.png"); */
       }
       .form-error {
         padding: 3px 6px;

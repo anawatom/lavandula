@@ -92,7 +92,7 @@
 						<div class="collapse navbar-collapse" id="navbar-collapse" style="padding: 0;overflow: hidden;">
 							<ul class="nav navbar-nav nav-tabs nav-justified">
 								<li class="bg-green">
-									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
+									<a class="nav-link" href="?r=home"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
 								</li>
 								<li class="bg-yellow">
 									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'ABOUT'); ?></a>
@@ -113,11 +113,15 @@
 									</a>
 									<ul class="dropdown-menu" role="menu">
 										<li class="divider"></li>
+										<li><a href="#">Article Importer</a></li>
+										<li><a href="#">Article Approval</a></li>
+										<li class="divider"></li>
+										<li><a href="#">User Management</a></li>
 										<li><a href="?r=ctt-articles">Article Management</a></li>
 										<li><a href="#">Author Management</a></li>
 										<li><a href="#">Journal Management</a></li>
 										<li><a href="#">Publisher Management</a></li>
-										<li class="divider">Static Data</li>
+										<li class="divider"></li>
 										<li><a href="#">Country Management</a></li>
 										<li><a href="?r=ctt-staticdata-languages">Language Management</a></li>
 										<li><a href="#">Subject Area Management</a></li>

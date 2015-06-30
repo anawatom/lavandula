@@ -6,5 +6,5 @@ return [
     'dsn' => 'mysql:host=103.253.75.56;dbname=unitedla_aci;charset=UTF8',
     'username' => 'unitedla_aci',
     'password' => 'aci_2015',
-//     'charset' => 'utf8',
+    'charset' => 'utf8',
 ];

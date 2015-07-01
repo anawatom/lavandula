@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\components\FlashMessage;
 use app\models\CttStaticdataCountrys;
 use app\models\CttStaticdataCountrysSearch;
 use yii\web\Controller;
@@ -14,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class CttStaticdataCountrysController extends Controller
 {
+    public $layout = 'home';
+
     public function behaviors()
     {
         return [
@@ -62,8 +65,20 @@ class CttStaticdataCountrysController extends Controller
     {
         $model = new CttStaticdataCountrys();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($result = $model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                return $this->redirect(['index']);
+            } else {
+                // Handler error in here.
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -81,8 +96,19 @@ class CttStaticdataCountrysController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['index']);
+            } else {
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -98,7 +124,11 @@ class CttStaticdataCountrysController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($this->findModel($id)->delete()) {
+            FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
+        } else {
+            FlashMessage::showSuccess(['msg' => 'Delete failed.']);
+        }
 
         return $this->redirect(['index']);
     }

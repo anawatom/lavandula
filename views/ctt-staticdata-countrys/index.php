@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             },
                     'update' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
-                                                Url::to(['ctt-staticdata-countrys/lang-list']),
+                                                Url::to(['ctt-staticdata-countrys/lang-list', 'id' => $model->id]),
                                                 ['title' => Yii::t('app/frontend', 'Update')]);
                             },
                 ],
@@ -69,7 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'headingOptions' => ['class' => 'no-border-radius'],
         'before' => '<div class="clearfix"></div>'
                     .$this->render('_search', ['model' => $searchModel])
-                    .Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country', ['create'], ['class' => 'btn btn-success']),
+                    .Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country',
+                             Url::to(['ctt-staticdata-countrys/lang-list']),
+                            ['class' => 'btn btn-success']),
         ],
     ]); ?>
 

@@ -24,6 +24,7 @@ return [
 	'CONTACT' => 'CONTACT',
     'Search...' => 'Search...',
     'Search' => 'Search',
+    'Back' => 'Back',
     'Reset' => 'Reset',
     'Create' => 'Create',
     'Update' => 'Update',

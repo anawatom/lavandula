@@ -40,7 +40,7 @@ class CttStaticdataCountrysController extends Controller
         $searchModel = new CttStaticdataCountrysSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        GlobalVariable::fetchData();
+        // GlobalVariable::fetchData();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -67,12 +67,12 @@ class CttStaticdataCountrysController extends Controller
      */
     public function actionCreate()
     {
-        GlobalVariable::clearData();
+        // GlobalVariable::clearData();
         $model = new CttStaticdataCountrys();
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
-            $model->id = CttSequences::getValue('STATICDATA_COUNTRY_SEQ');
+            $model->id = $model->getId();
 
             if ($result = $model->save()) {
                 FlashMessage::showSuccess(['msg' => 'Saved successfully.']);

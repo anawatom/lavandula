@@ -33,7 +33,7 @@
 	</head>
 	<body>
 		<?php $this->beginBody(); ?>
-		<?php echo print_r(Yii::$app->params['staticdata']['countrys']); ?>
+		<?php //echo print_r(Yii::$app->params['staticdata']['countrys']); ?>
 		<div class="container main-container">
 			<?php
 				//Get all flash messages and loop through them

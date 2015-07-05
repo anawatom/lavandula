@@ -3,14 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\components\FlashMessage;
-use app\components\GlobalVariable;
-use app\models\CttStaticdataCountrys;
-use app\models\CttStaticdataCountrysSearch;
-use app\models\CttSequences;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\FlashMessage;
+use app\components\GlobalVariable;
+use app\helpers\ErrorHelper;
+use app\models\CttStaticdataCountrys;
+use app\models\CttStaticdataCountrysSearch;
+use app\models\CttSequences;
 
 /**
  * CttStaticdataCountrysController implements the CRUD actions for CttStaticdataCountrys model.
@@ -67,28 +69,32 @@ class CttStaticdataCountrysController extends Controller
      */
     public function actionCreate()
     {
-        // GlobalVariable::clearData();
-        $model = new CttStaticdataCountrys();
+        try {
+            // GlobalVariable::clearData();
+            $model = new CttStaticdataCountrys();
 
-        if (Yii::$app->request->post()) {
-            $model->load(Yii::$app->request->post());
-            $model->id = $model->getId();
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
+                $model->id = $model->getId();
 
-            if ($result = $model->save()) {
-                FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
-                return $this->redirect(['index']);
+                if ($result = $model->save()) {
+                    FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                    return $this->redirect(['index']);
+                } else {
+                    // Handler error in here.
+                    Yii::trace(print_r($model->errors, true), 'Debug');
+                    Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
             } else {
-                // Handler error in here.
-                Yii::trace(print_r($model->errors, true), 'Debug');
-                Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
                 return $this->render('create', [
                     'model' => $model,
                 ]);
             }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        } catch (Exception $e) {
+            ErrorHelper::showErrorForCU($e, ['create']);
         }
     }
 

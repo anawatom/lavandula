@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -43,10 +44,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => 'kartik\grid\ActionColumn',
                 'header' => 'Actions',
                 'headerOptions' => ['class' => 'center-content'],
                 'contentOptions' => ['class' => 'center-content'],
+                'template'=>'{view} {update}',
+                'buttons'=>[
+                    'view' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
+                                                Url::to(['index']),
+                                                ['title' => Yii::t('app/frontend', 'View')]);
+                            },
+                    'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
+                                                Url::to(['ctt-staticdata-countrys/lang-list']),
+                                                ['title' => Yii::t('app/frontend', 'Update')]);
+                            },
+                ],
             ],
         ],
         'panel'=>[

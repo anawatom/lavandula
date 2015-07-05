@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\components\FlashMessage;
+use app\components\GlobalVariable;
 use app\models\CttStaticdataCountrys;
 use app\models\CttStaticdataCountrysSearch;
+use app\models\CttSequences;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -38,6 +40,8 @@ class CttStaticdataCountrysController extends Controller
         $searchModel = new CttStaticdataCountrysSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        GlobalVariable::fetchData();
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,10 +67,12 @@ class CttStaticdataCountrysController extends Controller
      */
     public function actionCreate()
     {
+        GlobalVariable::clearData();
         $model = new CttStaticdataCountrys();
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
+            $model->id = CttSequences::getValue('STATICDATA_COUNTRY_SEQ');
 
             if ($result = $model->save()) {
                 FlashMessage::showSuccess(['msg' => 'Saved successfully.']);

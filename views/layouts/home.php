@@ -32,9 +32,8 @@
 		<?php $this->head() ?>
 	</head>
 	<body>
-		<!-- This is Global param!!! -->
-		<?= Yii::$app->params['testGlobal']; ?>
 		<?php $this->beginBody(); ?>
+		<?php echo print_r(Yii::$app->params['staticdata']['countrys']); ?>
 		<div class="container main-container">
 			<?php
 				//Get all flash messages and loop through them

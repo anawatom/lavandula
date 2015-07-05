@@ -28,7 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'panel' => [
             'heading' => $model->name,
-            'type' => DetailView::TYPE_PRIMARY,
+            'type' => DetailView::TYPE_PRIMARY, 
+            'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
+                            .Yii::t('app/frontend', 'Back'),
+                            Url::to(['ctt-staticdata-countrys/lang-list', 'id' => $model->id]),
+                            ['class' => 'btn btn-danger']),
+            'footerOptions' => [
+                'tag' => 'div'
+            ],
         ],
         'buttons1' => '{update}',
         'updateOptions' => [

@@ -24,7 +24,8 @@ $currentUser = \Yii::$app->user->getIdentity();
         'type' => DetailView::TYPE_PRIMARY,
         'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
                             .Yii::t('app/frontend', 'Back'),
-                            Url::to(['ctt-staticdata-countrys/index']),
+                            Url::to(['ctt-staticdata-countrys/lang-list',
+                                    'id' => Yii::$app->request->getQueryParam('id')]),
                             ['class' => 'btn btn-danger']),
         'footerOptions' => [
             'tag' => 'div'

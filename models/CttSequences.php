@@ -46,4 +46,17 @@ class CttSequences extends \yii\db\ActiveRecord
             'inc' => Yii::t('app', 'Inc'),
         ];
     }
+
+    public static function getValue($name)
+    {
+        $data = parent::find()
+                    ->where(['name' => $name])
+                    ->one();
+        $value = $data->value + $data->inc;
+
+        $data->value = $value;
+        $data->save();
+
+        return $value;
+    }
 }

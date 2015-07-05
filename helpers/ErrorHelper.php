@@ -34,10 +34,14 @@ class ErrorHelper extends Exception
     * that using kartik\detail\DetailView. So the error will be shown
     * in the same page.
     */
-    public static function showErrorForCU($exception)
+    public static function showErrorForCU($exception, $redirectTo)
     {
 		Yii::error($exception->getMessage(), 'Application Debug');
 
 		Yii::$app->session->setFlash('kv-detail-error', $exception->getMessage());
+
+		if (!empty($redirectTo)) {
+			Controller::redirect(Url::to($redirectTo));
+		}
     }
 }

@@ -51,6 +51,23 @@ class CttStaticdataCountrysController extends Controller
     }
 
     /**
+     * Lists all CttStaticdataCountrys models in each name.
+     * @return mixed
+     */
+    public function actionLangList()
+    {
+        $searchModel = new CttStaticdataCountrysSearch();
+        $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
+
+        // GlobalVariable::fetchData();
+
+        return $this->render('lang_list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Displays a single CttStaticdataCountrys model.
      * @param integer $id
      * @return mixed

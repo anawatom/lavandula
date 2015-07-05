@@ -32,6 +32,8 @@
 		<?php $this->head() ?>
 	</head>
 	<body>
+		<!-- This is Global param!!! -->
+		<?= Yii::$app->params['testGlobal']; ?>
 		<?php $this->beginBody(); ?>
 		<div class="container main-container">
 			<?php

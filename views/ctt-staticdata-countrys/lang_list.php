@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => 'kartik\grid\ActionColumn',
                 'header' => 'Actions',
                 'headerOptions' => ['class' => 'center-content'],
                 'contentOptions' => ['class' => 'center-content'],

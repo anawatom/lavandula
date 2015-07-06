@@ -8,6 +8,8 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Create Ctt Staticdata Countrys');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Countrys'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Countrys(Language List)'), 
+									'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-countrys-create">

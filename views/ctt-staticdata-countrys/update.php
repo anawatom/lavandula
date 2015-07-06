@@ -9,6 +9,8 @@ $this->title = Yii::t('app', 'Update {modelClass}: ', [
     'modelClass' => 'Ctt Staticdata Countrys',
 ]) . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Countrys'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Countrys(Language List)'),
+									'url' => ['lang-list', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>

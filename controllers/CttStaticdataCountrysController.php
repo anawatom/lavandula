@@ -96,7 +96,7 @@ class CttStaticdataCountrysController extends Controller
 
                 if ($result = $model->save()) {
                     FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
-                    return $this->redirect(['index']);
+                    return $this->redirect(['lang-list', 'id' => $model->id]);
                 } else {
                     // Handler error in here.
                     Yii::trace(print_r($model->errors, true), 'Debug');
@@ -130,7 +130,7 @@ class CttStaticdataCountrysController extends Controller
 
             if ($model->save()) {
                 FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
-                return $this->redirect(['index']);
+                return $this->redirect(['lang-list', 'id' => $model->id]);
             } else {
                 Yii::trace(print_r($model->errors, true), 'Debug');
                 Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');

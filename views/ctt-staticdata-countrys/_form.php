@@ -51,7 +51,11 @@ $currentUser = \Yii::$app->user->getIdentity();
                 'value' => ($mode == 'create')? '': $model->lang,
             ],
         ],
-        'name',
+        [
+            'attribute' => 'name',
+            'options' => [
+            ],
+        ],
         [
 			'attribute' => 'created_by',
             'options' => [

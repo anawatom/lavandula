@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'headingOptions' => ['class' => 'no-border-radius'],
         'before' => '<div class="clearfix"></div>'
                     .Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country',
-                            ['create', 'id' => Yii::$app->request->queryParams['id']],
+                            ['create', 'id' => Yii::$app->request->getQueryParam('id')],
                             ['class' => 'btn btn-success']),
         ],
     ]); ?>

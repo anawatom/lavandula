@@ -79,8 +79,13 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
      */
     public function searchLangList($params)
     {
-        $query = CttStaticdataCountrys::find()
-                    ->where(['id' => $params['id']]);
+        if (empty($params['id'])) {
+            $query = CttStaticdataCountrys::find()
+                        ->where(['id' => '-1']);
+        } else {
+            $query = CttStaticdataCountrys::find()
+                        ->where(['id' => $params['id']]);
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

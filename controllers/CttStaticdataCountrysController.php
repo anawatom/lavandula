@@ -72,10 +72,10 @@ class CttStaticdataCountrysController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $lang_id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id, $lang_id),
         ]);
     }
 
@@ -92,7 +92,9 @@ class CttStaticdataCountrysController extends Controller
 
             if (Yii::$app->request->post()) {
                 $model->load(Yii::$app->request->post());
-                $model->id = $model->getId();
+                $model->id = (Yii::$app->request->getQueryParam('id'))
+                                ? Yii::$app->request->getQueryParam('id')
+                                : $model->getId();
 
                 if ($result = $model->save()) {
                     FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
@@ -111,7 +113,7 @@ class CttStaticdataCountrysController extends Controller
                 ]);
             }
         } catch (Exception $e) {
-            ErrorHelper::showErrorForCU($e, ['create']);
+            ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
         }
     }
 
@@ -121,9 +123,9 @@ class CttStaticdataCountrysController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id, $lang_id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $lang_id);
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
@@ -151,9 +153,9 @@ class CttStaticdataCountrysController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $lang_id)
     {
-        if ($this->findModel($id)->delete()) {
+        if ($this->findModel($id, $lang_id)->delete()) {
             FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
         } else {
             FlashMessage::showSuccess(['msg' => 'Delete failed.']);
@@ -169,9 +171,13 @@ class CttStaticdataCountrysController extends Controller
      * @return CttStaticdataCountrys the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $langId)
     {
-        if (($model = CttStaticdataCountrys::findOne($id)) !== null) {
+        $model = CttStaticdataCountrys::find($id)
+                    ->where(['id' => $id, 'lang_id' => $langId])
+                    ->one();
+
+        if ($model !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

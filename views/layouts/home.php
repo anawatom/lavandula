@@ -124,7 +124,7 @@
 										<li><a href="#">Journal Management</a></li>
 										<li><a href="#">Publisher Management</a></li>
 										<li class="divider"></li>
-										<li><a href="#">Country Management</a></li>
+										<li><a href="?r=ctt-staticdata-countrys">Country Management</a></li>
 										<li><a href="?r=ctt-staticdata-languages">Language Management</a></li>
 										<li><a href="#">Subject Area Management</a></li>
 										<li><a href="#">Affiliation Management</a></li>

@@ -41,7 +41,14 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
      */
     public function search($params)
     {
-        $query = CttStaticdataCountrys::find()->groupBy(['id']);
+        $query = CttStaticdataCountrys::find()
+                    ->where('status = :status
+                                and lang_id=(select min(lang_id)
+                                    from ctt_staticdata_countrys t2
+                                    where t2.id=ctt_staticdata_countrys.id
+                                    group by id)', 
+                            [':status' => 'A'])
+                    ->groupBy(['id']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -79,13 +86,16 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
      */
     public function searchLangList($params)
     {
+        $whereClause = [];
         if (empty($params['id'])) {
-            $query = CttStaticdataCountrys::find()
-                        ->where(['id' => '-1']);
+            $whereClause = ['id' => '-1'];
         } else {
-            $query = CttStaticdataCountrys::find()
-                        ->where(['id' => $params['id']]);
+            $whereClause = ['id' => $params['id']];
         }
+
+        $query = CttStaticdataCountrys::find()
+                    ->where($whereClause)
+                    ->orderBy('lang_id');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

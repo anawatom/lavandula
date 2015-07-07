@@ -161,7 +161,7 @@ class CttStaticdataCountrysController extends Controller
             FlashMessage::showSuccess(['msg' => 'Delete failed.']);
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lang-list', 'id' => $id]);
     }
 
     /**

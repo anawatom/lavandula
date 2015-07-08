@@ -37,7 +37,7 @@ $currentUser = \Yii::$app->user->getIdentity();
 			'type' => DetailView::INPUT_SELECT2,
 			'widgetOptions'=>[
 				'data' => ArrayHelper::map(CttStaticdataLanguages::find()->asArray()->all(), 'id', 'name'),
-				'options' => ['placeholder' => 'Select ...'],
+				'options' => ['placeholder' => ''],
 				'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
                 'pluginEvents' => [
                     'change' => 'function() { $("#cttstaticdatacountrys-lang").val( $(this).find("option:selected").text() ); }',

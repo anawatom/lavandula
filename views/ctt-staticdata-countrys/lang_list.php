@@ -55,7 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> '.Html::encode($this->title).'</h3>',
         'headingOptions' => ['class' => 'no-border-radius'],
         'before' => '<div class="clearfix"></div>'
-                    .Html::a('<i class="glyphicon glyphicon-plus"></i> Create Country',
+                    .Html::a('<i class="glyphicon glyphicon-plus"></i> '
+                            .Yii::t('app/frontend_staticdata_country', 'Add new language'),
                             ['create', 'id' => Yii::$app->request->getQueryParam('id')],
                             ['class' => 'btn btn-success']),
         ],

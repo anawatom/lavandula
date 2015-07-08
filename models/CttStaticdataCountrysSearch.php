@@ -41,14 +41,7 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
      */
     public function search($params)
     {
-        $query = CttStaticdataCountrys::find()
-                    ->where('status = :status
-                                and lang_id=(select min(lang_id)
-                                    from ctt_staticdata_countrys t2
-                                    where t2.id=ctt_staticdata_countrys.id
-                                    group by id)', 
-                            [':status' => 'A'])
-                    ->groupBy(['id']);
+        $query = CttStaticdataCountrys::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -62,17 +55,28 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
             return $dataProvider;
         }
 
+        // Conditions for filter
+        $query->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_countrys t2
+                        where t2.id = ctt_staticdata_countrys.id
+                        and t2.name like :name
+                        group by id)',
+                        [
+                            ':name' => ($this->name)? $this->name: '%%'
+                        ]);
+
         $query->andFilterWhere([
             'id' => $this->id,
             'lang_id' => $this->lang_id,
             'created_dtm' => $this->created_dtm,
             'modified_dtm' => $this->modified_dtm,
+            'status' => 'A',
         ]);
 
-        $query->andFilterWhere(['like', 'lang', $this->lang])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'created_by', $this->created_by])
-            ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
+        // $query->andFilterWhere(['like', 'lang', $this->lang])
+        //     ->andFilterWhere(['like', 'name', $this->name])
+        //     ->andFilterWhere(['like', 'created_by', $this->created_by])
+        //     ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
 
         return $dataProvider;
     }

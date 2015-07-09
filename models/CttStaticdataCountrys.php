@@ -66,14 +66,14 @@ class CttStaticdataCountrys extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'lang_id' => Yii::t('app', 'Lang ID'),
-            'lang' => Yii::t('app', 'Lang'),
-            'name' => Yii::t('app', 'Name'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'id' => Yii::t('app/ctt_staticdata_country', 'ID'),
+            'lang_id' => Yii::t('app/ctt_staticdata_country', 'Lang ID'),
+            'lang' => Yii::t('app/ctt_staticdata_country', 'Lang'),
+            'name' => Yii::t('app/ctt_staticdata_country', 'Name'),
+            'created_by' => Yii::t('app/ctt_staticdata_country', 'Created By'),
+            'created_dtm' => Yii::t('app/ctt_staticdata_country', 'Created Dtm'),
+            'modified_by' => Yii::t('app/ctt_staticdata_country', 'Modified By'),
+            'modified_dtm' => Yii::t('app/ctt_staticdata_country', 'Modified Dtm'),
         ];
     }
 

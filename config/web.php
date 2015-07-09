@@ -62,7 +62,8 @@ $config = [
                         'fileMap' => [
                             'app' => 'app.php',
                             'app/frontend' => 'frontend.php',
-                            'app/ctt-staticdata-language' => 'ctt_staticdata_language.php'
+                            'app/ctt-staticdata-language' => 'ctt_staticdata_language.php',
+                            'app/ctt_staticdata_country' => 'ctt_staticdata_country.php',
                         ],
                     ],
                     'app*' => [
@@ -72,7 +73,8 @@ $config = [
                         'fileMap' => [
                             'app' => 'app.php',
                             'app/frontend' => 'frontend.php',
-                            'app/ctt-staticdata-language' => 'ctt_staticdata_language.php'
+                            'app/ctt-staticdata-language' => 'ctt_staticdata_language.php',
+                            'app/ctt_staticdata_country' => 'ctt_staticdata_country.php',
                         ],
                     ],
                 ],

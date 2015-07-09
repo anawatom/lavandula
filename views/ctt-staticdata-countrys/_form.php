@@ -75,6 +75,11 @@ $currentUser = \Yii::$app->user->getIdentity();
     'resetOptions' => [
         'label' => '<span class="glyphicon glyphicon-ban-circle"></span>',
     ],
+    'i18n' => [
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/messages',
+        'forceTranslation' => true
+    ]
 ]);
 ?>
 

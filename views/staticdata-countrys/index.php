@@ -11,7 +11,7 @@ use kartik\grid\GridView;
 $this->title = Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Country');
 $this->params['breadcrumbs'][] = $this->title;
 
-echo Yii::$app->session->get('app.language');
+// echo Yii::$app->session->get('app.language');
 ?>
 
 <div class="ctt-staticdata-countrys-index">

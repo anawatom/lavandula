@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.4
+ * @version   3.0.5
  */
 
 namespace kartik\grid;
@@ -148,7 +148,7 @@ class RadioColumn extends \yii\grid\Column
     protected $_clientVars = '';
 
     /**
-     * @var string the client script
+     * @var string the client script to initialize
      */
     protected $_clientScript = '';
     

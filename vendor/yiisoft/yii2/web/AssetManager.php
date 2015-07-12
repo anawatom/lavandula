@@ -66,11 +66,11 @@ class AssetManager extends Component
     /**
      * @var string the root directory storing the published asset files.
      */
-    public $basePath = '@webroot/tmp-assets';
+    public $basePath = '@webroot/assets';
     /**
      * @var string the base URL through which the published asset files can be accessed.
      */
-    public $baseUrl = '@web/tmp-assets';
+    public $baseUrl = '@web/assets';
     /**
      * @var array mapping from source asset files (keys) to target asset files (values).
      *

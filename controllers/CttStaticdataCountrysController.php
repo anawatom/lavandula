@@ -50,6 +50,15 @@ class CttStaticdataCountrysController extends Controller
         ]);
     }
 
+    public function actionPublicView($id)
+    {
+
+        return $this->render('public_view',
+                            [
+                                'model' => CttStaticdataCountrys::find()->where(['id' => $id])->all()
+                            ]);
+    }
+
     /**
      * Lists all CttStaticdataCountrys models in each name.
      * @return mixed

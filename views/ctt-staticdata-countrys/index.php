@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                     'view' => function ($url, $model) {
                                 return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
-                                                Url::to(['index']),
+                                                Url::to(['public-view', 'id' => $model->id]),
                                                 ['title' => Yii::t('app/frontend', 'View')]);
                             },
                     'update' => function ($url, $model) {

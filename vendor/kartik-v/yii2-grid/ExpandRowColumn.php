@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.4
+ * @version   3.0.5
  */
 
 namespace kartik\grid;
@@ -339,7 +339,7 @@ class ExpandRowColumn extends DataColumn
             Html::addCssClass($detailOptions, 'skip-export');
         }        
         $detailOptions['data-index'] = $index;
-        $detailOptions['data-key'] = $key;
+        $detailOptions['data-key'] = is_object($key) || is_array($key) ? serialize($key) : $key;
         Html::addCssClass($detailOptions, 'kv-expanded-row');
         $content = Html::tag('div', $detail, $detailOptions);
         return <<< HTML

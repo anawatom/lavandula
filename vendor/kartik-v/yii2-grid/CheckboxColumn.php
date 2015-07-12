@@ -4,7 +4,7 @@
  * @package   yii2-grid
  * @author    Kartik Visweswaran <kartikv2@gmail.com>
  * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2015
- * @version   3.0.4
+ * @version   3.0.5
  */
 
 namespace kartik\grid;
@@ -105,6 +105,11 @@ class CheckboxColumn extends \yii\grid\CheckboxColumn
     public $mergeHeader = true;
 
     /**
+     * @var string the client script to initialize
+     */
+    protected $_clientScript = '';
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -112,26 +117,25 @@ class CheckboxColumn extends \yii\grid\CheckboxColumn
         if ($this->rowHighlight) {
             Html::addCssClass($this->headerOptions, 'kv-all-select');
             $view = $this->grid->getView();
+            $id =  $this->grid->options['id'];
             CheckboxColumnAsset::register($view);
-            $view->registerJs('kvSelectRow("' . $this->grid->options['id'] . '", "' . $this->rowSelectedClass . '");');
+            $this->_clientScript = "kvSelectRow('{$id}', '{$this->rowSelectedClass}');";
+            $view->registerJs($this->_clientScript);
         }
         $this->parseFormat();
         $this->parseVisibility();
         parent::init();
         $this->setPageRows();
     }
-
+        
     /**
      * @inheritdoc
      */
     public function renderDataCell($model, $key, $index)
     {
-        if ($this->rowHighlight) {
-            $grid = $this->grid->options['id'];
-            $this->initPjax("kvSelectRow('{$grid}', '{$this->rowSelectedClass}');");
-        }
         $options = $this->fetchContentOptions($model, $key, $index);
         if ($this->rowHighlight) {
+            $this->initPjax($this->_clientScript);
             Html::addCssClass($options, 'kv-row-select');
         }
         return Html::tag('td', $this->renderDataCellContent($model, $key, $index), $options);

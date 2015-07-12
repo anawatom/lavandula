@@ -5,7 +5,7 @@ use yii\helpers\Url;
 use kartik\tabs\TabsX;
 use kartik\detail\DetailView;
 
-$this->title = 'Public View';
+$this->title = $model[0]->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Countrys'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 

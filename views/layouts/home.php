@@ -64,8 +64,8 @@
 				<div class="col-sm-12 col-md-12 header-container">
 					<!-- Language bar -->
 					<div class="language-contianer">
-						<a href="<?= Url::to(['home/set-language', 'lang' => 'en-US']); ?>" class="<?= ($language=='en-US')? 'active':''; ?>">Eng</a> | 
-						<a href="<?= Url::to(['home/set-language', 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
+						<a href="<?= Url::to(['home/set-language', 'current_url' => Url::current(), 'lang' => 'en_US']); ?>" class="<?= ($language=='en_US')? 'active':''; ?>">Eng</a> | 
+						<a href="<?= Url::to(['home/set-language', 'current_url' => Url::current(), 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
 					</div><!-- End Language bar -->
 					<!-- Logo -->
 					<div class="logo-contianer">

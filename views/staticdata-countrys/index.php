@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttStaticdataCountrysSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Country');
+$this->title = Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys');
 $this->params['breadcrumbs'][] = $this->title;
 
 // echo Yii::$app->session->get('app.language');

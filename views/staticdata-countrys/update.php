@@ -8,7 +8,7 @@ use yii\helpers\Html;
 $this->title = Yii::t('app/ctt_staticdata_country', 'Update {modelClass}: ', [
     'modelClass' => 'Ctt Staticdata Countrys',
 ]) . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Country'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys(Language List)'),
 									'url' => ['lang-list', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = [

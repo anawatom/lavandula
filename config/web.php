@@ -58,21 +58,9 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
-                    'app*' => [
+                    '*' => [
                         'class' => 'yii\i18n\PhpMessageSource',
                         'basePath' => '@app/messages',
-                        'sourceLanguage' => 'th',
-                        'fileMap' => [
-                            'app' => 'app.php',
-                            'app/frontend' => 'frontend.php',
-                            'app/ctt-staticdata-language' => 'ctt_staticdata_language.php',
-                            'app/ctt_staticdata_country' => 'ctt_staticdata_country.php',
-                        ],
-                    ],
-                    'app*' => [
-                        'class' => 'yii\i18n\PhpMessageSource',
-                        'basePath' => '@app/messages',
-                        'sourceLanguage' => 'en-US',
                         'fileMap' => [
                             'app' => 'app.php',
                             'app/frontend' => 'frontend.php',

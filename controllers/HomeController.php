@@ -25,12 +25,12 @@ class HomeController extends \yii\web\Controller
 
 	public function init()
     {
-        parent::init();
+   //      parent::init();
 
-        $language = \Yii::$app->session->get('app.language');
-        if ($language) {
-			Yii::$app->language = $language;
-        }
+   //      $language = \Yii::$app->session->get('app.language');
+   //      if ($language) {
+			// Yii::$app->language = $language;
+   //      }
     }
 
     public function actionIndex()

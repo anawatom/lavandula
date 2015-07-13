@@ -5,7 +5,7 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'language'],
 	'language' => 'th',
     'modules' => [
         // More information http://demos.krajee.com/grid#installation
@@ -53,6 +53,9 @@ $config = [
 	         'class' => 'yii\rbac\DbManager',
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'language' => [
+            'class' => 'app\components\Language',
+        ],
         'i18n' => [
             'translations' => [
                     'app*' => [

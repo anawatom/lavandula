@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'buttons1' => '{update}',
         'updateOptions' => [
-            'label' => '<a class="update-link" href="'.Url::to(['ctt-staticdata-languages/update', 'id' => $model->id]).'"><span class="glyphicon glyphicon-pencil"></span></a>'
+            'label' => '<a class="update-link" href="'.Url::to(['update', 'id' => $model->id]).'"><span class="glyphicon glyphicon-pencil"></span></a>'
         ],
     ]) ?>
 </div>

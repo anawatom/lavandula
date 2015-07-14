@@ -18,7 +18,14 @@ $currentUser = \Yii::$app->user->getIdentity();
     'mode' => ($mode == 'create')? DetailView::MODE_EDIT: DetailView::MODE_EDIT,
     'panel'=>[
         'heading' => $title,
-        'type' => DetailView::TYPE_PRIMARY ,
+        'type' => DetailView::TYPE_PRIMARY,
+        'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
+                            .Yii::t('app/frontend', 'Back'),
+                            Url::to(['index']),
+                            ['class' => 'btn btn-danger']),
+        'footerOptions' => [
+            'tag' => 'div'
+        ],
     ],
     'attributes' => [
         'name',

@@ -7,11 +7,10 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttStaticdataLanguagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Ctt Staticdata Languages');
+$this->title = Yii::t('app/ctt_staticdata_language', 'Ctt Staticdata Languages');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-languages-index index-page-container">
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'bordered' => true,
@@ -55,7 +54,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'headingOptions' => ['class' => 'no-border-radius'],
             'before' => '<div class="clearfix"></div>'
                         .$this->render('_search', ['model' => $searchModel])
-                        .Html::a('<i class="glyphicon glyphicon-plus"></i> Create Languages', ['create'], ['class' => 'btn btn-success']),
+                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '
+                                .Yii::t('app/ctt_staticdata_language', 'Create Ctt Staticdata Languages'),
+                                ['create'], 
+                                ['class' => 'btn btn-success']),
         ],
     ]); ?>
 </div>

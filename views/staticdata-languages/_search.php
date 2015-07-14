@@ -34,8 +34,8 @@ use yii\bootstrap\ActiveForm;
     <div class="form-group">
         <div class="col-md-offset-3 col-md-9">
             <?= Html::submitButton(Yii::t('app/frontend', 'Search'), ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(Yii::t('app/fronted', 'Reset'),
-                        Url::to(['index']),
+            <?= Html::a(Yii::t('app/frontend', 'Reset'),
+                        ['index'],
                         ['class' => 'btn btn-danger']) ?>
         </div>
     </div>

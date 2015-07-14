@@ -8,7 +8,7 @@ use kartik\detail\DetailView;
 /* @var $model app\models\CttStaticdataLanguages */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Languages'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_language', 'Ctt Staticdata Languages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-languages-view">

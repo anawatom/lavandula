@@ -47,13 +47,13 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'short_name' => Yii::t('app', 'Short Name'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'name' => Yii::t('app/ctt_staticdata_language', 'Name'),
+            'short_name' => Yii::t('app/ctt_staticdata_language', 'Short Name'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

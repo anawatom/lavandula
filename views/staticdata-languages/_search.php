@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -33,7 +34,9 @@ use yii\bootstrap\ActiveForm;
     <div class="form-group">
         <div class="col-md-offset-3 col-md-9">
             <?= Html::submitButton(Yii::t('app/frontend', 'Search'), ['class' => 'btn btn-primary']) ?>
-            <?php // echo Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+            <?= Html::a(Yii::t('app/fronted', 'Reset'),
+                        Url::to(['index']),
+                        ['class' => 'btn btn-danger']) ?>
         </div>
     </div>
 

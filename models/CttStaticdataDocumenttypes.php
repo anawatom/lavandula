@@ -50,15 +50,15 @@ class CttStaticdataDocumenttypes extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'lang_id' => Yii::t('app', 'Lang ID'),
-            'lang' => Yii::t('app', 'Lang'),
-            'name' => Yii::t('app', 'Name'),
-            'status' => Yii::t('app', 'Status'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'lang_id' => Yii::t('app/ctt_staticdata_documenttype', 'Lang ID'),
+            'lang' => Yii::t('app/ctt_staticdata_documenttype', 'Lang'),
+            'name' => Yii::t('app/ctt_staticdata_documenttype', 'Name'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

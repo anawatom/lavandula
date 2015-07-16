@@ -67,7 +67,17 @@ $config = [
                             'app/backend' => 'backend.php',
                             'app/ctt_staticdata_language' => 'ctt_staticdata_language.php',
                             'app/ctt_staticdata_country' => 'ctt_staticdata_country.php',
+                            'app/ctt_staticdata_docsource' => 'ctt_staticdata_docsource.php',
+                            'app/ctt_staticdata_authortype' => 'ctt_staticdata_authortype.php',
+                            'app/ctt_staticdata_documenttype' => 'ctt_staticdata_documenttype.php',
+                            'app/ctt_staticdata_sourcetype' => 'ctt_staticdata_sourcetype.php',
+                            'app/ctt_staticdata_revisiontype' => 'ctt_staticdata_revisiontype.php',
                         ],
+                        // - ctt_staticdata_docsources
+                        // - ctt_staticdata_authortypes
+                        // - ctt_staticdata_documenttypes
+                        // - ctt_staticdata_sourcetypes
+                        // - ctt_staticdata_revisiontypes
                     ],
                 ],
         ],

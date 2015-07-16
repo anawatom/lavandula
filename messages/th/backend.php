@@ -18,6 +18,7 @@
  */
 return [
 	'ID' => 'ไอดี',
+	'Status' => 'สถานะ',
     'Created By' => 'ชื่อผู้สร้าง',
     'Created Dtm' => 'วันที่สร้าง',
     'Modified By' => 'ชื่อผู้แก้ไข',

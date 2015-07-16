@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Lang ID' => 'รหัสภาษา',
     'Lang' => 'ภาษา',
     'Name' => 'ชื่อ',
     'Ctt Staticdata Languages' => 'Language List',

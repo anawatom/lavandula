@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "ctt_staticdata_revisiontypes".
@@ -23,8 +26,22 @@ use Yii;
  * @property CttJournalRevs[] $cttJournalRevs
  * @property CttPublisherRevs[] $cttPublisherRevs
  */
-class CttStaticdataRevisiontypes extends \yii\db\ActiveRecord
+class CttStaticdataRevisiontypes extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_dtm', 'modified_dtm'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'modified_dtm',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -65,6 +82,20 @@ class CttStaticdataRevisiontypes extends \yii\db\ActiveRecord
             'modified_by' => Yii::t('app/backend', 'Modified By'),
             'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
+    }
+
+    public function getId()
+    {
+        $id = '';
+        $data = parent::find()->where(['name' => $this->name])->one();
+
+        if (empty($data)) {
+            $id = CttSequences::getValue('STATICDATA_REVISIONTYPE_SEQ');
+        } else {
+           $id = $data->id;
+        }
+
+        return $id;
     }
 
     /**

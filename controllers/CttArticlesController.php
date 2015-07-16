@@ -5,17 +5,14 @@ namespace app\controllers;
 use Yii;
 use app\models\CttArticles;
 use yii\data\ActiveDataProvider;
-use yii\web\AppController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * CttArticlesController implements the CRUD actions for CttArticles model.
  */
-class CttArticlesController extends AppController
+class CttArticlesController extends base\AppController
 {
-	
-	public $layout = 'home';
 	
     public function behaviors()
     {

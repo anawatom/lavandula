@@ -5,14 +5,13 @@ namespace app\controllers;
 use Yii;
 use app\models\CttPublishers;
 use app\models\CttPublishersSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * CttPublishersController implements the CRUD actions for CttPublishers model.
  */
-class CttPublishersController extends Controller
+class CttPublishersController extends base\AppController
 {
     public function behaviors()
     {

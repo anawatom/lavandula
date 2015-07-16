@@ -6,7 +6,6 @@ use Yii;
 use app\components\FlashMessage;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataLanguagesSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
@@ -14,10 +13,8 @@ use yii\helpers\Json;
 /**
  * CttStaticdataLanguagesController implements the CRUD actions for CttStaticdataLanguages model.
  */
-class CttStaticdataLanguagesController extends Controller
+class CttStaticdataLanguagesController extends base\AppController
 {
-    public $layout = 'home';
-
     public function behaviors()
     {
         return [

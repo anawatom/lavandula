@@ -9,7 +9,7 @@ use yii\web\Session;
 use kartik\growl\Growl;
 use app\models\WA_PROVINCE;
 
-class HomeController extends \yii\web\Controller
+class HomeController extends base\AppController
 {
 	public $title = 'ACI';
 	

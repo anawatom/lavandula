@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Exception;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\components\FlashMessage;
@@ -17,10 +16,8 @@ use app\models\CttSequences;
 /**
  * StaticdataCountrysController implements the CRUD actions for CttStaticdataCountrys model.
  */
-class StaticdataCountrysController extends Controller
+class StaticdataCountrysController extends base\AppController
 {
-    public $layout = 'home';
-
     public function behaviors()
     {
         return [

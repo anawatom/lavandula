@@ -5,7 +5,6 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
-use yii\web\AppController;
 use yii\web\Utils;
 use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
@@ -14,7 +13,7 @@ use app\models\ContactForm;
 use himiklab\jqgrid\actions\JqGridActiveAction;
 use himiklab\jqgrid\jqGridResponse;
 
-class WelcomeController extends AppController
+class WelcomeController extends base\AppController
 {
     public $title = 'Welcome';
     public $enableCsrfValidation = false;

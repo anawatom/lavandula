@@ -3,5 +3,5 @@
 return [
     'adminEmail' => 'admin@example.com',
 	'resizeImage' => array('width'=>300, 'height'=>300),
-	'testGlobal' => 'aaaa',
+	'status' => array('A'=>'Active', 'I'=>'Inavtive'),
 ];

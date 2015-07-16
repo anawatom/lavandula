@@ -84,6 +84,20 @@ class CttStaticdataRevisiontypes extends ActiveRecord
         ];
     }
 
+    public function getId()
+    {
+        $id = '';
+        $data = parent::find()->where(['name' => $this->name])->one();
+
+        if (empty($data)) {
+            $id = CttSequences::getValue('STATICDATA_REVISIONTYPE_SEQ');
+        } else {
+           $id = $data->id;
+        }
+
+        return $id;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

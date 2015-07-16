@@ -39,6 +39,20 @@ class CttStaticdataDocumenttype extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getId()
+    {
+        $id = '';
+        $data = parent::find()->where(['name' => $this->name])->one();
+
+        if (empty($data)) {
+            $id = CttSequences::getValue('STATICDATA_DOCUMENTTYPE_SEQ');
+        } else {
+           $id = $data->id;
+        }
+
+        return $id;
+    }
+
     /**
      * @inheritdoc
      */

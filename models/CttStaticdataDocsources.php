@@ -67,7 +67,7 @@ class CttStaticdataDocsources extends ActiveRecord
     {
         return [
             'id' => Yii::t('app/backend', 'ID'),
-            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang_id' => Yii::t('app/ctt_staticdata_docsource', 'Lang ID'),
             'lang' => Yii::t('app/ctt_staticdata_docsource', 'Lang'),
             'name' => Yii::t('app/ctt_staticdata_docsource', 'Name'),
             'status' => Yii::t('app/backend', 'Status'),

@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\CttStaticdataDocsources;
 use app\models\CttStaticdataDocsourcesSearch;
+use app\components\FlashMessage;
+use app\components\GlobalVariable;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +14,7 @@ use yii\filters\VerbFilter;
 /**
  * StaticdataDocsourceController implements the CRUD actions for CttStaticdataDocsources model.
  */
-class StaticdataDocsourceController extends Controller
+class StaticdataDocsourceController extends base\AppController
 {
     public function behaviors()
     {
@@ -41,6 +43,34 @@ class StaticdataDocsourceController extends Controller
         ]);
     }
 
+    public function actionPublicView($id)
+    {
+
+        return $this->render('public_view',
+                            [
+                                'model' => CttStaticdataDocsources::find()
+                                            ->where(['id' => $id])
+                                            ->all()
+                            ]);
+    }
+
+    /**
+     * Lists all CttStaticdataDocsources models in each name.
+     * @return mixed
+     */
+    public function actionLangList()
+    {
+        $searchModel = new CttStaticdataDocsourcesSearch();
+        $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
+
+        // GlobalVariable::fetchData();
+
+        return $this->render('lang_list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single CttStaticdataDocsources model.
      * @param integer $id
@@ -61,14 +91,33 @@ class StaticdataDocsourceController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CttStaticdataDocsources();
+        try {
+            $model = new CttStaticdataDocsources();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
+                $model->id = (Yii::$app->request->getQueryParam('id'))
+                                ? Yii::$app->request->getQueryParam('id')
+                                : $model->getId();
+
+                if ($result = $model->save()) {
+                    FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                    return $this->redirect(['lang-list', 'id' => $model->id]);
+                } else {
+                    // Handler error in here.
+                    Yii::trace(print_r($model->errors, true), 'Debug');
+                    Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        } catch (Exception $e) {
+            ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
         }
     }
 
@@ -83,8 +132,19 @@ class StaticdataDocsourceController extends Controller
     {
         $model = $this->findModel($id, $lang_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['lang-list', 'id' => $model->id]);
+            } else {
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

@@ -5,27 +5,25 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="search-container">
-			<form action="<?=Url::to('search');?>" method="post">
-				<div id="frmsearchbox">
-					<div style="padding:0 0 2px 5px;font-size:16px;color:darkblue;">Searchable 9,003,241 items</div>
-					<div class="search-contianer pull-left">
-						<div class="row">
-							<div class="col-md-12">
-								<form>
-									<div class="input-group">
-										<input type="text" class="form-control" style="height:50px;font-size:18px;" placeholder="<?= Yii::t('app/frontend', 'Search...'); ?>">
-										<span class="input-group-btn">
-											<button class="btn btn-success" style="height:50px;" type="button">
-												<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-											</button>
-										</span>
-									</div>
-								</form>
-							</div>
+			<div id="frmsearchbox">
+				<div style="padding:0 0 2px 5px;font-size:16px;color:darkblue;">Searchable 9,003,241 items</div>
+				<div class="search-contianer pull-left">
+					<div class="row">
+						<div class="col-md-12">
+							<form action="<?=Url::to(['/article-search-result/index']);?>" method="post">
+								<div class="input-group">
+									<input type="text" class="form-control" name="keywords" style="height:50px;font-size:18px;" placeholder="<?= Yii::t('app/frontend', 'Search...'); ?>">
+									<span class="input-group-btn">
+										<button class="btn btn-success" style="height:50px;" type="button">
+											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										</button>
+									</span>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 </div>

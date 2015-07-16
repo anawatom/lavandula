@@ -17,9 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Name' => 'ชื่อ',
-    'Short Name' => 'ชื่อย่อ',
-    'Ctt Staticdata Languages' => 'รายการภาษา',
-    'Create Ctt Staticdata Languages' => 'เพิ่มภาษา',
-    'Update Ctt Staticdata Languages' => 'แก้ไขภาษา',
+	'ID' => 'ID',
+	'Status' => 'Status',
+    'Created By' => 'Created By',
+    'Created Dtm' => 'Created Dtm',
+    'Modified By' => 'Modified By',
+    'Modified Dtm' => 'Modified Dtm',
 ];

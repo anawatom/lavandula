@@ -5,26 +5,28 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "ctt_staticdata_languages".
+ * This is the model class for table "ctt_staticdata_sourcetypes".
  *
  * @property integer $id
+ * @property integer $lang_id
+ * @property string $lang
  * @property string $name
- * @property string $short_name
+ * @property string $status
  * @property string $created_by
  * @property string $created_dtm
  * @property string $modified_by
  * @property string $modified_dtm
  *
- * @property CttPublishers[] $cttPublishers
+ * @property CttJournals[] $cttJournals
  */
-class CttStaticdataLanguages extends \yii\db\ActiveRecord
+class CttStaticdataSourcetypes extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ctt_staticdata_languages';
+        return 'ctt_staticdata_sourcetypes';
     }
 
     /**
@@ -33,11 +35,11 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['short_name', 'created_by', 'modified_by'], 'required'],
+            [['id', 'lang_id'], 'required'],
+            [['id', 'lang_id'], 'integer'],
             [['created_dtm', 'modified_dtm'], 'safe'],
-            [['name'], 'string', 'max' => 50],
-            [['short_name'], 'string', 'max' => 10],
-            [['created_by', 'modified_by'], 'string', 'max' => 45]
+            [['lang', 'name', 'created_by', 'modified_by'], 'string', 'max' => 45],
+            [['status'], 'string', 'max' => 1]
         ];
     }
 
@@ -48,8 +50,10 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app/backend', 'ID'),
-            'name' => Yii::t('app/ctt_staticdata_language', 'Name'),
-            'short_name' => Yii::t('app/ctt_staticdata_language', 'Short Name'),
+            'lang_id' => Yii::t('app/ctt_staticdata_sourcetype', 'Lang ID'),
+            'lang' => Yii::t('app/ctt_staticdata_sourcetype', 'Lang'),
+            'name' => Yii::t('app/ctt_staticdata_sourcetype', 'Name'),
+            'status' => Yii::t('app/backend', 'Status'),
             'created_by' => Yii::t('app/backend', 'Created By'),
             'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
             'modified_by' => Yii::t('app/backend', 'Modified By'),
@@ -60,8 +64,8 @@ class CttStaticdataLanguages extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCttPublishers()
+    public function getCttJournals()
     {
-        return $this->hasMany(CttPublishers::className(), ['lang_id' => 'id']);
+        return $this->hasMany(CttJournals::className(), ['source_type_id' => 'id']);
     }
 }

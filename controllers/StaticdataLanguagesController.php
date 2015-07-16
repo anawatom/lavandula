@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Json;
 
 /**
- * CttStaticdataLanguagesController implements the CRUD actions for CttStaticdataLanguages model.
+ * StaticdataLanguagesController implements the CRUD actions for CttStaticdataLanguages model.
  */
 class CttStaticdataLanguagesController extends base\AppController
 {

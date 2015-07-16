@@ -68,13 +68,14 @@ class HomeController extends base\AppController
 			$request = \Yii::$app->getRequest();
 
 			$lang = $request->getQueryParam('lang');
+			$current_url = $request->getQueryParam('current_url');
 			\Yii::$app->session->set('app.language', $lang);
 		}
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}
 
-		return $this->redirect(['home/index']);
+		return $this->redirect($current_url);
     }
 
     public function handlerError($ex) {

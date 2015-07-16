@@ -17,18 +17,10 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'ID' => 'ไอดี',
-    'Lang ID' => 'รหัสภาษา',
-    'Lang' => 'ภาษา',
-    'Name' => 'ชื่อ',
+	'ID' => 'ไอดี',
+	'Status' => 'สถานะ',
     'Created By' => 'ชื่อผู้สร้าง',
-    'Created Date' => 'วันที่สร้าง',
+    'Created Dtm' => 'วันที่สร้าง',
     'Modified By' => 'ชื่อผู้แก้ไข',
-    'Modified Date' => 'วันที่แก้ไข',
-    'Ctt Staticdata Countrys' => 'รายการประเทศ',
-    'Ctt Staticdata Countrys(Language List)' => 'รายการประเทศ (ภาษา)',
-    'Create Country' => 'สร้างประเทศ',
-    'Add new language' => 'เพิ่มภาษาใหม่',
-    'Create Ctt Staticdata Countrys' => 'เพิ่มประเทศ',
-    'Update Ctt Staticdata Countrys' => 'แก้ไขประเทศ',
+    'Modified Dtm' => 'วันที่แก้ไข',
 ];

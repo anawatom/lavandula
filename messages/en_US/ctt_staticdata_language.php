@@ -17,18 +17,9 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'ID' => 'ID',
-    'Lang ID' => 'Lang ID',
-    'Lang' => 'Lang',
     'Name' => 'Name',
-    'Created By' => 'Created By',
-    'Created Date' => 'Created Date',
-    'Modified By' => 'Modified By',
-    'Modified Date' => 'Modified Date',
-    'Ctt Staticdata Country' => 'Staticdata Countrys',
-    'Ctt Staticdata Countrys(Language List)' => 'Staticdata Countrys (Language List)',
-    'Create Country' => 'Create Country',
-    'Add new language' => 'Add new language',
-    'Create Ctt Staticdata Countrys' => 'Create Staticdata Countrys',
-    'Update Ctt Staticdata Countrys' => 'Update Staticdata Countrys',
+    'Short Name' => 'Short Name',
+    'Ctt Staticdata Languages' => 'Language List',
+    'Create Ctt Staticdata Languages' => 'Create Language',
+    'Update Ctt Staticdata Languages' => 'Update Language',
 ];

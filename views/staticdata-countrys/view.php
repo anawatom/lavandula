@@ -8,7 +8,7 @@ use kartik\detail\DetailView;
 /* @var $model app\models\CttStaticdataCountrys */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Country'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys(Language List)'),
                                     'url' => ['lang-list', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;

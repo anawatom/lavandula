@@ -12,10 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-authortypes-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
+        'title' => Html::encode($this->title),
         'model' => $model,
+        'mode' => 'create',
     ]) ?>
 
 </div>

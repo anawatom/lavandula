@@ -14,7 +14,6 @@ $this->params['breadcrumbs'][] = Yii::t('app/frontend', 'Update');
 <div class="ctt-staticdata-docsources-update">
 
     <?= $this->render('_form', [
-        'model' => $model,
         'title' => Html::encode($this->title),
         'model' => $model,
         'mode' => 'edit',

@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
  */
 class SiteController extends base\AppController
 {
+    public $layout = 'main';
 
     /**
      * @inheritdoc

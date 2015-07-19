@@ -29,4 +29,5 @@ return [
     'Create' => 'Create',
     'Update' => 'Update',
     'View' => 'View',
+    'Add new language' => 'Add new language',
 ];

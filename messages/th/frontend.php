@@ -29,4 +29,5 @@ return [
     'Create' => 'เพิ่ม',
     'Update' => 'แก้ไข',
     'View' => 'ดู',
+    'Add new language' => 'เพิ่มภาษาใหม่',
 ];

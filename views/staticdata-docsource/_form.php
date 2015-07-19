@@ -41,7 +41,7 @@ $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray(
                 'options' => [],
                 'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
                 'pluginEvents' => [
-                    'change' => 'function() { $("#cttstaticdatacountrys-lang").val( $(this).find("option:selected").text() ); }',
+                    'change' => 'function() { $("#cttstaticdatadocsources-lang").val( $(this).find("option:selected").text() ); }',
                 ],
             ],
         ],
@@ -49,7 +49,7 @@ $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray(
             'attribute' => 'lang',
             'type' => DetailView::INPUT_HIDDEN,
             'options' => [
-                'value' => ($mode == 'create')? $cttStaticdataLanguage[0]['id']: $model->lang,
+                'value' => ($mode == 'create')? $cttStaticdataLanguage[0]['name']: $model->lang,
             ],
         ],
         [

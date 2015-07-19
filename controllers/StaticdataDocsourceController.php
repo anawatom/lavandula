@@ -3,10 +3,12 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
 use app\models\CttStaticdataDocsources;
 use app\models\CttStaticdataDocsourcesSearch;
 use app\components\FlashMessage;
 use app\components\GlobalVariable;
+use app\helpers\ErrorHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -161,9 +163,14 @@ class StaticdataDocsourceController extends base\AppController
      */
     public function actionDelete($id, $lang_id)
     {
-        $this->findModel($id, $lang_id)->delete();
+        try {
+            $this->findModel($id, $lang_id)->delete();
+            FlashMessage::showSuccess(['msg' => 'Deleted']);
+        } catch (Exception $e) {
+            FlashMessage::showSuccess(['msg' => 'Delete']);
+        }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lang-list', 'id' => $id]);
     }
 
     /**

@@ -8,7 +8,9 @@ use kartik\detail\DetailView;
 /* @var $model app\models\CttStaticdataAuthortypes */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Authortypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_authortype', 'Ctt Staticdata Authortypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_authortype', 'Ctt Staticdata Authortypes(Language List)'),
+                                    'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-authortypes-view">

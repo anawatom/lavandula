@@ -20,7 +20,8 @@ return [
     'Lang ID' => 'รหัสภาษา',
     'Lang' => 'ภาษา',
     'Name' => 'ชื่อ',
-    'Ctt Staticdata Languages' => 'Language List',
-    'Create Ctt Staticdata Languages' => 'Create Language',
-    'Update Ctt Staticdata Languages' => 'Update Language',
+    'Ctt Staticdata Authortypes' => 'รายการประเภทผู้เขียน',
+    'Ctt Staticdata Authortypes(Language List)' => 'รายการประเภทผู้เขียน (ภาษา)',
+    'Create Ctt Staticdata Authortypes' => 'เพิ่มประเภทผู้เขียน',
+    'Update Ctt Staticdata Authortypes' => 'แก้ไขประเภทผู้เขียน',
 ];

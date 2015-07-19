@@ -20,7 +20,8 @@ return [
     'Lang ID' => 'Lang ID',
     'Lang' => 'Lang',
     'Name' => 'Name',
-    'Ctt Staticdata Languages' => 'Language List',
-    'Create Ctt Staticdata Languages' => 'Create Language',
-    'Update Ctt Staticdata Languages' => 'Update Language',
+    'Ctt Staticdata Authortypes' => 'Authortype List',
+    'Ctt Staticdata Authortypes(Language List)' => 'Authortype List (Language)',
+    'Create Ctt Staticdata Authortypes' => 'Create Authortype',
+    'Update Ctt Staticdata Authortypes' => 'Update Authortype',
 ];

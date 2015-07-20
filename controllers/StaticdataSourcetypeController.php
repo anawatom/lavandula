@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CttStaticdataSourcetypeController implements the CRUD actions for CttStaticdataSourcetypes model.
  */
-class CttStaticdataSourcetypeController extends Controller
+class StaticdataSourcetypeController extends Controller
 {
     public function behaviors()
     {

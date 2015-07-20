@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CttStaticdataRevisiontypeController implements the CRUD actions for CttStaticdataRevisiontypes model.
  */
-class CttStaticdataRevisiontypeController extends Controller
+class StaticdataRevisiontypeController extends Controller
 {
     public function behaviors()
     {

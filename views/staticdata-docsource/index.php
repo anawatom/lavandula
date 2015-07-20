@@ -40,12 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'name',
                 'enableSorting' => true,
             ],
-            [
-                'attribute' => 'status',
-                'headerOptions' => ['class' => 'center-content'],
-                'value' => 'name',
-                'enableSorting' => true,
-            ],
 
             [
                 'class' => 'kartik\grid\ActionColumn',

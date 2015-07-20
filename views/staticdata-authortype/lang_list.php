@@ -10,6 +10,8 @@ use kartik\grid\GridView;
 $this->title = Yii::t('app/ctt_staticdata_authortype', 'Ctt Staticdata Authortypes(Language List)');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_authortype', 'Ctt Staticdata Authortypes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$status = Yii::$app->params['status'];
 ?>
 
 <div class="ctt-staticdata-countrys-index">
@@ -43,7 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => 'name',
+                'value' => function($model) use(&$status) {
+                    return $status[$model->status];
+                },
                 'enableSorting' => true,
             ],
 

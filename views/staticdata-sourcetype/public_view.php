@@ -6,7 +6,7 @@ use kartik\tabs\TabsX;
 use kartik\detail\DetailView;
 
 $this->title = $model[0]->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_documenttype', 'Ctt Staticdata Documenttypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_sourcetype', 'Ctt Staticdata Sourcetypes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $items = [];

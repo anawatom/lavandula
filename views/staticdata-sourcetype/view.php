@@ -8,7 +8,9 @@ use kartik\detail\DetailView;
 /* @var $model app\models\CttStaticdataSourcetypes */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Sourcetypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_sourcetype', 'Ctt Staticdata Sourcetypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_sourcetype', 'Ctt Staticdata Sourcetypes(Language List)'),
+                                    'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-sourcetypes-view">

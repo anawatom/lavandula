@@ -20,7 +20,8 @@ return [
     'Lang ID' => 'รหัสภาษา',
     'Lang' => 'ภาษา',
     'Name' => 'ชื่อ',
-    'Ctt Staticdata Languages' => 'Language List',
-    'Create Ctt Staticdata Languages' => 'Create Language',
-    'Update Ctt Staticdata Languages' => 'Update Language',
+    'Ctt Staticdata Documenttypes' => 'รายการประเภทเอกสาร',
+    'Ctt Staticdata Documenttypes(Language List)' => 'รายการประเภทเอกสาร (ภาษา)',
+    'Create Ctt Staticdata Documenttypes' => 'เพิ่มประเภทเอกสาร',
+    'Update Ctt Staticdata Documenttypes' => 'แก้ไขประเภทเอกสาร',
 ];

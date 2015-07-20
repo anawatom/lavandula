@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttStaticdataRevisiontypesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Ctt Staticdata Revisiontypes');
+$this->title = Yii::t('app/ctt_staticdata_revisiontype', 'Ctt Staticdata Revisiontypes');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-revisiontypes-index">
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'headingOptions' => ['class' => 'no-border-radius'],
             'before' => '<div class="clearfix"></div>'
                         .$this->render('_search', ['model' => $searchModel])
-                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_documenttype', 'Create Ctt Staticdata Documenttypes'),
+                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_revisiontype', 'Create Ctt Staticdata Revisiontypes'),
                                 ['lang-list'],
                                 ['class' => 'btn btn-success']),
             ],

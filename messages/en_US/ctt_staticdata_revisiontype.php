@@ -21,7 +21,8 @@ return [
     'Lang' => 'Lang',
     'Class Name' => 'Class Name',
     'Name' => 'Name',
-    'Ctt Staticdata Languages' => 'Language List',
-    'Create Ctt Staticdata Languages' => 'Create Language',
-    'Update Ctt Staticdata Languages' => 'Update Language',
+    'Ctt Staticdata Revisiontypes' => 'Revisiontype List',
+    'Ctt Staticdata Revisiontypes(Language List)' => 'Revisiontype List (Language)',
+    'Create Ctt Staticdata Revisiontypes' => 'Create Revisiontype',
+    'Update Ctt Staticdata Revisiontypes' => 'Update Revisiontype',
 ];

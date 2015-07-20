@@ -8,14 +8,15 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Create Ctt Staticdata Documenttypes');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Documenttypes'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_docsource', 'Ctt Staticdata Docsources'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-documenttypes-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
+        'title' => Html::encode($this->title),
         'model' => $model,
+        'mode' => 'create',
     ]) ?>
 
 </div>

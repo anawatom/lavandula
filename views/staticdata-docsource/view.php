@@ -22,7 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'lang_id',
             'lang',
             'name',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => Yii::$app->params['status'][$model->status]
+            ],
             'created_by',
             'created_dtm',
             'modified_by',

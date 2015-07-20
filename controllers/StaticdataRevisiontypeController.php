@@ -3,16 +3,19 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\CttStaticdataRevisiontypes;
-use app\models\CttStaticdataRevisiontypesSearch;
-use yii\web\Controller;
+use yii\base\Exception;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\FlashMessage;
+use app\components\GlobalVariable;
+use app\models\CttStaticdataRevisiontypes;
+use app\models\CttStaticdataRevisiontypesSearch;
+use app\helpers\ErrorHelper;
 
 /**
  * CttStaticdataRevisiontypeController implements the CRUD actions for CttStaticdataRevisiontypes model.
  */
-class StaticdataRevisiontypeController extends Controller
+class StaticdataRevisiontypeController extends base\AppController
 {
     public function behaviors()
     {
@@ -42,6 +45,23 @@ class StaticdataRevisiontypeController extends Controller
     }
 
     /**
+     * Lists all CttStaticdataSourcetypes models in each name.
+     * @return mixed
+     */
+    public function actionLangList()
+    {
+        $searchModel = new CttStaticdataRevisiontypesSearch();
+        $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
+
+        // GlobalVariable::fetchData();
+
+        return $this->render('lang_list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
      * Displays a single CttStaticdataRevisiontypes model.
      * @param integer $id
      * @param integer $lang_id
@@ -54,6 +74,17 @@ class StaticdataRevisiontypeController extends Controller
         ]);
     }
 
+    public function actionPublicView($id)
+    {
+
+        return $this->render('public_view',
+                            [
+                                'model' => CttStaticdataRevisiontypes::find()
+                                            ->where(['id' => $id])
+                                            ->all()
+                            ]);
+    }
+
     /**
      * Creates a new CttStaticdataRevisiontypes model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -61,14 +92,33 @@ class StaticdataRevisiontypeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CttStaticdataRevisiontypes();
+        try {
+            $model = new CttStaticdataRevisiontypes();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
+                $model->id = (Yii::$app->request->getQueryParam('id'))
+                                ? Yii::$app->request->getQueryParam('id')
+                                : $model->getId();
+
+                if ($result = $model->save()) {
+                    FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                    return $this->redirect(['lang-list', 'id' => $model->id]);
+                } else {
+                    // Handler error in here.
+                    Yii::trace(print_r($model->errors, true), 'Debug');
+                    Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        } catch (Exception $e) {
+            ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
         }
     }
 
@@ -83,8 +133,19 @@ class StaticdataRevisiontypeController extends Controller
     {
         $model = $this->findModel($id, $lang_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['lang-list', 'id' => $model->id]);
+            } else {
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,9 +162,14 @@ class StaticdataRevisiontypeController extends Controller
      */
     public function actionDelete($id, $lang_id)
     {
-        $this->findModel($id, $lang_id)->delete();
+        try {
+            $this->findModel($id, $lang_id)->delete();
+            FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+        } catch (Exception $e) {
+            FlashMessage::showSuccess(['msg' => 'Delete failed.']);
+        }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lang-list', 'id' => $id]);
     }
 
     /**

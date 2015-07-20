@@ -9,6 +9,14 @@ $this->title = Yii::t('app/ctt_staticdata_docsource', 'Update Ctt Staticdata Doc
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_docsource', 'Ctt Staticdata Docsources'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_docsource', 'Ctt Staticdata Countrys(Language List)'),
                                     'url' => ['lang-list', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = [
+									'label' => $model->name,
+									'url' => [
+												'view',
+												'id' => $model->id,
+												'lang_id' => $model->lang_id,
+											]
+								];
 $this->params['breadcrumbs'][] = Yii::t('app/frontend', 'Update');
 ?>
 <div class="ctt-staticdata-docsources-update">

@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * See in 
+ *  https://github.com/yiisoft/yii2/blob/master/docs/guide/security-authorization.md
+ *
+ */
+
 namespace app\commands;
 
 use Yii;

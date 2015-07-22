@@ -41,6 +41,15 @@ border-right: 2px solid gray;
 .language-contianer a.active {
 	font-weight: 900;
 }
+.member-contianer {
+	float: right;
+	text-align: right;
+	padding: 5px;
+	color: #fff;
+}
+.member-contianer a {
+	color: #fff;
+}
 .logo-contianer {
 	color: white;
 	padding: 20px 20px;
@@ -59,11 +68,6 @@ border-right: 2px solid gray;
 	width: 320px;
 	overflow: hidden;
 	background-color: lightgray;
-}
-.member-contianer {
-	float: right;
-	cursor: pointer;
-	text-align: right;
 }
 .navbar-contianer {
 	padding: 0;

@@ -67,15 +67,19 @@
 						<a href="<?= Url::to(['home/set-language', 'current_url' => Url::current(), 'lang' => 'en_US']); ?>" class="<?= ($language=='en_US')? 'active':''; ?>">Eng</a> | 
 						<a href="<?= Url::to(['home/set-language', 'current_url' => Url::current(), 'lang' => 'th']); ?>" class="<?= ($language=='th')? 'active':''; ?>">TH</a>
 					</div><!-- End Language bar -->
+					<div class="member-contianer">
+						<?php if (empty($currentUser)) : ?>
+							<?= Html::a('Login', ['site/login']); ?> <br />
+						<?php else :?>
+							<b>Member: </b><span><?= $currentUser->username; ?></span><br />
+							<b>Role: </b><span><?= $currentUser->role->name ?></span><br />
+							<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
+						<?php endif ?>
+					</div>
 					<!-- Logo -->
 					<div class="logo-contianer">
 						<div class="logo">
 							<img src="<?= Url::to('@web/images/aec-logo.png') ?>">
-						</div>
-						<div class="member-contianer">
-							<b>Member:</b> Login <span class="glyphicon glyphicon-triangle-bottom" ></span><br />
-							<span><?php echo $currentUser->username.' ('.$currentUser->role->name.') '; ?></span><br />
-							<a href="<?= Url::to(['site/logout'])?>" data-method="post">Logout</a>
 						</div>
 					</div>
 					<!-- End logo -->
@@ -108,31 +112,33 @@
 								<li class="bg-purple">
 									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
 								</li>
-								<li class="bg-sky">
-									<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
-										<?= Yii::t('app/frontend', 'Admin'); ?>
-										<span class="caret"></span>
-									</a>
-									<ul class="dropdown-menu" role="menu">
-										<li class="divider"></li>
-										<li><a href="#">Article Importer</a></li>
-										<li><a href="#">Article Approval</a></li>
-										<li class="divider"></li>
-										<li><a href="#">User Management</a></li>
-										<li><a href="?r=articles">Article Management</a></li>
-										<li><a href="#">Author Management</a></li>
-										<li><a href="#">Journal Management</a></li>
-										<li><a href="#">Publisher Management</a></li>
-										<li class="divider"></li>
-										<li><a href="?r=staticdata-countrys">Country Management</a></li>
-										<li><a href="?r=staticdata-languages">Language Management</a></li>
-										<li><a href="#">Subject Area Management</a></li>
-										<li><a href="#">Affiliation Management</a></li>
-										<li><a href="#">Document Type Management</a></li>
-										<li><a href="#">Issue Management</a></li>
-										<li class="divider"></li>
-									</ul>
-								</li>
+								<?php if (\Yii::$app->user->can('createData') || \Yii::$app->user->can('updateData')) { ?>
+									<li class="bg-sky">
+										<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
+											<?= Yii::t('app/frontend', 'Admin'); ?>
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu" role="menu">
+											<li class="divider"></li>
+											<li><a href="#">Article Importer</a></li>
+											<li><a href="#">Article Approval</a></li>
+											<li class="divider"></li>
+											<li><a href="#">User Management</a></li>
+											<li><a href="?r=articles">Article Management</a></li>
+											<li><a href="#">Author Management</a></li>
+											<li><a href="#">Journal Management</a></li>
+											<li><a href="#">Publisher Management</a></li>
+											<li class="divider"></li>
+											<li><a href="?r=staticdata-countrys">Country Management</a></li>
+											<li><a href="?r=staticdata-languages">Language Management</a></li>
+											<li><a href="#">Subject Area Management</a></li>
+											<li><a href="#">Affiliation Management</a></li>
+											<li><a href="#">Document Type Management</a></li>
+											<li><a href="#">Issue Management</a></li>
+											<li class="divider"></li>
+										</ul>
+									</li>
+								<?php } ?>
 							</ul>
 						</div>
 					</nav>
@@ -163,8 +169,6 @@
 				</div>
 			</div>
 			<!-- End Header -->
-			<?php if (\Yii::$app->user->can('updateData')) { ?>
-			<?php } ?>
 			<!-- Breadcrumbs -->
 			<div class="row">
 				<?=

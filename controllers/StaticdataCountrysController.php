@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\base\Exception;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\components\FlashMessage;
 use app\components\GlobalVariable;
@@ -18,9 +19,28 @@ use app\models\CttSequences;
  */
 class StaticdataCountrysController extends base\AppController
 {
+
+    /**
+     * @inheritdoc
+     *
+     * See more
+     *  http://www.yiiframework.com/forum/index.php/topic/60439-yii2-rbac-permissions-in-controller-behaviors/
+     *  http://www.yiiframework.com/doc-2.0/yii-filters-accesscontrol.html
+     *  http://www.yiiframework.com/doc-2.0/yii-filters-accessrule.html
+     */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['superadmin'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

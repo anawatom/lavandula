@@ -16,7 +16,7 @@ class UtilsController extends Controller
     public function actionCreateUser()
     {
 		$user = new \app\Models\User();
-        $user->role_id = '4';
+        $user->role_id = '1';
         $user->username = 'superadmin';
         $user->email = 'superadmin@email.com';
         $user->password = sha1('password');

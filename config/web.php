@@ -7,6 +7,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'language'],
 	'language' => 'th',
+    'defaultRoute' => 'home',
     'modules' => [
         // More information http://demos.krajee.com/grid#installation
        'gridview' =>  [

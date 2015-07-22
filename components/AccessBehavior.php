@@ -45,11 +45,11 @@ class AccessBehavior extends Behavior
      */
     public function beforeAction()
     {
-        if (\Yii::$app->getUser()->isGuest &&
-            \Yii::$app->getRequest()->url !== Url::to(\Yii::$app->getUser()->loginUrl)
-        ) {
-            \Yii::$app->getResponse()->redirect(\Yii::$app->getUser()->loginUrl);
-        }
+        // if (\Yii::$app->getUser()->isGuest &&
+        //     \Yii::$app->getRequest()->url !== Url::to(\Yii::$app->getUser()->loginUrl)
+        // ) {
+        //     \Yii::$app->getResponse()->redirect(\Yii::$app->getUser()->loginUrl);
+        // }
     }
 
 

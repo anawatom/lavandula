@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 /**
@@ -20,20 +21,15 @@ class ArticleSearchResultController extends base\AppController
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
                         'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'actions' => ['index'],
                     ],
                 ],
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'index' => ['post'],
                 ],
             ],
         ];
@@ -53,7 +49,23 @@ class ArticleSearchResultController extends base\AppController
 
     public function actionIndex()
     {
-        return $this->render('index');
-    }
+        $keyword = Yii::$app->request->post('keyword');
+        $connection = Yii::$app->db;
 
+        $data = $connection
+                ->createCommand('SELECT * FROM ctt_articles
+                                    WHERE status = :status
+                                    AND lang_id=(SELECT min(lang_id)
+                                                FROM ctt_articles t2
+                                                WHERE t2.id=ctt_articles.id
+                                                AND MATCH (title_fulltext, abstract_fulltext, author_keyword, auto_keyword) 
+                                                AGAINST (:keyword) GROUP BY id) LIMIT 100',
+                                [
+                                    'status' => 'A',
+                                    'keyword' => $keyword
+                                ])
+                ->queryAll();
+
+        return $this->render('index', ['data' => $data, 'keyword' => $keyword]);
+    }
 }

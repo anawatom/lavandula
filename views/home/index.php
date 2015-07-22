@@ -1,5 +1,7 @@
 <?php
 	use yii\helpers\Url;
+	use yii\helpers\Html;
+	use yii\bootstrap\ActiveForm;
 ?>
 <!-- Search -->
 <div class="row">
@@ -10,16 +12,43 @@
 				<div class="search-contianer pull-left">
 					<div class="row">
 						<div class="col-md-12">
-							<form action="<?=Url::to(['/article-search-result/index']);?>" method="post">
+							<?php $form = ActiveForm::begin([
+											'action' => ['/article-search-result/index'],
+											'method' => 'post',
+											'layout' => 'horizontal',
+											'fieldConfig' => [
+											'template' => "{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+											'horizontalCssClasses' => [
+																		'offset' => '',
+																		'label' => '',
+																		'wrapper' => 'col-md-12',
+																		'error' => '',
+																		'hint' => '',
+																	],
+											]
+											]); ?>
+								<div class="input-group">
+									<?= Html::input('text', 'keyword', '', ['class'=>'form-control',
+																	'placeholder' => Yii::t('app/frontend', 'Search...'),
+																	'style' => 'height:50px;font-size:18px;']) ?>
+									<span class="input-group-btn">
+										<?= Html::submitButton('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>', 
+																['class' => 'btn btn-primary',
+																'style' => 'height:50px;']) ?>
+									</span>
+								</div>
+							<?php ActiveForm::end(); ?>
+							
+							<!-- <form action="<?=Url::to(['/article-search-result/search']);?>" method="post">
 								<div class="input-group">
 									<input type="text" class="form-control" name="keywords" style="height:50px;font-size:18px;" placeholder="<?= Yii::t('app/frontend', 'Search...'); ?>">
 									<span class="input-group-btn">
-										<button class="btn btn-success" style="height:50px;" type="button">
+										<button class="btn btn-success" style="height:50px;" type="submit">
 											<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										</button>
 									</span>
 								</div>
-							</form>
+							</form> -->
 						</div>
 					</div>
 				</div>

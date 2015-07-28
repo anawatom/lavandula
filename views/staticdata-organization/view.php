@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\helpers\Url;
+use kartik\detail\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CttStaticdataOrganizations */
@@ -11,19 +12,6 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Organ
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-organizations-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id, 'lang_id' => $model->lang_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id, 'lang_id' => $model->lang_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -35,11 +23,35 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'alias',
             'address',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => Yii::$app->params['status'][$model->status]
+            ],
             'created_by',
             'created_dtm',
             'modified_by',
             'modified_dtm',
+        ],
+        'panel' => [
+            'heading' => $model->name,
+            'type' => DetailView::TYPE_PRIMARY,
+            'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
+                                .Yii::t('app/frontend', 'Back'),
+                                ['lang-list', 'id' => $model->id],
+                                ['class' => 'btn btn-danger']),
+            'footerOptions' => [
+                'tag' => 'div'
+            ],
+        ],
+        'buttons1' => '{update}',
+        'updateOptions' => [
+            'label' => '<a class="update-link" href="'
+                        .Url::to([
+                                    'update',
+                                    'id' => $model->id,
+                                    'lang_id' => $model->lang_id,
+                                ])
+                        .'"><span class="glyphicon glyphicon-pencil"></span></a>'
         ],
     ]) ?>
 

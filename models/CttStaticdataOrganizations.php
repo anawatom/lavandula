@@ -58,7 +58,7 @@ class CttStaticdataOrganizations extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'lang_id', 'affiliation_id', 'name', 'modified_dtm'], 'required'],
+            [['id', 'lang_id', 'affiliation_id', 'name'], 'required'],
             [['id', 'lang_id', 'affiliation_id'], 'integer'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],

@@ -12,7 +12,7 @@ An enhanced HTML 5 file input for Bootstrap 3.x with file preview for various fi
 
 This plugin was initially inspired by [this blog article](http://www.abeautifulsite.net/blog/2013/08/whipping-file-inputs-into-shape-with-bootstrap-3/) and [Jasny's File Input plugin](http://jasny.github.io/bootstrap/javascript/#fileinput). But the plugin has now matured with various additional features and enhancements to be a complete (yet simple) file management tool and solution for web developers. 
 
-> NOTE: The latest version of the plugin v4.2.3 has been released. Refer the [CHANGE LOG](https://github.com/kartik-v/bootstrap-fileinput/blob/master/CHANGE.md) for details. 
+> NOTE: The latest version of the plugin v4.2.5 has been released. Refer the [CHANGE LOG](https://github.com/kartik-v/bootstrap-fileinput/blob/master/CHANGE.md) for details. 
 
 ## Features  
 
@@ -175,6 +175,9 @@ _boolean_ whether to display the file upload cancel button. Defaults to `true`. 
 
 ### showUploadedThumbs
 _boolean_ whether to persist display of the uploaded file thumbnails in the preview window (for ajax uploads) until the remove/clear button is pressed. Defaults to `true`.  When set to `false`, a next batch of files selected for upload will clear these thumbnails from preview.
+
+### autoReplace
+_boolean_ whether to automatically replace the files in the preview after the `maxFileCount` limit is reached and a new set of file(s) is/are selected. This will only work if a valid  `maxFileCount` is set. Defaults to `false`.
 
 ### captionClass
 _string_ any additional CSS class to append to the caption container.
@@ -765,10 +768,14 @@ _object | function_ the extra data that will be passed as data to the url/AJAX s
  {id: 100, value: '100 Details'}
 ```
 
-As a function callback, it can be setup for example as:
+As a function callback, the `uploadExtraData` can be setup as shown below. Note that for uploading individual file via thumbnail, the callback can also receive the thumbnail `previewId` and `index` as parameters. These are described below:
+
+- `previewId`: the identifier for the preview file container (only available when uploading each thumbnail file)
+- `index`: the zero-based sequential index of the loaded file in the preview list (only available when uploading each thumbnail file)
 
 ```js
-function() {
+// previewId and index is only available for individual file upload via the thumbnail
+function (previewId, index) {
     var obj = {};
     $('.your-form-class').find('input').each(function() {
         var id = $(this).attr('id'), val = $(this).val();
@@ -1112,7 +1119,8 @@ _object_ additional ajax settings to pass to the plugin before submitting the de
 _boolean_ whether to show details of the error stack from the server log when an error is encountered via ajax response. Defaults to `true`.
 
 ## Plugin Events
-The plugin supports these events:
+
+The plugin supports the following events. 
 
 ### File Events
 
@@ -1264,8 +1272,20 @@ $('#input-id').on('fileunlock', function(event, filestack) {
 });
 ```
 
+#### filepreajax
+This event is triggered before submission of the upload ajax request. You could use this event to manipulate the `uploadExtraData` before its submitted via ajax. The following additional parameters are also available specifically and only if the upload is triggered via each thumbnail upload button.
+
+- `previewId`: the identifier of the preview thumbnail container.
+- `index`: the zero-based index of the file in the preview container.
+
+```js
+$('#input-id').on('filepreajax', function(event, previewId, index) {
+    console.log('File pre ajax triggered');
+});
+```
+
 #### filepreupload
-This event is triggered before upload of each thumbnail file. Additional parameters available are: 
+This event is triggered before upload of each thumbnail file. This event is triggered after `filepreajax` and within the ajax `beforeSend`. Additional parameters available are: 
 
 - `data`: This is a data object (associative array) that sends the following information, whose keys are:
     - `form`: the FormData object which is passed via XHR2 (or empty object if not available).
@@ -1585,6 +1605,12 @@ $('#input-id').fileinput('enable');
 Reset the file input.
 ```js
 $('#input-id').fileinput('reset');
+```
+
+### destroy
+Destroys the file input.
+```js
+$('#input-id').fileinput('destroy');
 ```
 
 ### refresh

@@ -21,15 +21,17 @@
 			return v.indexOf("px") >= 0 ? parseFloat(v) : v;
 		},
 		savePositionOnHide = function (propName, frmgr, h) {
-			var $w = h.w, $form = $(frmgr), toTop = h.c.toTop, offsetGbox,
-				top = getCssStyleOrFloat($w, "top"),
-				left = getCssStyleOrFloat($w, "left");
-			// we use below .style.height and .style.width to save correctly "auto" and "100%" values
-			// the "px" suffix will be saved too, but it's not a problem 
+			var $w = h.w, $form = $(frmgr), toTop = h.c.toTop, offsetGbox, offset, top, left;
 			if (toTop) {
-				offsetGbox = $w.closest(".ui-jqgrid").offset();
-				top -= offsetGbox.top;
-				left -= offsetGbox.left;
+				offsetGbox = this.closest(".ui-jqgrid").offset();
+				offset = $w.offset();
+				top = offset.top - offsetGbox.top;
+				left = offset.left - offsetGbox.left;
+			} else {
+				// we use below .style.height and .style.width to save correctly "auto" and "100%" values
+				// the "px" suffix will be saved too, but it's not a problem 
+				top = getCssStyleOrFloat($w, "top");
+				left = getCssStyleOrFloat($w, "left");
 			}
 			this.data(propName, {
 				top: top,                 //parseFloat($w.css("top")),
@@ -1896,19 +1898,16 @@
 					alertIDs = { themodal: "alertmod_" + gridId, modalhead: "alerthd_" + gridId, modalcontent: "alertcnt_" + gridId },
 					createModalAlert = function () {
 						return function () {
-							var documentElement = document.documentElement, w = window, left, top,
+						    var documentElement = document.documentElement, w = window, left = 1024, top = 768,
 								offsetGbox = $self.closest(".ui-jqgrid").offset();
 							if ($("#" + jqID(alertIDs.themodal))[0] === undefined) {
 								if (!o.alerttop && !o.alertleft) {
 									if (w.innerWidth !== undefined) {
 										left = w.innerWidth;
 										top = w.innerHeight;
-									} else if (documentElement !== null && documentElement.clientWidth !== undefined && documentElement.clientWidth !== 0) {
+									} else if (documentElement != null && documentElement.clientWidth !== undefined && documentElement.clientWidth !== 0) {
 										left = documentElement.clientWidth;
 										top = documentElement.clientHeight;
-									} else {
-										left = 1024;
-										top = 768;
 									}
 									left = left / 2 - parseInt(o.alertwidth, 10) / 2 - offsetGbox.left;
 									top = top / 2 - 25 - offsetGbox.top;

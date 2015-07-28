@@ -2,13 +2,13 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license jqGrid 4.9.0 - free jqGrid: https://github.com/free-jqgrid/jqGrid
+ * @license jqGrid 4.9.1 - free jqGrid: https://github.com/free-jqgrid/jqGrid
  * Copyright (c) 2008-2014, Tony Tomov, tony@trirand.com
  * Copyright (c) 2014-2015, Oleg Kiriljuk, oleg.kiriljuk@ok-soft-gmbh.com
  * Dual licensed under the MIT and GPL licenses
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl-2.0.html
- * Date: 2015-06-14
+ * Date: 2015-07-23
  */
 //jsHint options
 /*jshint evil:true, eqeqeq:false, eqnull:true, devel:true */
@@ -618,7 +618,7 @@
 			var c = $(cell);
 			if (c.is("tr")) { return -1; }
 			c = (!c.is("td") && !c.is("th") ? c.closest("td,th") : c)[0];
-			if (c === undefined) { return -1; }
+			if (c == null) { return -1; }
 			if (jgrid.msie) { return $.inArray(c, c.parentNode.cells); }
 			return c.cellIndex;
 		},
@@ -917,7 +917,7 @@
 		/**
 		 *  @param {COMPONENT_NAMES} componentName
 		 */
-		getGridComponent: function (componentName, $p, p1) {
+		getGridComponent: function (componentName, $p) {// , p1
 			var p;
 			if ($p instanceof $ || $p.length > 0) {
 				p = $p[0];
@@ -1028,7 +1028,7 @@
 		// one cell of the main grid and another cell with the corresponding cell from the frozen body table
 		getCell: function (tr, iCol) {
 			var grid = this.grid, p = this.p, frozenRows, $td;
-			if (!grid || !p) { return; } // not a grid
+			if (!grid || !p) { return $(); } // not a grid
 			if (tr instanceof $ || tr.length > 0) {
 				tr = tr[0]; // unwrap jQuery object to DOM element
 			}
@@ -1113,8 +1113,8 @@
 		},
 		getEditedValue: function ($dataFiled, cm, useTextInSelects) {
 			var result, checkBoxValues, newformat, $field, valuesOrTexts, selectMethod = useTextInSelects ? "text" : "val",
-				formatoptions = cm.formatoptions || {}, editoptions = cm.editoptions || {}, customValue = cm.custom_value,
-				nameSelector = "[name=" + jgrid.jqID(cm.name) + "]", $t = this, $self = $($t), info_dialog, getRes, errcap, bClose;
+				formatoptions = cm.formatoptions || {}, editoptions = cm.editoptions || {}, customValue = editoptions.custom_value,
+				nameSelector = "[name=" + jgrid.jqID(cm.name) + "]", $t = this, $self = $($t), infoDialog, getRes, errcap, bClose;
 			switch (cm.edittype) {
 				case "checkbox":
 					checkBoxValues = ["Yes", "No"];
@@ -1138,7 +1138,7 @@
 					$field = $dataFiled.find("select option:selected");
 					if (editoptions.multiple) {
 						valuesOrTexts = [];
-						$field.each(function (i, option) {
+						$field.each(function () {
 							valuesOrTexts.push($(this)[selectMethod]());
 						});
 						result = valuesOrTexts.join(",");
@@ -1157,17 +1157,17 @@
 							throw "e1";
 						}
 					} catch (e) {
-						info_dialog = jgrid.info_dialog;
+						infoDialog = jgrid.info_dialog;
 						getRes = function (path) { $self.jqGrid("getGridRes", path); };
 						errcap = getRes("errors.errcap");
 						bClose = getRes("edit.bClose");
 						if (e === "e1") {
-							info_dialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.nodefined"), bClose);
+							infoDialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.nodefined"), bClose);
 						}
 						if (e === "e2") {
-							info_dialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.novalue"), bClose);
+							infoDialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.novalue"), bClose);
 						} else {
-							info_dialog.call($t, errcap, e.message, bClose);
+							infoDialog.call($t, errcap, e.message, bClose);
 						}
 					}
 					break;
@@ -1816,8 +1816,9 @@
 					);
 				};
 
-			return "<span class='s-ico' style='display:none'><span class='" + getClasses("asc") +
-				"'></span>" + "<span class='" + getClasses("desc") + "'></span></span>";
+			return "<span class='s-ico" + (p.sortIconsBeforeText ? " jqgrid-icons-first" : "") +
+				"' style='display:none'><span class='" + getClasses("asc") +
+				"'></span><span class='" + getClasses("desc") + "'></span></span>";
 		},
 		/**
 		 *  @param {String} id
@@ -1831,7 +1832,7 @@
 				getDialogGuiStyles = function (name) {
 					return jgrid.getRes(jgrid.guiStyles[p.guiStyle], "dialog." + name);
 				};
-			if (p == null) { return; }
+			if (p == null) { return ""; }
 			
 			return "<a id='" + id + "' class='" +
 				jgrid.mergeCssClasses("fm-button",
@@ -2338,7 +2339,7 @@
 				buildArrayReader = function () {
 					var i, colModel = p.colModel, cmNamesInputOrder = p.cmNamesInputOrder,
 						additionalProperties = p.additionalProperties, n = cmNamesInputOrder.length, arrayReaderInfos,
-						name, index, order = 0;
+						name, index, order;
 					p.arrayReaderInfos = {};
 					arrayReaderInfos = p.arrayReaderInfos;
 					for (order = 0; order < n; order++) {
@@ -2416,7 +2417,7 @@
 					dragStart: function (i, x, y, $th) {
 						var self = this, $bDiv = $(self.bDiv), gridOffset = $bDiv.closest(p.gBox).offset(),
 							// it's better to use exact position of the border on the right of the current header
-							startX = $th.offset().left + self.headers[i].width + (jgrid.cell_width ? 0 : intNum(p.cellLayout, 0)) - 2;
+							startX = $th.offset().left + (p.direction === "rtl" ? 0 : self.headers[i].width + (jgrid.cell_width ? 0 : intNum(p.cellLayout, 0)) - 2);
 						self.resizing = { idx: i, startX: startX, sOL: startX, moved: false, delta: startX - x.pageX };
 						self.curGbox = $(p.rs);
 						self.curGbox.prependTo("body"); // change the parent to be able to move over the ranges of the gBox
@@ -2505,7 +2506,7 @@
 								}
 							}
 						}
-						if (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") && skipGridAdjustments != true) {
+						if (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") && skipGridAdjustments !== true) {
 							$j.setGridWidth.call($bTable, self.newWidth + p.scrollOffset, false);
 						}
 						if (!skipCallbacks) {
@@ -2677,18 +2678,17 @@
 					// The index 0 in the p.remapColumns means the first column after the "rn", "cb", "subgrid"
 					var remapColumns = p.remapColumns, colModel = p.colModel, nCol = colModel.length, cmNames = [], i, remappedCmNames,
 						name;
-					for (iCol = 0; iCol < nCol; iCol++) {
-						name = colModel[iCol].name;
+					for (i = 0; i < nCol; i++) {
+					    name = colModel[i].name;
 						if (inArray(name, p.reservedColumnNames) < 0) {
 							cmNames.push(name);
-							i++;
 						}
 					}
 					
 					// it's important to remark that the numbers in remapColumns or in
 					// jsonReder, localReader, xmlReader are based on the position of column
 					// in colModel BEFORE adding columns "rn", "cb", "subgrid"
-					if (remapColumns == null) {
+					if (remapColumns != null) {
 						// now we should remap items in cmNames corresponds to the indexes from p.remapColumns array
 						remappedCmNames = cmNames.slice(); // make copy of cmNames array
 						for (i = 0; i < remapColumns.length; i++) {
@@ -2702,11 +2702,16 @@
 				},
 				formatCol = function (pos, rowInd, tv, rawObject, rowId, rdata) {
 					var cm = p.colModel[pos], cellAttrFunc, cellValue = tv, rPrefix,
-						ral = cm.align, result = "style=\"", clas = cm.classes, nm = cm.name, celp, acp = [];
-					if (ral) { result += "text-align:" + ral + ";"; }
-					if (cm.hidden === true) { result += "display:none;"; }
+						result = "style='", classes = cm.classes,
+						styleValue = cm.align ? "text-align:" + cm.align + ";" : "",
+						attrStr, matches, value, tilteValue,
+						encodeAttr = function (v) {
+							return typeof v === "string" ? v.replace(/\'/g, "&#39;") : v;
+						},
+						rest = " aria-describedby='" + p.id + "_" + cm.name + "'";
+					if (cm.hidden === true) { styleValue += "display:none;"; }
 					if (rowInd === 0) {
-						result += "width: " + grid.headers[pos].width + "px;";
+						styleValue += "width: " + grid.headers[pos].width + "px;";
 					} else if (isFunction(cm.cellattr) || (typeof cm.cellattr === "string" && jgrid.cellattr != null && isFunction(jgrid.cellattr[cm.cellattr]))) {
 						cellAttrFunc = isFunction(cm.cellattr) ? cm.cellattr : jgrid.cellattr[cm.cellattr];
 						if (p.useUnformattedDataForCellAttr && rdata != null) {
@@ -2718,27 +2723,66 @@
 							rPrefix = "<span class='" + p.autoResizing.wrapperClassName + "'>";
 							cellValue = tv.substring(rPrefix.length, tv.length - "</span>".length);
 						}
-						celp = cellAttrFunc.call(ts, rowId, cellValue, rawObject, cm, rdata);
-						if (celp && typeof celp === "string") {
-							celp = celp.replace(/style/i, "style").replace(/title/i, "title");
-							if (celp.indexOf("title") > -1) { cm.title = false; }
-							if (celp.indexOf("class") > -1) { clas = undefined; }
-							acp = celp.replace(/\-style/g, "-sti").split(/style/);
-							if (acp.length === 2) {
-								acp[1] = trim(acp[1].replace(/\-sti/g, "-style").replace("=", ""));
-								if (acp[1].indexOf("'") === 0 || acp[1].indexOf("\"") === 0) {
-									acp[1] = acp[1].substring(1);
+						attrStr = cellAttrFunc.call(ts, rowId, cellValue, rawObject, cm, rdata);
+						if (typeof attrStr === "string") {
+							// ??? probably one can create object with properties from the attrStr
+							// and then to use one common function with constructTr to combin the default
+							// properties with the properties used in cellattr and rowattr.
+							// Probably one could use $.extend with the most attributes. The exception are
+							// only class and style attributes which hold multi-values with " " or ";" as separator
+							attrStr = attrStr.replace(/\n/g, "&#xA;");
+							while (true) {
+								// we have to use ? in the construction ([^\2]*?) to have non-greedy (lazy, minimal) matching
+								// so that we will find the FIRST closing quote instead of default the LAST matching.
+								
+								// TODO: more common regex for the attribute name.
+								// See http://www.w3.org/TR/html-markup/syntax.html#syntax-attributes:
+								//    Attribute names must consist of one or more characters other than the space
+								//    characters, U+0000 NULL, """, "'", ">", "/", "=", the control characters,
+								//    and any characters that are not defined by Unicode.
+								// An important example is attribute name with "-" in the middle: "data-sometext"
+								// An important example is attribute name with "-" in the middle: "data-sometext"
+								matches = /^\s*(\w+[\w|\-]*)\s*=\s*([\"|\'])(.*?)\2(.*)/.exec(attrStr);
+								if (matches === null || matches.length < 5) {
+									if (!tilteValue && cm.title) {
+										tilteValue = cellValue;
+									}
+									return rest + " style='" + encodeAttr(styleValue) + "'" +
+										(classes ? " class='" + encodeAttr(classes) + "'" : "") +
+										(tilteValue ? " title='" + encodeAttr(tilteValue) + "'" : "");
 								}
-								result += acp[1].replace(/'/gi, "\"");
-							} else {
-								result += "\"";
+								value = matches[3];
+								attrStr = matches[4];
+								switch (matches[1].toLowerCase()) { // attribute name
+									case "class":
+										// if some special characters are inside of class value there MUST be escaped
+										// so we can use any quote characters (' or ") around the call value.
+										// So we don't need to save quote used in class attribute
+										if (classes) {
+											classes += " " + value;
+										} else {
+											classes = value;
+										}
+										break;
+									case "title":
+										//quotedTilteValue = quote + value + quote;
+										tilteValue = value;
+										break;
+									case "style":
+										styleValue += value;
+										break;
+									default:
+										// matches[2] is quote
+										rest += " " + matches[1] + "=" + matches[2] + value + matches[2];
+										break;
+								}
 							}
 						}
 					}
-					if (!acp.length) { acp[0] = ""; result += "\""; }
-					result += (clas !== undefined ? (" class=\"" + clas + "\"") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
-					result += " aria-describedby=\"" + p.id + "_" + nm + "\"";
-					return result + acp[0];
+					result += styleValue + "'";
+					result += (classes !== undefined ? (" class='" + classes + "'") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
+					result += rest;
+					return result;
 				},
 				cellVal = function (val) {
 					return val == null || val === "" ? "&#160;" : (p.autoencode ? htmlEncode(val) : String(val));
@@ -2751,6 +2795,11 @@
 						getBool = function (val) {
 							return val === true || val === "true" || val === "1";
 						};
+					if (p.treeGridModel === "nested" && !ldat[isLeaf]) {
+						var lft = parseInt(ldat[treeReader.left_field], 10),
+							rgt = parseInt(ldat[treeReader.right_field], 10);
+						ldat[isLeaf] = (rgt === lft + 1) ? true : false;
+					}
 					if (ldat[loaded] !== undefined) {
 						ldat[loaded] = getBool(ldat[loaded]);
 					}
@@ -2892,7 +2941,7 @@
 								if (info.type === 1) { // additional property
 									addProp = additionalProperties[info.index];
 									if (addProp != null && isFunction(addProp.convert)) {
-										v = addProp.convert(v);
+										v = addProp.convert(v, cells);
 									}
 								}
 								if (v !== undefined) {
@@ -2981,9 +3030,7 @@
 					}
 					if (p.treeGrid) {
 						if (parseInt(rd[p.treeReader.level_field], 10) !== parseInt(p.tree_root_level, 10)) {
-							var parentId = rd[p.treeReader.parent_id_field],
-								iParent = p._index[parentId],
-								pn = iParent != undefined ? p.data[iParent] : null,
+							var pn = $j.getNodeParent.call($(this), rd),
 								expan = pn && pn.hasOwnProperty(p.treeReader.expanded_field) ?
 										pn[p.treeReader.expanded_field] : true;
 							if (!expan && !hide) {
@@ -3083,7 +3130,7 @@
 							};
 						},
 						nodeReader = function (nodeName) {
-							return function (obj) {
+							return function () {
 								// commented code which used getElementsByTagName works
 								// good in new web browsers (Chrome, Firefox, Safari),
 								// but it is slowly in IE10 and especially in IE8.
@@ -3258,7 +3305,7 @@
 								if (info.type === 1) { // additional property
 									addProp = additionalProperties[info.index];
 									if (addProp != null && isFunction(addProp.convert)) {
-										v = addProp.convert(v);
+										v = addProp.convert(v, cells);
 									}
 								}
 								if (v !== undefined) {
@@ -3283,6 +3330,8 @@
 						}
 						id = String(id);
 						idr = p.idPrefix + id;
+						
+						if (p.treeGrid) { normalizeTreeGridProperties(rd); }
 						
 						// final steps of reading the row
 						if (i < rn) {
@@ -4337,7 +4386,7 @@
 				}
 			}
 			var idn, w, res, sort, cmi, tooltip, labelStyle, ptr, tbody, sortarr = [], sortord = [], sotmp = [],
-				thead = "<thead><tr class='ui-jqgrid-labels' role='row'>",
+				thead = "<thead><tr class='ui-jqgrid-labels' role='row'>", headerText,
 				hoverStateClasses = getGuiStyles("states.hover"),
 				disabledStateClasses = getGuiStyles("states.disabled");
 
@@ -4352,7 +4401,7 @@
 			}
 			for (iCol = 0; iCol < p.colNames.length; iCol++) {
 				cmi = p.colModel[iCol];
-				tooltip = p.headertitles ? (" title=\"" + stripHtml(p.colNames[iCol]) + "\"") : "";
+				tooltip = p.headertitles || cmi.headerTitle ? (" title=\"" + stripHtml(typeof cmi.headerTitle === "string" ? cmi.headerTitle : p.colNames[iCol]) + "\"") : "";
 				thead += "<th id='" + p.id + "_" + cmi.name + "' role='columnheader' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
 				idn = cmi.index || cmi.name;
 				switch (cmi.labelAlign) {
@@ -4370,12 +4419,21 @@
 				default:
 					labelStyle = "";
 				}
+				
 				thead += "<div id='jqgh_" + p.id + "_" + cmi.name + "'" +
 					(isMSIE ? " class='ui-th-div-ie'" : "") +
-					(labelStyle === "" ? "" : " style='" + labelStyle + "'") + ">" +
-					(cmi.autoResizable && cmi.formatter !== "actions" ?
+					(labelStyle === "" ? "" : " style='" + labelStyle + "'") + ">";
+				headerText = cmi.autoResizable && cmi.formatter !== "actions" ?
 							"<span class='" + p.autoResizing.wrapperClassName + "'>" + p.colNames[iCol] + "</span>" :
-							p.colNames[iCol]);
+							p.colNames[iCol];
+				if (p.sortIconsBeforeText) {
+					thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol);
+					thead += headerText;
+				} else {
+					thead += headerText;
+					thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol);
+				}
+				thead += "</div></th>";
 				cmi.width = cmi.width ? parseInt(cmi.width, 10) : 150;
 				if (typeof cmi.title !== "boolean") { cmi.title = true; }
 				cmi.lso = "";
@@ -4388,7 +4446,6 @@
 						cmi.lso = sortord[sotmp];
 					}
 				}
-				thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol) + "</div></th>";
 			}
 			thead += "</tr></thead>";
 			$self0.append(thead);
@@ -4440,6 +4497,11 @@
 			if (p.autowidth === true) {
 				var pw = Math.floor($(eg).innerWidth());
 				p.width = pw > 0 ? pw : "nw";
+			}
+			if (!isNaN(p.width)) { // process values like "500" instead of the number 500.
+				p.width = Number(p.width);
+			} else if (!isNaN(parseFloat(p.width))) { // process values like "500px"
+				p.width = parseFloat(p.width);
 			}
 			p.widthOrg = p.width;
 			setInitialColWidth();
@@ -4556,7 +4618,7 @@
 				})
 				.mousedown(function (e) {
 					var $th = $(this), isFrozen = $th.closest(".ui-jqgrid-hdiv").hasClass("frozen-div"),
-						getOffset = function (iCol) {
+						getOffset = function () {
 							var ret = [$th.position().left + $th.outerWidth()];
 							if (p.direction === "rtl") { ret[0] = p.width - ret[0]; }
 							ret[0] -= isFrozen ? 0 : grid.bDiv.scrollLeft;
@@ -4570,7 +4632,7 @@
 					ci = getColumnHeaderIndex(this);
 					if (ci != null) {
 						if (p.forceFit === true) { p.nv = nextVisible(ci); }
-						grid.dragStart(ci, e, getOffset(ci), $th);
+						grid.dragStart(ci, e, getOffset(), $th);
 					}
 					return false;
 				})
@@ -4617,7 +4679,7 @@
 				.css({ width: grid.width + "px" })
 				.addClass(getGuiStyles("hDiv", "ui-jqgrid-hdiv"))
 				.append(hb)
-				.scroll(function (e) {
+				.scroll(function () {
 					// the hDiv can be scrolled because of tab keyboard navigation
 					// we have to sync bDiv and hDiv scrollLeft in the case
 					var bDiv = $(this).next(".ui-jqgrid-bdiv")[0];
@@ -5300,7 +5362,7 @@
 						p.selrow = null;
 					}
 				} else {
-					$($t.rows).each(function (i) {
+					$($t.rows).each(function () {
 						var iSel = $.inArray(this.id, p.selarrrow);
 						if (iSel !== -1) {
 							deselectRow(this);
@@ -5330,9 +5392,14 @@
 				clearArray(p.savedRow); // p.savedRow = [];
 			});
 		},
-		getRowData: function (rowid) {
+		getRowData: function (rowid, options) {
 			// TODO: add additional parameter, which will inform whether the output data need be in formatted or unformatted form
 			var res = {}, resall;
+			if (typeof rowid === "object") {
+				options = rowid;
+				rowid = undefined;
+			}
+			options = options || {};
 			this.each(function () {
 				var $t = this, p = $t.p, getall = false, ind, len = 2, j = 0, rows = $t.rows, i, $td, cm, nm, td;
 				if (rowid === undefined) {
@@ -5350,7 +5417,7 @@
 						for (i = 0; i < $td.length; i++) {
 							cm = p.colModel[i];
 							nm = cm.name;
-							if (nm !== "cb" && nm !== "subgrid" && nm !== "rn" && cm.formatter !== "actions") {
+							if (nm !== "cb" && nm !== "subgrid" && nm !== "rn" && cm.formatter !== "actions" && (!options.skipHidden || !cm.hidden)) {
 								td = $td[i];
 								if (p.treeGrid === true && nm === p.ExpandColumn) {
 									res[nm] = htmlDecode($("span", td).first().html());
@@ -5362,6 +5429,9 @@
 									}
 								}
 							}
+						}
+						if (options.includeId && (p.keyName === false || res[p.keyName] == null)) {
+							res[p.prmNames.id] = stripPref(p.idPrefix, ind.id);
 						}
 						if (getall) { resall.push(res); res = {}; }
 					}
@@ -5688,7 +5758,7 @@
 						});
 						$($t.rows).each(function () {
 							var cell = this.cells[i];
-							if (!$(this).hasClass("jqgroup") || (cell !== undefined && cell.colSpan === 1)) {
+							if (!$(this).hasClass("jqgroup") || (cell != null && cell.colSpan === 1)) {
 								$(cell).css("display", show);
 							}
 							// to follow HTML standards exactly one should probably add hidden column in 
@@ -5711,7 +5781,20 @@
 					base.setGridWidth.call($self, (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") ? p.tblwidth : p.width) + parseInt(p.scrollOffset, 10));
 				}
 				if (gh) {
-					base.setGroupHeaders.call($self, p.groupHeader);
+					if (p.pivotOptions != null && p.pivotOptions.colHeaders != null && p.pivotOptions.colHeaders.length > 1) {
+						var i, gHead = p.pivotOptions.colHeaders; 
+						for (i = 0; i < gHead.length; i++) {
+							// Multiple calls of setGroupHeaders for one grid are wrong,
+							// but there are produces good results in case of usage
+							// useColSpanStyle: false option. The rowspan values
+							// needed be increased in case of usage useColSpanStyle: true
+							if (gHead[i] && gHead[i].groupHeaders.length) {
+								base.setGroupHeaders.call($self, gHead[i]);
+							}
+						}
+					} else {
+						base.setGroupHeaders.call($self, p.groupHeader);
+					}
 				}
 			});
 		},
@@ -5838,7 +5921,7 @@
 				// TODO: ??? recalculate p.tblwidth in case of shrink===false
 				if (shrink === true) {
 					// calculate initialWidth, fixedColumnsWidth and numberOfVariableColumns
-					$.each(colModel, function (i) {
+					$.each(colModel, function () {
 						// the classes property of colModel will be applied to the first
 						// row of the grid (hCols). If the 
 						if (this.hidden === false && !isCellClassHidden(this.classes)) {
@@ -5974,7 +6057,7 @@
 		},
 		setLabel: function (colname, nData, prop, attrp) {
 			return this.each(function () {
-				var $t = this, pos = -1, p = $t.p;
+				var $t = this, pos, p = $t.p;
 				if (!$t.grid) { return; }
 				if (isNaN(colname)) {
 					pos = p.iColByName[colname];
@@ -6064,7 +6147,7 @@
 			// TODO: add an additional parameter, which will inform whether the output data should be in formatted or unformatted form
 			var ret = false;
 			this.each(function () {
-				var $t = this, iCol = -1, p = $t.p, tr, $td;
+				var $t = this, iCol, p = $t.p, tr, $td;
 				if (!$t.grid) { return; }
 				iCol = isNaN(colName) ? p.iColByName[colName] : parseInt(colName, 10);
 				if (iCol >= 0) { //isNaN(iCol)>=0 is false and undefined >= 0 is false
@@ -6087,7 +6170,7 @@
 			obj = typeof obj !== "boolean" ? false : obj;
 			if (mathopr === undefined) { mathopr = false; }
 			this.each(function () {
-				var $t = this, iCol = -1, p = $t.p, $td;
+				var $t = this, iCol, p = $t.p, $td;
 				if (!$t.grid) { return; }
 				iCol = isNaN(colName) ? p.iColByName[colName] : parseInt(colName, 10);
 				if (iCol >= 0) { //isNaN(iCol)>=0 is false and undefined >= 0 is false

@@ -930,65 +930,6 @@
         ]
     },
     {
-        "name": "bower-asset/free-jqgrid",
-        "version": "v4.9.0",
-        "version_normalized": "4.9.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/free-jqgrid/jqGrid.git",
-            "reference": "9bca1e6c7179bd88a791edfef437c512b5a267af"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/9bca1e6c7179bd88a791edfef437c512b5a267af",
-            "reference": "9bca1e6c7179bd88a791edfef437c512b5a267af",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/jquery": ">=1.7.2"
-        },
-        "type": "bower-asset-library",
-        "extra": {
-            "bower-asset-main": [
-                "js/jquery.jqgrid.min.js",
-                "js/jquery.jqgrid.src.js",
-                "js/jquery.jqgrid.min.map",
-                "css/ui.jqgrid.css"
-            ],
-            "bower-asset-ignore": [
-                "**/.*",
-                "node_modules",
-                "bower_components",
-                "test",
-                "tests",
-                "gradlew.bat",
-                "gradle/wrapper",
-                ".gradle",
-                "gradlew"
-            ]
-        },
-        "installation-source": "dist",
-        "license": [
-            "MIT",
-            "GPL-2.0"
-        ],
-        "description": "grid as jQuery plugin - fork of jqGrid before licensing change",
-        "keywords": [
-            "Subgrid",
-            "TreeGrid",
-            "editing",
-            "grid",
-            "grid",
-            "grouping",
-            "jQuery",
-            "jqGrid",
-            "paging",
-            "searching",
-            "sorting",
-            "table"
-        ]
-    },
-    {
         "name": "himiklab/yii2-jqgrid-widget",
         "version": "1.1.9",
         "version_normalized": "1.1.9.0",
@@ -1033,72 +974,6 @@
             "jqgrid",
             "widget",
             "yii2"
-        ]
-    },
-    {
-        "name": "ramsey/uuid",
-        "version": "2.8.1",
-        "version_normalized": "2.8.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ramsey/uuid.git",
-            "reference": "c1d7d8f0ac860fceaadadbda7154e8b5d2f9789e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ramsey/uuid/zipball/c1d7d8f0ac860fceaadadbda7154e8b5d2f9789e",
-            "reference": "c1d7d8f0ac860fceaadadbda7154e8b5d2f9789e",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "replace": {
-            "rhumsaa/uuid": "self.version"
-        },
-        "require-dev": {
-            "doctrine/dbal": ">=2.3",
-            "moontoast/math": "~1.1",
-            "phpunit/phpunit": "~4.1",
-            "satooshi/php-coveralls": "~0.6",
-            "symfony/console": "~2.3"
-        },
-        "suggest": {
-            "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
-            "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
-            "symfony/console": "Support for use of the bin/uuid command line tool."
-        },
-        "time": "2015-06-16 15:12:41",
-        "bin": [
-            "bin/uuid"
-        ],
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Rhumsaa\\Uuid\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Marijn Huizendveld",
-                "email": "marijn.huizendveld@gmail.com"
-            },
-            {
-                "name": "Ben Ramsey",
-                "homepage": "http://benramsey.com"
-            }
-        ],
-        "description": "A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
-        "homepage": "https://github.com/ramsey/uuid",
-        "keywords": [
-            "guid",
-            "identifier",
-            "uuid"
         ]
     },
     {
@@ -1846,56 +1721,6 @@
         ]
     },
     {
-        "name": "kartik-v/bootstrap-fileinput",
-        "version": "v4.2.3",
-        "version_normalized": "4.2.3.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-            "reference": "1b30f372977efdb5aa1cc8b706d9e40be90ff904"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/1b30f372977efdb5aa1cc8b706d9e40be90ff904",
-            "reference": "1b30f372977efdb5aa1cc8b706d9e40be90ff904",
-            "shasum": ""
-        },
-        "time": "2015-06-21 13:36:43",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "kartik\\plugins\\fileinput\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "An enhanced HTML 5 file input for Bootstrap 3.x with features for file preview for many file types, multiple selection, ajax uploads, and more.",
-        "homepage": "https://github.com/kartik-v/bootstrap-fileinput",
-        "keywords": [
-            "ajax",
-            "bootstrap",
-            "delete",
-            "file",
-            "image",
-            "input",
-            "jquery",
-            "multiple",
-            "preview",
-            "progress",
-            "upload"
-        ]
-    },
-    {
         "name": "kartik-v/yii2-widget-fileinput",
         "version": "v1.0.3",
         "version_normalized": "1.0.3.0",
@@ -1945,50 +1770,6 @@
             "upload",
             "widget",
             "yii2"
-        ]
-    },
-    {
-        "name": "kartik-v/dependent-dropdown",
-        "version": "v1.4.2",
-        "version_normalized": "1.4.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/dependent-dropdown.git",
-            "reference": "5af96f871606fc75aa8f3a3b34b01c8fe56345fd"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/dependent-dropdown/zipball/5af96f871606fc75aa8f3a3b34b01c8fe56345fd",
-            "reference": "5af96f871606fc75aa8f3a3b34b01c8fe56345fd",
-            "shasum": ""
-        },
-        "time": "2015-06-18 15:04:37",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "kartik\\plugins\\depdrop\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "A multi level dependent dropdown JQuery plugin that allows nested dependencies.",
-        "homepage": "https://github.com/kartik-v/dependent-dropdown",
-        "keywords": [
-            "dependent",
-            "dropdown",
-            "jquery",
-            "option",
-            "select"
         ]
     },
     {
@@ -2083,57 +1864,6 @@
         "homepage": "https://github.com/kartik-v/yii2-widget-datetimepicker",
         "keywords": [
             "datetime",
-            "extension",
-            "form",
-            "jquery",
-            "picker",
-            "plugin",
-            "select2",
-            "widget",
-            "yii2"
-        ]
-    },
-    {
-        "name": "kartik-v/yii2-widget-datepicker",
-        "version": "v1.3.2",
-        "version_normalized": "1.3.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-widget-datepicker.git",
-            "reference": "3fb31048bb70ebddf94a827aec77779835305629"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/3fb31048bb70ebddf94a827aec77779835305629",
-            "reference": "3fb31048bb70ebddf94a827aec77779835305629",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-krajee-base": "*"
-        },
-        "time": "2015-03-02 13:03:59",
-        "type": "yii2-extension",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "kartik\\date\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD 3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "Enhanced Yii2 wrapper for the bootstrap datepicker plugin (sub repo split from yii2-widgets).",
-        "homepage": "https://github.com/kartik-v/yii2-widget-datepicker",
-        "keywords": [
-            "date",
             "extension",
             "form",
             "jquery",
@@ -2453,52 +2183,6 @@
         ]
     },
     {
-        "name": "kartik-v/yii2-grid",
-        "version": "v3.0.5",
-        "version_normalized": "3.0.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-grid.git",
-            "reference": "9359dcc7f34451af035294bd4127c8ff5d1ffffc"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/9359dcc7f34451af035294bd4127c8ff5d1ffffc",
-            "reference": "9359dcc7f34451af035294bd4127c8ff5d1ffffc",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-krajee-base": "~1.7"
-        },
-        "time": "2015-07-07 17:50:12",
-        "type": "yii2-extension",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "kartik\\grid\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "Yii 2 GridView on steroids. Various enhancements and utilities for the Yii 2.0 GridView widget.",
-        "homepage": "https://github.com/kartik-v/yii2-grid",
-        "keywords": [
-            "extension",
-            "grid",
-            "widget",
-            "yii2"
-        ]
-    },
-    {
         "name": "kartik-v/yii2-widget-activeform",
         "version": "v1.4.4",
         "version_normalized": "1.4.4.0",
@@ -2691,6 +2375,324 @@
             "modal-tabs",
             "tabs",
             "tabs-x"
+        ]
+    },
+    {
+        "name": "ramsey/uuid",
+        "version": "2.8.2",
+        "version_normalized": "2.8.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ramsey/uuid.git",
+            "reference": "9c1e2d34bdefd42608c612e08d6e1da1e13a3530"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ramsey/uuid/zipball/9c1e2d34bdefd42608c612e08d6e1da1e13a3530",
+            "reference": "9c1e2d34bdefd42608c612e08d6e1da1e13a3530",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "replace": {
+            "rhumsaa/uuid": "self.version"
+        },
+        "require-dev": {
+            "doctrine/dbal": ">=2.3",
+            "jakub-onderka/php-parallel-lint": "^0.9.0",
+            "moontoast/math": "~1.1",
+            "phpunit/phpunit": "~4.1",
+            "satooshi/php-coveralls": "~0.6",
+            "squizlabs/php_codesniffer": "^2.3",
+            "symfony/console": "~2.3"
+        },
+        "suggest": {
+            "doctrine/dbal": "Allow the use of a UUID as doctrine field type.",
+            "moontoast/math": "Support for converting UUID to 128-bit integer (in string form).",
+            "symfony/console": "Support for use of the bin/uuid command line tool."
+        },
+        "time": "2015-07-23 19:00:41",
+        "bin": [
+            "bin/uuid"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Rhumsaa\\Uuid\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Marijn Huizendveld",
+                "email": "marijn.huizendveld@gmail.com"
+            },
+            {
+                "name": "Ben Ramsey",
+                "homepage": "http://benramsey.com"
+            }
+        ],
+        "description": "NO LONGER MAINTAINED. Use ramsey/uuid instead. A PHP 5.3+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).",
+        "homepage": "https://github.com/ramsey/rhumsaa-uuid",
+        "keywords": [
+            "guid",
+            "identifier",
+            "uuid"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-grid",
+        "version": "v3.0.6",
+        "version_normalized": "3.0.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-grid.git",
+            "reference": "5e5229fd7ea30d65cdde15db073ea8cb1a39be68"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/5e5229fd7ea30d65cdde15db073ea8cb1a39be68",
+            "reference": "5e5229fd7ea30d65cdde15db073ea8cb1a39be68",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-krajee-base": "~1.7"
+        },
+        "time": "2015-07-14 19:20:52",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\grid\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "Yii 2 GridView on steroids. Various enhancements and utilities for the Yii 2.0 GridView widget.",
+        "homepage": "https://github.com/kartik-v/yii2-grid",
+        "keywords": [
+            "extension",
+            "grid",
+            "widget",
+            "yii2"
+        ]
+    },
+    {
+        "name": "bower-asset/free-jqgrid",
+        "version": "v4.9.1",
+        "version_normalized": "4.9.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/free-jqgrid/jqGrid.git",
+            "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
+            "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": ">=1.7.2"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "js/jquery.jqgrid.min.js",
+                "js/jquery.jqgrid.src.js",
+                "js/jquery.jqgrid.min.map",
+                "css/ui.jqgrid.css"
+            ],
+            "bower-asset-ignore": [
+                "**/.*",
+                "node_modules",
+                "bower_components",
+                "test",
+                "tests",
+                "gradlew.bat",
+                "gradle/wrapper",
+                ".gradle",
+                "gradlew"
+            ]
+        },
+        "installation-source": "dist",
+        "license": [
+            "MIT",
+            "GPL-2.0"
+        ],
+        "description": "grid as jQuery plugin - fork of jqGrid before licensing change",
+        "keywords": [
+            "Subgrid",
+            "TreeGrid",
+            "editing",
+            "grid",
+            "grid",
+            "grouping",
+            "jQuery",
+            "jqGrid",
+            "paging",
+            "searching",
+            "sorting",
+            "table"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-widget-datepicker",
+        "version": "v1.3.3",
+        "version_normalized": "1.3.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-widget-datepicker.git",
+            "reference": "368b181ef658c05707fe41dd16eee4d9ffd9da38"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/368b181ef658c05707fe41dd16eee4d9ffd9da38",
+            "reference": "368b181ef658c05707fe41dd16eee4d9ffd9da38",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-krajee-base": "~1.7"
+        },
+        "time": "2015-07-19 04:49:03",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\date\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "Enhanced Yii2 wrapper for the bootstrap datepicker plugin (sub repo split from yii2-widgets).",
+        "homepage": "https://github.com/kartik-v/yii2-widget-datepicker",
+        "keywords": [
+            "date",
+            "extension",
+            "form",
+            "jquery",
+            "picker",
+            "plugin",
+            "select2",
+            "widget",
+            "yii2"
+        ]
+    },
+    {
+        "name": "kartik-v/bootstrap-fileinput",
+        "version": "v4.2.5",
+        "version_normalized": "4.2.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
+            "reference": "e8a712d4840ba9abe7c1302808e86e55e91aab7f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/e8a712d4840ba9abe7c1302808e86e55e91aab7f",
+            "reference": "e8a712d4840ba9abe7c1302808e86e55e91aab7f",
+            "shasum": ""
+        },
+        "time": "2015-07-26 20:29:14",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\plugins\\fileinput\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "An enhanced HTML 5 file input for Bootstrap 3.x with features for file preview for many file types, multiple selection, ajax uploads, and more.",
+        "homepage": "https://github.com/kartik-v/bootstrap-fileinput",
+        "keywords": [
+            "ajax",
+            "bootstrap",
+            "delete",
+            "file",
+            "image",
+            "input",
+            "jquery",
+            "multiple",
+            "preview",
+            "progress",
+            "upload"
+        ]
+    },
+    {
+        "name": "kartik-v/dependent-dropdown",
+        "version": "v1.4.3",
+        "version_normalized": "1.4.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/dependent-dropdown.git",
+            "reference": "03b086d7ec51fc773aab064d7204adbbaa807ec4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/dependent-dropdown/zipball/03b086d7ec51fc773aab064d7204adbbaa807ec4",
+            "reference": "03b086d7ec51fc773aab064d7204adbbaa807ec4",
+            "shasum": ""
+        },
+        "time": "2015-07-14 09:54:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "kartik\\plugins\\depdrop\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "A multi level dependent dropdown JQuery plugin that allows nested dependencies.",
+        "homepage": "https://github.com/kartik-v/dependent-dropdown",
+        "keywords": [
+            "dependent",
+            "dropdown",
+            "jquery",
+            "option",
+            "select"
         ]
     }
 ]

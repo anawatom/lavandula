@@ -2,13 +2,13 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license jqGrid 4.9.0 - free jqGrid: https://github.com/free-jqgrid/jqGrid
+ * @license jqGrid 4.9.1 - free jqGrid: https://github.com/free-jqgrid/jqGrid
  * Copyright (c) 2008-2014, Tony Tomov, tony@trirand.com
  * Copyright (c) 2014-2015, Oleg Kiriljuk, oleg.kiriljuk@ok-soft-gmbh.com
  * Dual licensed under the MIT and GPL licenses
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl-2.0.html
- * Date: 2015-06-14
+ * Date: 2015-07-23
  */
 //jsHint options
 /*jshint evil:true, eqeqeq:false, eqnull:true, devel:true */
@@ -618,7 +618,7 @@
 			var c = $(cell);
 			if (c.is("tr")) { return -1; }
 			c = (!c.is("td") && !c.is("th") ? c.closest("td,th") : c)[0];
-			if (c === undefined) { return -1; }
+			if (c == null) { return -1; }
 			if (jgrid.msie) { return $.inArray(c, c.parentNode.cells); }
 			return c.cellIndex;
 		},
@@ -917,7 +917,7 @@
 		/**
 		 *  @param {COMPONENT_NAMES} componentName
 		 */
-		getGridComponent: function (componentName, $p, p1) {
+		getGridComponent: function (componentName, $p) {// , p1
 			var p;
 			if ($p instanceof $ || $p.length > 0) {
 				p = $p[0];
@@ -1028,7 +1028,7 @@
 		// one cell of the main grid and another cell with the corresponding cell from the frozen body table
 		getCell: function (tr, iCol) {
 			var grid = this.grid, p = this.p, frozenRows, $td;
-			if (!grid || !p) { return; } // not a grid
+			if (!grid || !p) { return $(); } // not a grid
 			if (tr instanceof $ || tr.length > 0) {
 				tr = tr[0]; // unwrap jQuery object to DOM element
 			}
@@ -1113,8 +1113,8 @@
 		},
 		getEditedValue: function ($dataFiled, cm, useTextInSelects) {
 			var result, checkBoxValues, newformat, $field, valuesOrTexts, selectMethod = useTextInSelects ? "text" : "val",
-				formatoptions = cm.formatoptions || {}, editoptions = cm.editoptions || {}, customValue = cm.custom_value,
-				nameSelector = "[name=" + jgrid.jqID(cm.name) + "]", $t = this, $self = $($t), info_dialog, getRes, errcap, bClose;
+				formatoptions = cm.formatoptions || {}, editoptions = cm.editoptions || {}, customValue = editoptions.custom_value,
+				nameSelector = "[name=" + jgrid.jqID(cm.name) + "]", $t = this, $self = $($t), infoDialog, getRes, errcap, bClose;
 			switch (cm.edittype) {
 				case "checkbox":
 					checkBoxValues = ["Yes", "No"];
@@ -1138,7 +1138,7 @@
 					$field = $dataFiled.find("select option:selected");
 					if (editoptions.multiple) {
 						valuesOrTexts = [];
-						$field.each(function (i, option) {
+						$field.each(function () {
 							valuesOrTexts.push($(this)[selectMethod]());
 						});
 						result = valuesOrTexts.join(",");
@@ -1157,17 +1157,17 @@
 							throw "e1";
 						}
 					} catch (e) {
-						info_dialog = jgrid.info_dialog;
+						infoDialog = jgrid.info_dialog;
 						getRes = function (path) { $self.jqGrid("getGridRes", path); };
 						errcap = getRes("errors.errcap");
 						bClose = getRes("edit.bClose");
 						if (e === "e1") {
-							info_dialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.nodefined"), bClose);
+							infoDialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.nodefined"), bClose);
 						}
 						if (e === "e2") {
-							info_dialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.novalue"), bClose);
+							infoDialog.call($t, errcap, "function 'custom_value' " + getRes("edit.msg.novalue"), bClose);
 						} else {
-							info_dialog.call($t, errcap, e.message, bClose);
+							infoDialog.call($t, errcap, e.message, bClose);
 						}
 					}
 					break;
@@ -1816,8 +1816,9 @@
 					);
 				};
 
-			return "<span class='s-ico' style='display:none'><span class='" + getClasses("asc") +
-				"'></span>" + "<span class='" + getClasses("desc") + "'></span></span>";
+			return "<span class='s-ico" + (p.sortIconsBeforeText ? " jqgrid-icons-first" : "") +
+				"' style='display:none'><span class='" + getClasses("asc") +
+				"'></span><span class='" + getClasses("desc") + "'></span></span>";
 		},
 		/**
 		 *  @param {String} id
@@ -1831,7 +1832,7 @@
 				getDialogGuiStyles = function (name) {
 					return jgrid.getRes(jgrid.guiStyles[p.guiStyle], "dialog." + name);
 				};
-			if (p == null) { return; }
+			if (p == null) { return ""; }
 			
 			return "<a id='" + id + "' class='" +
 				jgrid.mergeCssClasses("fm-button",
@@ -2338,7 +2339,7 @@
 				buildArrayReader = function () {
 					var i, colModel = p.colModel, cmNamesInputOrder = p.cmNamesInputOrder,
 						additionalProperties = p.additionalProperties, n = cmNamesInputOrder.length, arrayReaderInfos,
-						name, index, order = 0;
+						name, index, order;
 					p.arrayReaderInfos = {};
 					arrayReaderInfos = p.arrayReaderInfos;
 					for (order = 0; order < n; order++) {
@@ -2416,7 +2417,7 @@
 					dragStart: function (i, x, y, $th) {
 						var self = this, $bDiv = $(self.bDiv), gridOffset = $bDiv.closest(p.gBox).offset(),
 							// it's better to use exact position of the border on the right of the current header
-							startX = $th.offset().left + self.headers[i].width + (jgrid.cell_width ? 0 : intNum(p.cellLayout, 0)) - 2;
+							startX = $th.offset().left + (p.direction === "rtl" ? 0 : self.headers[i].width + (jgrid.cell_width ? 0 : intNum(p.cellLayout, 0)) - 2);
 						self.resizing = { idx: i, startX: startX, sOL: startX, moved: false, delta: startX - x.pageX };
 						self.curGbox = $(p.rs);
 						self.curGbox.prependTo("body"); // change the parent to be able to move over the ranges of the gBox
@@ -2505,7 +2506,7 @@
 								}
 							}
 						}
-						if (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") && skipGridAdjustments != true) {
+						if (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") && skipGridAdjustments !== true) {
 							$j.setGridWidth.call($bTable, self.newWidth + p.scrollOffset, false);
 						}
 						if (!skipCallbacks) {
@@ -2677,18 +2678,17 @@
 					// The index 0 in the p.remapColumns means the first column after the "rn", "cb", "subgrid"
 					var remapColumns = p.remapColumns, colModel = p.colModel, nCol = colModel.length, cmNames = [], i, remappedCmNames,
 						name;
-					for (iCol = 0; iCol < nCol; iCol++) {
-						name = colModel[iCol].name;
+					for (i = 0; i < nCol; i++) {
+					    name = colModel[i].name;
 						if (inArray(name, p.reservedColumnNames) < 0) {
 							cmNames.push(name);
-							i++;
 						}
 					}
 					
 					// it's important to remark that the numbers in remapColumns or in
 					// jsonReder, localReader, xmlReader are based on the position of column
 					// in colModel BEFORE adding columns "rn", "cb", "subgrid"
-					if (remapColumns == null) {
+					if (remapColumns != null) {
 						// now we should remap items in cmNames corresponds to the indexes from p.remapColumns array
 						remappedCmNames = cmNames.slice(); // make copy of cmNames array
 						for (i = 0; i < remapColumns.length; i++) {
@@ -2702,11 +2702,16 @@
 				},
 				formatCol = function (pos, rowInd, tv, rawObject, rowId, rdata) {
 					var cm = p.colModel[pos], cellAttrFunc, cellValue = tv, rPrefix,
-						ral = cm.align, result = "style=\"", clas = cm.classes, nm = cm.name, celp, acp = [];
-					if (ral) { result += "text-align:" + ral + ";"; }
-					if (cm.hidden === true) { result += "display:none;"; }
+						result = "style='", classes = cm.classes,
+						styleValue = cm.align ? "text-align:" + cm.align + ";" : "",
+						attrStr, matches, value, tilteValue,
+						encodeAttr = function (v) {
+							return typeof v === "string" ? v.replace(/\'/g, "&#39;") : v;
+						},
+						rest = " aria-describedby='" + p.id + "_" + cm.name + "'";
+					if (cm.hidden === true) { styleValue += "display:none;"; }
 					if (rowInd === 0) {
-						result += "width: " + grid.headers[pos].width + "px;";
+						styleValue += "width: " + grid.headers[pos].width + "px;";
 					} else if (isFunction(cm.cellattr) || (typeof cm.cellattr === "string" && jgrid.cellattr != null && isFunction(jgrid.cellattr[cm.cellattr]))) {
 						cellAttrFunc = isFunction(cm.cellattr) ? cm.cellattr : jgrid.cellattr[cm.cellattr];
 						if (p.useUnformattedDataForCellAttr && rdata != null) {
@@ -2718,27 +2723,66 @@
 							rPrefix = "<span class='" + p.autoResizing.wrapperClassName + "'>";
 							cellValue = tv.substring(rPrefix.length, tv.length - "</span>".length);
 						}
-						celp = cellAttrFunc.call(ts, rowId, cellValue, rawObject, cm, rdata);
-						if (celp && typeof celp === "string") {
-							celp = celp.replace(/style/i, "style").replace(/title/i, "title");
-							if (celp.indexOf("title") > -1) { cm.title = false; }
-							if (celp.indexOf("class") > -1) { clas = undefined; }
-							acp = celp.replace(/\-style/g, "-sti").split(/style/);
-							if (acp.length === 2) {
-								acp[1] = trim(acp[1].replace(/\-sti/g, "-style").replace("=", ""));
-								if (acp[1].indexOf("'") === 0 || acp[1].indexOf("\"") === 0) {
-									acp[1] = acp[1].substring(1);
+						attrStr = cellAttrFunc.call(ts, rowId, cellValue, rawObject, cm, rdata);
+						if (typeof attrStr === "string") {
+							// ??? probably one can create object with properties from the attrStr
+							// and then to use one common function with constructTr to combin the default
+							// properties with the properties used in cellattr and rowattr.
+							// Probably one could use $.extend with the most attributes. The exception are
+							// only class and style attributes which hold multi-values with " " or ";" as separator
+							attrStr = attrStr.replace(/\n/g, "&#xA;");
+							while (true) {
+								// we have to use ? in the construction ([^\2]*?) to have non-greedy (lazy, minimal) matching
+								// so that we will find the FIRST closing quote instead of default the LAST matching.
+								
+								// TODO: more common regex for the attribute name.
+								// See http://www.w3.org/TR/html-markup/syntax.html#syntax-attributes:
+								//    Attribute names must consist of one or more characters other than the space
+								//    characters, U+0000 NULL, """, "'", ">", "/", "=", the control characters,
+								//    and any characters that are not defined by Unicode.
+								// An important example is attribute name with "-" in the middle: "data-sometext"
+								// An important example is attribute name with "-" in the middle: "data-sometext"
+								matches = /^\s*(\w+[\w|\-]*)\s*=\s*([\"|\'])(.*?)\2(.*)/.exec(attrStr);
+								if (matches === null || matches.length < 5) {
+									if (!tilteValue && cm.title) {
+										tilteValue = cellValue;
+									}
+									return rest + " style='" + encodeAttr(styleValue) + "'" +
+										(classes ? " class='" + encodeAttr(classes) + "'" : "") +
+										(tilteValue ? " title='" + encodeAttr(tilteValue) + "'" : "");
 								}
-								result += acp[1].replace(/'/gi, "\"");
-							} else {
-								result += "\"";
+								value = matches[3];
+								attrStr = matches[4];
+								switch (matches[1].toLowerCase()) { // attribute name
+									case "class":
+										// if some special characters are inside of class value there MUST be escaped
+										// so we can use any quote characters (' or ") around the call value.
+										// So we don't need to save quote used in class attribute
+										if (classes) {
+											classes += " " + value;
+										} else {
+											classes = value;
+										}
+										break;
+									case "title":
+										//quotedTilteValue = quote + value + quote;
+										tilteValue = value;
+										break;
+									case "style":
+										styleValue += value;
+										break;
+									default:
+										// matches[2] is quote
+										rest += " " + matches[1] + "=" + matches[2] + value + matches[2];
+										break;
+								}
 							}
 						}
 					}
-					if (!acp.length) { acp[0] = ""; result += "\""; }
-					result += (clas !== undefined ? (" class=\"" + clas + "\"") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
-					result += " aria-describedby=\"" + p.id + "_" + nm + "\"";
-					return result + acp[0];
+					result += styleValue + "'";
+					result += (classes !== undefined ? (" class='" + classes + "'") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
+					result += rest;
+					return result;
 				},
 				cellVal = function (val) {
 					return val == null || val === "" ? "&#160;" : (p.autoencode ? htmlEncode(val) : String(val));
@@ -2751,6 +2795,11 @@
 						getBool = function (val) {
 							return val === true || val === "true" || val === "1";
 						};
+					if (p.treeGridModel === "nested" && !ldat[isLeaf]) {
+						var lft = parseInt(ldat[treeReader.left_field], 10),
+							rgt = parseInt(ldat[treeReader.right_field], 10);
+						ldat[isLeaf] = (rgt === lft + 1) ? true : false;
+					}
 					if (ldat[loaded] !== undefined) {
 						ldat[loaded] = getBool(ldat[loaded]);
 					}
@@ -2892,7 +2941,7 @@
 								if (info.type === 1) { // additional property
 									addProp = additionalProperties[info.index];
 									if (addProp != null && isFunction(addProp.convert)) {
-										v = addProp.convert(v);
+										v = addProp.convert(v, cells);
 									}
 								}
 								if (v !== undefined) {
@@ -2981,9 +3030,7 @@
 					}
 					if (p.treeGrid) {
 						if (parseInt(rd[p.treeReader.level_field], 10) !== parseInt(p.tree_root_level, 10)) {
-							var parentId = rd[p.treeReader.parent_id_field],
-								iParent = p._index[parentId],
-								pn = iParent != undefined ? p.data[iParent] : null,
+							var pn = $j.getNodeParent.call($(this), rd),
 								expan = pn && pn.hasOwnProperty(p.treeReader.expanded_field) ?
 										pn[p.treeReader.expanded_field] : true;
 							if (!expan && !hide) {
@@ -3083,7 +3130,7 @@
 							};
 						},
 						nodeReader = function (nodeName) {
-							return function (obj) {
+							return function () {
 								// commented code which used getElementsByTagName works
 								// good in new web browsers (Chrome, Firefox, Safari),
 								// but it is slowly in IE10 and especially in IE8.
@@ -3258,7 +3305,7 @@
 								if (info.type === 1) { // additional property
 									addProp = additionalProperties[info.index];
 									if (addProp != null && isFunction(addProp.convert)) {
-										v = addProp.convert(v);
+										v = addProp.convert(v, cells);
 									}
 								}
 								if (v !== undefined) {
@@ -3283,6 +3330,8 @@
 						}
 						id = String(id);
 						idr = p.idPrefix + id;
+						
+						if (p.treeGrid) { normalizeTreeGridProperties(rd); }
 						
 						// final steps of reading the row
 						if (i < rn) {
@@ -4337,7 +4386,7 @@
 				}
 			}
 			var idn, w, res, sort, cmi, tooltip, labelStyle, ptr, tbody, sortarr = [], sortord = [], sotmp = [],
-				thead = "<thead><tr class='ui-jqgrid-labels' role='row'>",
+				thead = "<thead><tr class='ui-jqgrid-labels' role='row'>", headerText,
 				hoverStateClasses = getGuiStyles("states.hover"),
 				disabledStateClasses = getGuiStyles("states.disabled");
 
@@ -4352,7 +4401,7 @@
 			}
 			for (iCol = 0; iCol < p.colNames.length; iCol++) {
 				cmi = p.colModel[iCol];
-				tooltip = p.headertitles ? (" title=\"" + stripHtml(p.colNames[iCol]) + "\"") : "";
+				tooltip = p.headertitles || cmi.headerTitle ? (" title=\"" + stripHtml(typeof cmi.headerTitle === "string" ? cmi.headerTitle : p.colNames[iCol]) + "\"") : "";
 				thead += "<th id='" + p.id + "_" + cmi.name + "' role='columnheader' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
 				idn = cmi.index || cmi.name;
 				switch (cmi.labelAlign) {
@@ -4370,12 +4419,21 @@
 				default:
 					labelStyle = "";
 				}
+				
 				thead += "<div id='jqgh_" + p.id + "_" + cmi.name + "'" +
 					(isMSIE ? " class='ui-th-div-ie'" : "") +
-					(labelStyle === "" ? "" : " style='" + labelStyle + "'") + ">" +
-					(cmi.autoResizable && cmi.formatter !== "actions" ?
+					(labelStyle === "" ? "" : " style='" + labelStyle + "'") + ">";
+				headerText = cmi.autoResizable && cmi.formatter !== "actions" ?
 							"<span class='" + p.autoResizing.wrapperClassName + "'>" + p.colNames[iCol] + "</span>" :
-							p.colNames[iCol]);
+							p.colNames[iCol];
+				if (p.sortIconsBeforeText) {
+					thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol);
+					thead += headerText;
+				} else {
+					thead += headerText;
+					thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol);
+				}
+				thead += "</div></th>";
 				cmi.width = cmi.width ? parseInt(cmi.width, 10) : 150;
 				if (typeof cmi.title !== "boolean") { cmi.title = true; }
 				cmi.lso = "";
@@ -4388,7 +4446,6 @@
 						cmi.lso = sortord[sotmp];
 					}
 				}
-				thead += (p.builderSortIcons || jgrid.builderSortIcons).call(ts, iCol) + "</div></th>";
 			}
 			thead += "</tr></thead>";
 			$self0.append(thead);
@@ -4440,6 +4497,11 @@
 			if (p.autowidth === true) {
 				var pw = Math.floor($(eg).innerWidth());
 				p.width = pw > 0 ? pw : "nw";
+			}
+			if (!isNaN(p.width)) { // process values like "500" instead of the number 500.
+				p.width = Number(p.width);
+			} else if (!isNaN(parseFloat(p.width))) { // process values like "500px"
+				p.width = parseFloat(p.width);
 			}
 			p.widthOrg = p.width;
 			setInitialColWidth();
@@ -4556,7 +4618,7 @@
 				})
 				.mousedown(function (e) {
 					var $th = $(this), isFrozen = $th.closest(".ui-jqgrid-hdiv").hasClass("frozen-div"),
-						getOffset = function (iCol) {
+						getOffset = function () {
 							var ret = [$th.position().left + $th.outerWidth()];
 							if (p.direction === "rtl") { ret[0] = p.width - ret[0]; }
 							ret[0] -= isFrozen ? 0 : grid.bDiv.scrollLeft;
@@ -4570,7 +4632,7 @@
 					ci = getColumnHeaderIndex(this);
 					if (ci != null) {
 						if (p.forceFit === true) { p.nv = nextVisible(ci); }
-						grid.dragStart(ci, e, getOffset(ci), $th);
+						grid.dragStart(ci, e, getOffset(), $th);
 					}
 					return false;
 				})
@@ -4617,7 +4679,7 @@
 				.css({ width: grid.width + "px" })
 				.addClass(getGuiStyles("hDiv", "ui-jqgrid-hdiv"))
 				.append(hb)
-				.scroll(function (e) {
+				.scroll(function () {
 					// the hDiv can be scrolled because of tab keyboard navigation
 					// we have to sync bDiv and hDiv scrollLeft in the case
 					var bDiv = $(this).next(".ui-jqgrid-bdiv")[0];
@@ -5300,7 +5362,7 @@
 						p.selrow = null;
 					}
 				} else {
-					$($t.rows).each(function (i) {
+					$($t.rows).each(function () {
 						var iSel = $.inArray(this.id, p.selarrrow);
 						if (iSel !== -1) {
 							deselectRow(this);
@@ -5330,9 +5392,14 @@
 				clearArray(p.savedRow); // p.savedRow = [];
 			});
 		},
-		getRowData: function (rowid) {
+		getRowData: function (rowid, options) {
 			// TODO: add additional parameter, which will inform whether the output data need be in formatted or unformatted form
 			var res = {}, resall;
+			if (typeof rowid === "object") {
+				options = rowid;
+				rowid = undefined;
+			}
+			options = options || {};
 			this.each(function () {
 				var $t = this, p = $t.p, getall = false, ind, len = 2, j = 0, rows = $t.rows, i, $td, cm, nm, td;
 				if (rowid === undefined) {
@@ -5350,7 +5417,7 @@
 						for (i = 0; i < $td.length; i++) {
 							cm = p.colModel[i];
 							nm = cm.name;
-							if (nm !== "cb" && nm !== "subgrid" && nm !== "rn" && cm.formatter !== "actions") {
+							if (nm !== "cb" && nm !== "subgrid" && nm !== "rn" && cm.formatter !== "actions" && (!options.skipHidden || !cm.hidden)) {
 								td = $td[i];
 								if (p.treeGrid === true && nm === p.ExpandColumn) {
 									res[nm] = htmlDecode($("span", td).first().html());
@@ -5362,6 +5429,9 @@
 									}
 								}
 							}
+						}
+						if (options.includeId && (p.keyName === false || res[p.keyName] == null)) {
+							res[p.prmNames.id] = stripPref(p.idPrefix, ind.id);
 						}
 						if (getall) { resall.push(res); res = {}; }
 					}
@@ -5688,7 +5758,7 @@
 						});
 						$($t.rows).each(function () {
 							var cell = this.cells[i];
-							if (!$(this).hasClass("jqgroup") || (cell !== undefined && cell.colSpan === 1)) {
+							if (!$(this).hasClass("jqgroup") || (cell != null && cell.colSpan === 1)) {
 								$(cell).css("display", show);
 							}
 							// to follow HTML standards exactly one should probably add hidden column in 
@@ -5711,7 +5781,20 @@
 					base.setGridWidth.call($self, (!p.autowidth && (p.widthOrg === undefined || p.widthOrg === "auto" || p.widthOrg === "100%") ? p.tblwidth : p.width) + parseInt(p.scrollOffset, 10));
 				}
 				if (gh) {
-					base.setGroupHeaders.call($self, p.groupHeader);
+					if (p.pivotOptions != null && p.pivotOptions.colHeaders != null && p.pivotOptions.colHeaders.length > 1) {
+						var i, gHead = p.pivotOptions.colHeaders; 
+						for (i = 0; i < gHead.length; i++) {
+							// Multiple calls of setGroupHeaders for one grid are wrong,
+							// but there are produces good results in case of usage
+							// useColSpanStyle: false option. The rowspan values
+							// needed be increased in case of usage useColSpanStyle: true
+							if (gHead[i] && gHead[i].groupHeaders.length) {
+								base.setGroupHeaders.call($self, gHead[i]);
+							}
+						}
+					} else {
+						base.setGroupHeaders.call($self, p.groupHeader);
+					}
 				}
 			});
 		},
@@ -5838,7 +5921,7 @@
 				// TODO: ??? recalculate p.tblwidth in case of shrink===false
 				if (shrink === true) {
 					// calculate initialWidth, fixedColumnsWidth and numberOfVariableColumns
-					$.each(colModel, function (i) {
+					$.each(colModel, function () {
 						// the classes property of colModel will be applied to the first
 						// row of the grid (hCols). If the 
 						if (this.hidden === false && !isCellClassHidden(this.classes)) {
@@ -5974,7 +6057,7 @@
 		},
 		setLabel: function (colname, nData, prop, attrp) {
 			return this.each(function () {
-				var $t = this, pos = -1, p = $t.p;
+				var $t = this, pos, p = $t.p;
 				if (!$t.grid) { return; }
 				if (isNaN(colname)) {
 					pos = p.iColByName[colname];
@@ -6064,7 +6147,7 @@
 			// TODO: add an additional parameter, which will inform whether the output data should be in formatted or unformatted form
 			var ret = false;
 			this.each(function () {
-				var $t = this, iCol = -1, p = $t.p, tr, $td;
+				var $t = this, iCol, p = $t.p, tr, $td;
 				if (!$t.grid) { return; }
 				iCol = isNaN(colName) ? p.iColByName[colName] : parseInt(colName, 10);
 				if (iCol >= 0) { //isNaN(iCol)>=0 is false and undefined >= 0 is false
@@ -6087,7 +6170,7 @@
 			obj = typeof obj !== "boolean" ? false : obj;
 			if (mathopr === undefined) { mathopr = false; }
 			this.each(function () {
-				var $t = this, iCol = -1, p = $t.p, $td;
+				var $t = this, iCol, p = $t.p, $td;
 				if (!$t.grid) { return; }
 				iCol = isNaN(colName) ? p.iColByName[colName] : parseInt(colName, 10);
 				if (iCol >= 0) { //isNaN(iCol)>=0 is false and undefined >= 0 is false
@@ -7287,7 +7370,7 @@
 				try { $(":input:visible", selector)[0].focus(); } catch (ignore) { }
 			}
 		},
-		info_dialog: function (caption, content, c_b, modalopt) {
+		info_dialog: function (caption, content, closeButtonText, modalopt) {
 			var $t = this, p = $t.p, gridjqModal = p != null ? p.jqModal || {} : {},
 				mopt = $.extend(true,
 					{
@@ -7327,10 +7410,10 @@
 				cn = "text-align:" + mopt.align + ";",
 				cnt = "<div id='info_id'>";
 			cnt += "<div id='infocnt' style='margin:0px;padding-bottom:1em;width:100%;overflow:auto;position:relative;height:" + dh + ";" + cn + "'>" + content + "</div>";
-			if (c_b || buttstr !== "") {
+			if (closeButtonText || buttstr !== "") {
 				cnt += "<hr class='" + getGuiStyles.call($t, "dialog.hr") + "' style='margin:1px'/><div style='text-align:" + mopt.buttonalign +
 					";padding:.8em 0 .5em 0;background-image:none;border-width: 1px 0 0 0;'>" +
-					(c_b ? jgrid.builderFmButon.call($t, "closedialog", c_b) : "") + buttstr + "</div>";
+					(closeButtonText ? jgrid.builderFmButon.call($t, "closedialog", closeButtonText) : "") + buttstr + "</div>";
 			}
 			cnt += "</div>";
 
@@ -7481,7 +7564,7 @@
 								var ovm1 = [], elem1 = this.elem, vl2 = this.vl, cm1 = this.cm, iCol1 = this.iCol,
 									options1 = $.extend({}, this.options),
 									msl1 = options1.multiple === true,
-									a = $.isFunction(options1.buildSelect) ? options1.buildSelect.call($t, data, jqXHR) : data;
+									a = $.isFunction(options1.buildSelect) ? options1.buildSelect.call($t, data, jqXHR, cm1, iCol1) : data;
 								if (typeof a === "string") {
 									a = $($.trim(a)).html();
 								}
@@ -8057,7 +8140,7 @@
 					triggerToolbar = function () {
 						var sdata = {}, j = 0, sopt = {};
 						$.each(colModel, function () {
-							var cm = this, nm = cm.index || cm.name, v, so,
+							var cm = this, nm = cm.index || cm.name, v, so, searchoptions = cm.searchoptions || {},
 								$elem = $("#gs_" + jqID(cm.name), (cm.frozen === true && p.frozenColumns === true) ? grid.fhDiv : grid.hDiv),
 								getFormaterOption = function (optionName, formatter) {
 									var formatoptions = cm.formatoptions || {};
@@ -8074,7 +8157,7 @@
 							if (o.searchOperators) {
 								so = $elem.parent().prev().children("a").data("soper") || o.defaultSearch;
 							} else {
-								so = (cm.searchoptions && cm.searchoptions.sopt) ? cm.searchoptions.sopt[0] : cm.stype === "select" ? "eq" : o.defaultSearch;
+								so = searchoptions.sopt ? searchoptions.sopt[0] : cm.stype === "select" ? "eq" : o.defaultSearch;
 							}
 							/* the format of element of the searching toolbar if ANOTHER
 							 * as the format of cells in the grid. So one can't use
@@ -8083,8 +8166,8 @@
 							 * $elem.val() instead of $elem.text() used in the common case of
 							 * formatter. So we have to make manual conversion of searching filed
 							 * used for integer/number/currency. The code will be duplicate */
-							if (cm.stype === "custom" && $.isFunction(cm.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
-								v = cm.searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "get");
+							if (cm.stype === "custom" && $.isFunction(searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
+								v = searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "get");
 							} else {
 								v = $.trim($elem.val());
 								switch (cm.formatter) {
@@ -8178,8 +8261,8 @@
 						trigger = (typeof trigger !== "boolean") ? true : trigger;
 						$.each(colModel, function () {
 							var v, cm = this, $elem = $("#gs_" + jqID(cm.name), (cm.frozen === true && p.frozenColumns === true) ? grid.fhDiv : grid.hDiv),
-								isSindleSelect;
-							if (cm.searchoptions && cm.searchoptions.defaultValue !== undefined) { v = cm.searchoptions.defaultValue; }
+								isSindleSelect, searchoptions = cm.searchoptions || {};
+							if (searchoptions.defaultValue !== undefined) { v = searchoptions.defaultValue; }
 							nm = cm.index || cm.name;
 							switch (cm.stype) {
 								case "select":
@@ -8213,8 +8296,8 @@
 									}
 									break;
 								case "custom":
-									if ($.isFunction(cm.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
-										cm.searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "set", v || "");
+									if ($.isFunction(searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
+										searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "set", v || "");
 									}
 									break;
 							}
@@ -8282,7 +8365,7 @@
 
 						var selclass, ina, i = 0, aoprs = [], selected = $(elem).data("soper"), nm = $(elem).data("colname"),
 							fs = $(".ui-jqgrid-view").css("font-size") || "11px",
-							str = '<ul id="sopt_menu" class="ui-search-menu" role="menu" tabindex="0" style="font-size:' + fs + ";left:" + left + "px;top:" + top + 'px;">';
+							str = '<ul id="sopt_menu" class="ui-search-menu" role="menu" tabindex="0" style="z-index:9999;font-size:' + fs + ";left:" + left + "px;top:" + top + 'px;">';
 						i = p.iColByName[nm];
 						if (i === undefined) { return; }
 						var cm = colModel[i], options = $.extend({}, cm.searchoptions), odataItem, item, itemOper, itemOperand, itemText;
@@ -8393,30 +8476,32 @@
 									$(self).append(stbl);
 									$.ajax($.extend({
 										url: surl,
+										context: { stbl: stbl, options: soptions, cm: cm, iCol: ci },
 										dataType: "html",
 										success: function (data, textStatus, jqXHR) {
-											if (soptions.buildSelect !== undefined) {
-												var d = soptions.buildSelect(data, jqXHR);
+											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, $stbl1 = this.stbl, d,
+												$select = $stbl1.find("td.ui-search-input>select");// $stbl1.find(">tbody>tr>td.ui-search-input>select")
+											if (soptions1.buildSelect !== undefined) {
+												d = soptions1.buildSelect.call($t, data, jqXHR, cm1, iCol1);
 												if (d) {
-													$("td", stbl).eq(1).append(d);
+													$("td", $stbl1).eq(1).append(d);
 												}
 											} else {
-												$("td", stbl).eq(1).append(data);
+												$("td", $stbl1).eq(1).append(data);
 											}
-											var $select = stbl.find("td.ui-search-input>select"); // stbl.find(">tbody>tr>td.ui-search-input>select")
-											if (soptions.defaultValue !== undefined) { $select.val(soptions.defaultValue); }
-											$select.attr({ name: cm.index || cm.name, id: "gs_" + cm.name });
-											if (soptions.attr) { $select.attr(soptions.attr); }
+											if (soptions1.defaultValue !== undefined) { $select.val(soptions1.defaultValue); }
+											$select.attr({ name: cm1.index || cm1.name, id: "gs_" + cm1.name });
+											if (soptions1.attr) { $select.attr(soptions1.attr); }
 											$select.addClass(dataFieldClass);
 											$select.css({ width: "100%" });
 											// preserve autoserch
-											bindEv.call($t, $select[0], soptions);
-											jgrid.fullBoolFeedback.call($t, soptions.selectFilled, "jqGridSelectFilled", {
+											bindEv.call($t, $select[0], soptions1);
+											jgrid.fullBoolFeedback.call($t, soptions1.selectFilled, "jqGridSelectFilled", {
 												elem: $select[0],
-												options: soptions,
-												cm: cm,
-												cmName: cm.name,
-												iCol: ci,
+												options: soptions1,
+												cm: cm1,
+												cmName: cm1.name,
+												iCol: iCol1,
 												mode: mode
 											});
 											if (o.autosearch === true) {
@@ -8768,7 +8853,7 @@
 					// One should not do this for hidden headers.
 					$htable.find(".ui-th-column>div").each(function () {
 						var $ts = $(this), $parent = $ts.parent();
-						if ($parent.is(":visible") && $parent.is(":has(span.ui-jqgrid-resize)")) {
+						if ($parent.is(":visible") && $parent.is(":has(span.ui-jqgrid-resize)") && !($ts.hasClass("ui-jqgrid-rotate") || $ts.hasClass("ui-jqgrid-rotateOldIE"))) {
 							// !!! it seems be wrong now
 							$ts.css("top", ($parent.height() - $ts.outerHeight(true)) / 2 + "px");
 						}
@@ -8824,8 +8909,8 @@
 							top = top + $(grid.uDiv).outerHeight();
 						}
 					}
-					grid.fhDiv = $('<div style="position:absolute;left:0;top:' + top + 'px;height:' + hth + 'px;" class="' + getGuiStyles.call($t, "hDiv", "frozen-div ui-jqgrid-hdiv") + '"></div>');
-					grid.fbDiv = $('<div style="position:absolute;left:0;top:' + (parseInt(top, 10) + parseInt(hth, 10) + 1) + 'px;overflow:hidden" class="frozen-bdiv ui-jqgrid-bdiv"></div>');
+					grid.fhDiv = $('<div style="position:absolute;overflow:hidden;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + top + 'px;height:' + hth + 'px;" class="' + getGuiStyles.call($t, "hDiv", "frozen-div ui-jqgrid-hdiv") + '"></div>');
+					grid.fbDiv = $('<div style="position:absolute;overflow:hidden;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + (parseInt(top, 10) + parseInt(hth, 10) + 1) + 'px;overflow:hidden" class="frozen-bdiv ui-jqgrid-bdiv"></div>');
 					$(p.gView).append(grid.fhDiv);
 					var htbl = $(".ui-jqgrid-htable", p.gView).clone(true);
 					/*if ($t.ftoolbar) {
@@ -8901,7 +8986,7 @@
 					if (p.footerrow) {
 						var hbd = $(".ui-jqgrid-bdiv", p.gView).height();
 
-						grid.fsDiv = $('<div style="position:absolute;left:0;top:' + (parseInt(top, 10) + parseInt(hth, 10) + parseInt(hbd, 10) + 1) + 'px;" class="frozen-sdiv ui-jqgrid-sdiv"></div>');
+						grid.fsDiv = $('<div style="position:absolute;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + (parseInt(top, 10) + parseInt(hth, 10) + parseInt(hbd, 10) + 1) + 'px;" class="frozen-sdiv ui-jqgrid-sdiv"></div>');
 						$(p.gView).append(grid.fsDiv);
 						var ftbl = $(".ui-jqgrid-ftable", p.gView).clone(true);
 						$("tr", ftbl).each(function () {
@@ -8959,10 +9044,10 @@
 							var iRow, n, $frozenRows, $rows, $row, $frozenRow, posFrozenTop, height, newHeightFrozen,
 								posTop = $(hDivBase).position().top, frozenTableTop, tableTop;
 							if ($hDiv != null && $hDiv.length > 0) {
-								$hDiv.css({
-									top: posTop,
-									left: p.direction === "rtl" ? hDivBase.clientWidth - grid.fhDiv.width() : 0
-								});
+								$hDiv.css(p.direction === "rtl" ?
+									{ top: posTop, right: 0 } :
+									{ top: posTop, left: 0 }
+								);
 								$frozenRows = $hDiv.children("table").children("tbody,thead").children("tr");
 								$rows = $(hDivBase).children("div").children("table").children("tbody,thead").children("tr");
 								n = Math.min($frozenRows.length, $rows.length);
@@ -9276,7 +9361,7 @@
 			 * @param parentgroup - object
 			 */
 			this.createTableForGroup = function (group, parentgroup) {
-				var that = this, i, $t = getGrid();
+			    var that = this, i;
 				// this table will hold all the group (tables) and rules (rows)
 				var table = $("<table class='group " + dialogContentClass + "' style='border:0px none;'><tbody></tbody></table>"), align = "left";
 				// create error message row
@@ -9893,15 +9978,17 @@
 			return v.indexOf("px") >= 0 ? parseFloat(v) : v;
 		},
 		savePositionOnHide = function (propName, frmgr, h) {
-			var $w = h.w, $form = $(frmgr), toTop = h.c.toTop, offsetGbox,
-				top = getCssStyleOrFloat($w, "top"),
-				left = getCssStyleOrFloat($w, "left");
-			// we use below .style.height and .style.width to save correctly "auto" and "100%" values
-			// the "px" suffix will be saved too, but it's not a problem 
+			var $w = h.w, $form = $(frmgr), toTop = h.c.toTop, offsetGbox, offset, top, left;
 			if (toTop) {
-				offsetGbox = $w.closest(".ui-jqgrid").offset();
-				top -= offsetGbox.top;
-				left -= offsetGbox.left;
+				offsetGbox = this.closest(".ui-jqgrid").offset();
+				offset = $w.offset();
+				top = offset.top - offsetGbox.top;
+				left = offset.left - offsetGbox.left;
+			} else {
+				// we use below .style.height and .style.width to save correctly "auto" and "100%" values
+				// the "px" suffix will be saved too, but it's not a problem 
+				top = getCssStyleOrFloat($w, "top");
+				left = getCssStyleOrFloat($w, "left");
 			}
 			this.data(propName, {
 				top: top,                 //parseFloat($w.css("top")),
@@ -11768,19 +11855,16 @@
 					alertIDs = { themodal: "alertmod_" + gridId, modalhead: "alerthd_" + gridId, modalcontent: "alertcnt_" + gridId },
 					createModalAlert = function () {
 						return function () {
-							var documentElement = document.documentElement, w = window, left, top,
+						    var documentElement = document.documentElement, w = window, left = 1024, top = 768,
 								offsetGbox = $self.closest(".ui-jqgrid").offset();
 							if ($("#" + jqID(alertIDs.themodal))[0] === undefined) {
 								if (!o.alerttop && !o.alertleft) {
 									if (w.innerWidth !== undefined) {
 										left = w.innerWidth;
 										top = w.innerHeight;
-									} else if (documentElement !== null && documentElement.clientWidth !== undefined && documentElement.clientWidth !== 0) {
+									} else if (documentElement != null && documentElement.clientWidth !== undefined && documentElement.clientWidth !== 0) {
 										left = documentElement.clientWidth;
 										top = documentElement.clientHeight;
-									} else {
-										left = 1024;
-										top = 768;
 									}
 									left = left / 2 - parseInt(o.alertwidth, 10) / 2 - offsetGbox.left;
 									top = top / 2 - 25 - offsetGbox.top;
@@ -12958,7 +13042,7 @@
 	"use strict";
 	var jgrid = $.jgrid, fullBoolFeedback = jgrid.fullBoolFeedback, hasOneFromClasses = jgrid.hasOneFromClasses,
 		enumEditableCells = jgrid.enumEditableCells,
-		info_dialog = jgrid.info_dialog,
+		infoDialog = jgrid.info_dialog,
 		editFeedback = function (o) {
 			var args = $.makeArray(arguments).slice(1);
 			args.unshift("");
@@ -13170,7 +13254,7 @@
 				if (cv[0] === false) {
 					try {
 						var tr = $self.jqGrid("getGridRowById", rowid), positions = jgrid.findPos(tr);
-						info_dialog.call($t, errcap, cv[1], bClose, { left: positions[0], top: positions[1] + $(tr).outerHeight() });
+						infoDialog.call($t, errcap, cv[1], bClose, { left: positions[0], top: positions[1] + $(tr).outerHeight() });
 					} catch (e) {
 						alert(cv[1]);
 					}
@@ -13284,7 +13368,7 @@
 							} else {
 								var rT = res.responseText || res.statusText;
 								try {
-									info_dialog.call($t, errcap, '<div class="' + getGuiStateStyles.call($t, "error") + '">' + rT + "</div>", bClose, { buttonalign: "right" });
+									infoDialog.call($t, errcap, '<div class="' + getGuiStateStyles.call($t, "error") + '">' + rT + "</div>", bClose, { buttonalign: "right" });
 								} catch (e) {
 									alert(rT);
 								}
@@ -13333,7 +13417,7 @@
 						} catch (ignore) { }
 					}
 					
-					$.each(p.colModel, function (i) {
+					$.each(p.colModel, function () {
 						var nm = this.name;
 						if (p.savedRow[fr].hasOwnProperty(nm)) {
 							ares[nm] = p.savedRow[fr][nm];
@@ -13949,8 +14033,9 @@
 					}
 					return;
 				}
-				select.append("<option value='" + i + "' " +
-							  (this.hidden ? "" : "selected='selected'") + ">" + colHeader[i] + "</option>");
+				select.append("<option value='" + i + "'" +
+							  (p.headertitles || this.headerTitle ? (" title=\"" + jgrid.stripHtml(typeof this.headerTitle === "string" ? this.headerTitle : colHeader[i]) + "\"") : "") +
+							  (this.hidden ? "" : " selected='selected'") + ">" + colHeader[i] + "</option>");
 			});
 
 			dopts = $.isFunction(opts.dlog_opts) ? opts.dlog_opts.call($self, opts) : opts.dlog_opts;
@@ -14984,6 +15069,7 @@
 			}
 
 			// return the final result.
+			options.colHeaders = colHeaders;
 			return { colModel: colModel, options: options, rows: outputItems, groupOptions: groupOptions, groupHeaders: colHeaders, summary: summaries };
 		},
 		jqPivot: function (data, pivotOpt, gridOpt, ajaxOpt) {
@@ -15518,20 +15604,21 @@
 				var expanded = p.treeReader.expanded_field,
 					isLeaf = p.treeReader.leaf_field,
 					beforeSelectRow = function (e, rowid, eOrg) {
-						var expendOrCollaps = function (rowid) {
-								var item = p.data[p._index[stripPref(p.idPrefix, rowid)]],
-									collapseOrExpand = item[expanded] ? "collapse" : "expand";
-								if (!item[isLeaf]) {
-									base[collapseOrExpand + "Row"].call($self, item);
-									base[collapseOrExpand + "Node"].call($self, item);
-								}
-							};
 						if (eOrg != null) {
-							var $target = $(eOrg.target);
+							var $target = $(eOrg.target),
+								$td = $target.closest("tr.jqgrow>td"),
+								$tr = $td.parent(),
+								expendOrCollaps = function (rowid) {
+									var item = p.data[p._index[stripPref(p.idPrefix, rowid)]],
+										collapseOrExpand = item[expanded] ? "collapse" : "expand";
+									if (!item[isLeaf]) {
+										base[collapseOrExpand + "Row"].call($self, item, $tr);
+										base[collapseOrExpand + "Node"].call($self, item, $tr);
+									}
+								};
 							if ($target.is("div.treeclick")) {
 								expendOrCollaps(rowid);
 							} else if (p.ExpandColClick) {
-								var $td = $target.closest("tr.jqgrow>td");
 								if ($td.length > 0 && $target.closest("span.ui-jqgrid-cell-wrapper", $td).length > 0) {
 									expendOrCollaps(rowid);
 								}
@@ -15598,7 +15685,7 @@
 							p.additionalProperties.push({
 								name: name,
 								convert: function (data) {
-									return data === true || String(data).toLowerCase() === "true" || String(data) === "1" ? true : false;
+									return data === true || String(data).toLowerCase() === "true" || String(data) === "1" ? true : data;
 								}
 							});
 						} else {
@@ -15687,9 +15774,25 @@
 			return ret;
 		},
 		getNodeParent: function (rc) {
+			// var $t = this instanceof $ && this.length > 0 ? this[0] : this;
 			var $t = this[0];
 			if (!$t || !$t.grid || $t.p == null || !$t.p.treeGrid || rc == null) { return null; }
-			var p = $t.p, parentIdName = p.treeReader.parent_id_field, parentId = rc[parentIdName];
+			var p = $t.p, treeReader = p.treeReader, parentIdName = treeReader.parent_id_field, parentId = rc[parentIdName];
+			if (p.treeGridModel === "nested") {
+				var result = null,
+					lftc = treeReader.left_field,
+					rgtc = treeReader.right_field,
+					levelc = treeReader.level_field,
+					lft = parseInt(rc[lftc], 10), rgt = parseInt(rc[rgtc], 10), level = parseInt(rc[levelc], 10);
+
+				$(p.data).each(function() {
+					if (parseInt(this[levelc], 10) === level - 1 && parseInt(this[lftc], 10) < lft && parseInt(this[rgtc], 10) > rgt) {
+						result = this;
+						return false;
+					}
+				});
+				return result;
+			}
 			if (parentId === null || parentId === "null") { return null; }
 			var iParent = p._index[parentId];
 			return iParent != undefined ? p.data[iParent] : null;
@@ -15821,12 +15924,12 @@
 					if (!treeGridFeedback.call($t, "beforeExpandNode", { rowid: id, item: rc })) { return; }
 					var rc1 = $("#" + p.idPrefix + jqID(id), $t.grid.bDiv)[0],
 						position = p._index[id];
-					if (p.datatype === "local" || base.isNodeLoaded.call($($t), p.data[position])) {
+					if (p.treedatatype === "local" || base.isNodeLoaded.call($($t), p.data[position])) {
 						rc[expanded] = true;
-						$("div.treeclick", rc1).removeClass(p.treeIcons.plus + " tree-plus").addClass(p.treeIcons.minus + " tree-minus");
+						$("div.treeclick", rc1).removeClass(p.treeIcons.plus + " tree-plus").addClass(p.treeIcons.commonIconClass).addClass(p.treeIcons.minus + " tree-minus");
 					} else if (!$t.grid.hDiv.loading) {
 						rc[expanded] = true;
-						$("div.treeclick", rc1).removeClass(p.treeIcons.plus + " tree-plus").addClass(p.treeIcons.minus + " tree-minus");
+						$("div.treeclick", rc1).removeClass(p.treeIcons.plus + " tree-plus").addClass(p.treeIcons.commonIconClass).addClass(p.treeIcons.minus + " tree-minus");
 						// set the value which will be used during processing of the server response
 						// in readInput
 						p.treeANode = rc1.rowIndex;
@@ -15858,7 +15961,7 @@
 					if (!treeGridFeedback.call($t, "beforeCollapseNode", { rowid: id, item: rc })) { return; }
 					rc[expanded] = false;
 					var rc1 = $("#" + p.idPrefix + jqID(id), $t.grid.bDiv)[0];
-					$("div.treeclick", rc1).removeClass(p.treeIcons.minus + " tree-minus").addClass(p.treeIcons.plus + " tree-plus");
+					$("div.treeclick", rc1).removeClass(p.treeIcons.minus + " tree-minus").addClass(p.treeIcons.commonIconClass).addClass(p.treeIcons.plus + " tree-plus");
 					treeGridFeedback.call($t, "afterCollapseNode", { rowid: id, item: rc });
 				}
 			});
@@ -16003,7 +16106,7 @@
 						$($t.rows[prow])
 							.find("span.cell-wrapperleaf").removeClass("cell-wrapperleaf").addClass("cell-wrapper")
 							.end()
-							.find("div.tree-leaf").removeClass(p.treeIcons.leaf + " tree-leaf").addClass(p.treeIcons.minus + " tree-minus");
+							.find("div.tree-leaf").removeClass(p.treeIcons.leaf + " tree-leaf").addClass(p.treeIcons.commonIconClass).addClass(p.treeIcons.minus + " tree-minus");
 						p.data[parentindex][isLeaf] = false;
 						parentdata[loaded] = true;
 					}
@@ -16702,7 +16805,7 @@
 	};
 	$.fn.fmatter = $FnFmatter;
 	$FnFmatter.getCellBuilder = function (formatType, opts, act) {
-		var cellBuilder = $.fn.fmatter[formatType].getCellBuilder;
+		var cellBuilder = $.fn.fmatter[formatType] != null ? $.fn.fmatter[formatType].getCellBuilder : null;
 		return $.isFunction(cellBuilder) ?
 			cellBuilder.call(this, $.extend({}, getGridRes.call($(this), "formatter"), opts), act) :
 			null;

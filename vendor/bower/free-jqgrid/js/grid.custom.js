@@ -243,7 +243,7 @@
 					triggerToolbar = function () {
 						var sdata = {}, j = 0, sopt = {};
 						$.each(colModel, function () {
-							var cm = this, nm = cm.index || cm.name, v, so,
+							var cm = this, nm = cm.index || cm.name, v, so, searchoptions = cm.searchoptions || {},
 								$elem = $("#gs_" + jqID(cm.name), (cm.frozen === true && p.frozenColumns === true) ? grid.fhDiv : grid.hDiv),
 								getFormaterOption = function (optionName, formatter) {
 									var formatoptions = cm.formatoptions || {};
@@ -260,7 +260,7 @@
 							if (o.searchOperators) {
 								so = $elem.parent().prev().children("a").data("soper") || o.defaultSearch;
 							} else {
-								so = (cm.searchoptions && cm.searchoptions.sopt) ? cm.searchoptions.sopt[0] : cm.stype === "select" ? "eq" : o.defaultSearch;
+								so = searchoptions.sopt ? searchoptions.sopt[0] : cm.stype === "select" ? "eq" : o.defaultSearch;
 							}
 							/* the format of element of the searching toolbar if ANOTHER
 							 * as the format of cells in the grid. So one can't use
@@ -269,8 +269,8 @@
 							 * $elem.val() instead of $elem.text() used in the common case of
 							 * formatter. So we have to make manual conversion of searching filed
 							 * used for integer/number/currency. The code will be duplicate */
-							if (cm.stype === "custom" && $.isFunction(cm.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
-								v = cm.searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "get");
+							if (cm.stype === "custom" && $.isFunction(searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
+								v = searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "get");
 							} else {
 								v = $.trim($elem.val());
 								switch (cm.formatter) {
@@ -364,8 +364,8 @@
 						trigger = (typeof trigger !== "boolean") ? true : trigger;
 						$.each(colModel, function () {
 							var v, cm = this, $elem = $("#gs_" + jqID(cm.name), (cm.frozen === true && p.frozenColumns === true) ? grid.fhDiv : grid.hDiv),
-								isSindleSelect;
-							if (cm.searchoptions && cm.searchoptions.defaultValue !== undefined) { v = cm.searchoptions.defaultValue; }
+								isSindleSelect, searchoptions = cm.searchoptions || {};
+							if (searchoptions.defaultValue !== undefined) { v = searchoptions.defaultValue; }
 							nm = cm.index || cm.name;
 							switch (cm.stype) {
 								case "select":
@@ -399,8 +399,8 @@
 									}
 									break;
 								case "custom":
-									if ($.isFunction(cm.searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
-										cm.searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "set", v || "");
+									if ($.isFunction(searchoptions.custom_value) && $elem.length > 0 && $elem[0].nodeName.toUpperCase() === "SPAN") {
+										searchoptions.custom_value.call($t, $elem.children(".customelement").filter(":first"), "set", v || "");
 									}
 									break;
 							}
@@ -468,7 +468,7 @@
 
 						var selclass, ina, i = 0, aoprs = [], selected = $(elem).data("soper"), nm = $(elem).data("colname"),
 							fs = $(".ui-jqgrid-view").css("font-size") || "11px",
-							str = '<ul id="sopt_menu" class="ui-search-menu" role="menu" tabindex="0" style="font-size:' + fs + ";left:" + left + "px;top:" + top + 'px;">';
+							str = '<ul id="sopt_menu" class="ui-search-menu" role="menu" tabindex="0" style="z-index:9999;font-size:' + fs + ";left:" + left + "px;top:" + top + 'px;">';
 						i = p.iColByName[nm];
 						if (i === undefined) { return; }
 						var cm = colModel[i], options = $.extend({}, cm.searchoptions), odataItem, item, itemOper, itemOperand, itemText;
@@ -579,30 +579,32 @@
 									$(self).append(stbl);
 									$.ajax($.extend({
 										url: surl,
+										context: { stbl: stbl, options: soptions, cm: cm, iCol: ci },
 										dataType: "html",
 										success: function (data, textStatus, jqXHR) {
-											if (soptions.buildSelect !== undefined) {
-												var d = soptions.buildSelect(data, jqXHR);
+											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, $stbl1 = this.stbl, d,
+												$select = $stbl1.find("td.ui-search-input>select");// $stbl1.find(">tbody>tr>td.ui-search-input>select")
+											if (soptions1.buildSelect !== undefined) {
+												d = soptions1.buildSelect.call($t, data, jqXHR, cm1, iCol1);
 												if (d) {
-													$("td", stbl).eq(1).append(d);
+													$("td", $stbl1).eq(1).append(d);
 												}
 											} else {
-												$("td", stbl).eq(1).append(data);
+												$("td", $stbl1).eq(1).append(data);
 											}
-											var $select = stbl.find("td.ui-search-input>select"); // stbl.find(">tbody>tr>td.ui-search-input>select")
-											if (soptions.defaultValue !== undefined) { $select.val(soptions.defaultValue); }
-											$select.attr({ name: cm.index || cm.name, id: "gs_" + cm.name });
-											if (soptions.attr) { $select.attr(soptions.attr); }
+											if (soptions1.defaultValue !== undefined) { $select.val(soptions1.defaultValue); }
+											$select.attr({ name: cm1.index || cm1.name, id: "gs_" + cm1.name });
+											if (soptions1.attr) { $select.attr(soptions1.attr); }
 											$select.addClass(dataFieldClass);
 											$select.css({ width: "100%" });
 											// preserve autoserch
-											bindEv.call($t, $select[0], soptions);
-											jgrid.fullBoolFeedback.call($t, soptions.selectFilled, "jqGridSelectFilled", {
+											bindEv.call($t, $select[0], soptions1);
+											jgrid.fullBoolFeedback.call($t, soptions1.selectFilled, "jqGridSelectFilled", {
 												elem: $select[0],
-												options: soptions,
-												cm: cm,
-												cmName: cm.name,
-												iCol: ci,
+												options: soptions1,
+												cm: cm1,
+												cmName: cm1.name,
+												iCol: iCol1,
 												mode: mode
 											});
 											if (o.autosearch === true) {
@@ -954,7 +956,7 @@
 					// One should not do this for hidden headers.
 					$htable.find(".ui-th-column>div").each(function () {
 						var $ts = $(this), $parent = $ts.parent();
-						if ($parent.is(":visible") && $parent.is(":has(span.ui-jqgrid-resize)")) {
+						if ($parent.is(":visible") && $parent.is(":has(span.ui-jqgrid-resize)") && !($ts.hasClass("ui-jqgrid-rotate") || $ts.hasClass("ui-jqgrid-rotateOldIE"))) {
 							// !!! it seems be wrong now
 							$ts.css("top", ($parent.height() - $ts.outerHeight(true)) / 2 + "px");
 						}
@@ -1010,8 +1012,8 @@
 							top = top + $(grid.uDiv).outerHeight();
 						}
 					}
-					grid.fhDiv = $('<div style="position:absolute;left:0;top:' + top + 'px;height:' + hth + 'px;" class="' + getGuiStyles.call($t, "hDiv", "frozen-div ui-jqgrid-hdiv") + '"></div>');
-					grid.fbDiv = $('<div style="position:absolute;left:0;top:' + (parseInt(top, 10) + parseInt(hth, 10) + 1) + 'px;overflow:hidden" class="frozen-bdiv ui-jqgrid-bdiv"></div>');
+					grid.fhDiv = $('<div style="position:absolute;overflow:hidden;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + top + 'px;height:' + hth + 'px;" class="' + getGuiStyles.call($t, "hDiv", "frozen-div ui-jqgrid-hdiv") + '"></div>');
+					grid.fbDiv = $('<div style="position:absolute;overflow:hidden;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + (parseInt(top, 10) + parseInt(hth, 10) + 1) + 'px;overflow:hidden" class="frozen-bdiv ui-jqgrid-bdiv"></div>');
 					$(p.gView).append(grid.fhDiv);
 					var htbl = $(".ui-jqgrid-htable", p.gView).clone(true);
 					/*if ($t.ftoolbar) {
@@ -1087,7 +1089,7 @@
 					if (p.footerrow) {
 						var hbd = $(".ui-jqgrid-bdiv", p.gView).height();
 
-						grid.fsDiv = $('<div style="position:absolute;left:0;top:' + (parseInt(top, 10) + parseInt(hth, 10) + parseInt(hbd, 10) + 1) + 'px;" class="frozen-sdiv ui-jqgrid-sdiv"></div>');
+						grid.fsDiv = $('<div style="position:absolute;" + (p.direction === "rtl" ? "right:0;" : "left:0;") + "top:' + (parseInt(top, 10) + parseInt(hth, 10) + parseInt(hbd, 10) + 1) + 'px;" class="frozen-sdiv ui-jqgrid-sdiv"></div>');
 						$(p.gView).append(grid.fsDiv);
 						var ftbl = $(".ui-jqgrid-ftable", p.gView).clone(true);
 						$("tr", ftbl).each(function () {
@@ -1145,10 +1147,10 @@
 							var iRow, n, $frozenRows, $rows, $row, $frozenRow, posFrozenTop, height, newHeightFrozen,
 								posTop = $(hDivBase).position().top, frozenTableTop, tableTop;
 							if ($hDiv != null && $hDiv.length > 0) {
-								$hDiv.css({
-									top: posTop,
-									left: p.direction === "rtl" ? hDivBase.clientWidth - grid.fhDiv.width() : 0
-								});
+								$hDiv.css(p.direction === "rtl" ?
+									{ top: posTop, right: 0 } :
+									{ top: posTop, left: 0 }
+								);
 								$frozenRows = $hDiv.children("table").children("tbody,thead").children("tr");
 								$rows = $(hDivBase).children("div").children("table").children("tbody,thead").children("tr");
 								n = Math.min($frozenRows.length, $rows.length);

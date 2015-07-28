@@ -3,16 +3,20 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
+use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use app\components\FlashMessage;
+use app\components\GlobalVariable;
+use app\helpers\ErrorHelper;
 use app\models\CttStaticdataAffiliations;
 use app\models\CttStaticdataAffiliationsSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * StaticdataAffiliationController implements the CRUD actions for CttStaticdataAffiliations model.
  */
-class StaticdataAffiliationController extends Controller
+class StaticdataAffiliationController extends base\AppController
 {
     public function behaviors()
     {
@@ -41,6 +45,32 @@ class StaticdataAffiliationController extends Controller
         ]);
     }
 
+    public function actionPublicView($id)
+    {
+
+        return $this->render('public_view',
+                            [
+                                'model' => CttStaticdataAffiliations::find()->where(['id' => $id])->all()
+                            ]);
+    }
+
+    /**
+     * Lists all CttStaticdataAffiliations models in each name.
+     * @return mixed
+     */
+    public function actionLangList()
+    {
+        $searchModel = new CttStaticdataAffiliationsSearch();
+        $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
+
+        // GlobalVariable::fetchData();
+
+        return $this->render('lang_list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single CttStaticdataAffiliations model.
      * @param integer $id
@@ -61,14 +91,33 @@ class StaticdataAffiliationController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CttStaticdataAffiliations();
+         try {
+            $model = new CttStaticdataAffiliations();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
+                $model->id = (Yii::$app->request->getQueryParam('id'))
+                                ? Yii::$app->request->getQueryParam('id')
+                                : $model->getId();
+
+                if ($result = $model->save()) {
+                    FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                    return $this->redirect(['lang-list', 'id' => $model->id]);
+                } else {
+                    // Handler error in here.
+                    Yii::trace(print_r($model->errors, true), 'Debug');
+                    Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        } catch (Exception $e) {
+            ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
         }
     }
 
@@ -83,8 +132,19 @@ class StaticdataAffiliationController extends Controller
     {
         $model = $this->findModel($id, $lang_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['lang-list', 'id' => $model->id]);
+            } else {
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -101,9 +161,14 @@ class StaticdataAffiliationController extends Controller
      */
     public function actionDelete($id, $lang_id)
     {
-        $this->findModel($id, $lang_id)->delete();
+        try {
+            $this->findModel($id, $lang_id)->delete();
+            FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+        } catch (Exception $e) {
+            FlashMessage::showSuccess(['msg' => 'Delete failed.']);
+        }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lang-list', 'id' => $id]);
     }
 
     /**

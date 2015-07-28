@@ -52,7 +52,7 @@ class CttStaticdataAffiliations extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'lang_id', 'name', 'modified_dtm'], 'required'],
+            [['id', 'lang_id', 'name'], 'required'],
             [['id', 'lang_id'], 'integer'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],

@@ -24,10 +24,9 @@
         "kartik-v/yii2-helpers": "*",
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-mpdf": "*",
-        "kartik-v/yii2-detail-view": "*",
-        "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-tabs-x": "*",
-        "kartik-v/yii2-widget-select2": "*"
+        "kartik-v/yii2-detail-view": "*",
+        "kartik-v/yii2-widget-select2": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2": "*",

@@ -7,7 +7,6 @@ use yii\base\ErrorException;
 use yii\helpers\Html;
 use yii\web\Session;
 use kartik\growl\Growl;
-use app\models\WA_PROVINCE;
 
 class HomeController extends base\AppController
 {

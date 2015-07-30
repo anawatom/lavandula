@@ -12,6 +12,8 @@ use app\components\GlobalVariable;
 use app\helpers\ErrorHelper;
 use app\models\CttStaticdataOrganizations;
 use app\models\CttStaticdataOrganizationsSearch;
+use app\models\CttStaticdataLanguages;
+use app\models\CttStaticdataAffiliations;
 
 /**
  * StaticdataOrganizationController implements the CRUD actions for CttStaticdataOrganizations model.
@@ -94,6 +96,9 @@ class StaticdataOrganizationController extends base\AppController
         try {
             $model = new CttStaticdataOrganizations();
 
+            $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray()->all();
+            $cttStaticdataAffiliation = CttStaticdataAffiliations::getAffiliationList();
+
             if (Yii::$app->request->post()) {
                 $model->load(Yii::$app->request->post());
                 $model->id = (Yii::$app->request->getQueryParam('id'))
@@ -109,11 +114,15 @@ class StaticdataOrganizationController extends base\AppController
                     Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
                     return $this->render('create', [
                         'model' => $model,
+                        'cttStaticdataLanguage' => $cttStaticdataLanguage,
+                        'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
                     ]);
                 }
             } else {
                 return $this->render('create', [
                     'model' => $model,
+                    'cttStaticdataLanguage' => $cttStaticdataLanguage,
+                    'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
                 ]);
             }
         } catch (Exception $e) {
@@ -132,6 +141,9 @@ class StaticdataOrganizationController extends base\AppController
     {
         $model = $this->findModel($id, $lang_id);
 
+        $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->all();
+        $cttStaticdataAffiliation = CttStaticdataAffiliations::getAffiliationList();
+
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
 
@@ -143,11 +155,15 @@ class StaticdataOrganizationController extends base\AppController
                 Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
                 return $this->render('update', [
                     'model' => $model,
+                    'cttStaticdataLanguage' => $cttStaticdataLanguage,
+                    'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
                 ]);
             }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'cttStaticdataLanguage' => $cttStaticdataLanguage,
+                'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
             ]);
         }
     }

@@ -17,9 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'lang_id',
             'lang',
-            'affiliation_id',
+            [
+                'attribute' => 'affiliation_id',
+                'value' => $model->affiliation->name
+            ],
             'name',
             'alias',
             'address',

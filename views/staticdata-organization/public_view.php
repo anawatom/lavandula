@@ -18,9 +18,14 @@ foreach ($model as $key => $value) {
                         'model' => $value,
                         'attributes' => [
                             'id',
-                            'lang_id',
                             'lang',
+                            [
+                                'attribute' => 'affiliation_id',
+                                'value' => $value->affiliation->name
+                            ],
                             'name',
+                            'alias',
+                            'address',
                             [
                                 'attribute' => 'status',
                                 'value' => Yii::$app->params['status'][$value->status]

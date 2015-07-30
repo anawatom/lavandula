@@ -17,6 +17,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
     <?= $this->render('_form', [
         'title' => Html::encode($this->title),
         'model' => $model,
+        'cttStaticdataLanguage' => $cttStaticdataLanguage,
+        'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
         'mode' => 'edit',
     ]) ?>
 

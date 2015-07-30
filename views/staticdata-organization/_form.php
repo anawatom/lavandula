@@ -1,19 +1,14 @@
 <?php
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
-use kartik\helpers\Html;
 use kartik\detail\DetailView;
-use kartik\widgets\Select2;
-use app\models\CttStaticdataLanguages;
-use app\models\CttStaticdataAffiliations;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CttStaticdataOrganizations */
 /* @var $form yii\widgets\ActiveForm */
 $currentUser = \Yii::$app->user->getIdentity();
-$cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray()->all();
-$cttStaticdataAffiliation = CttStaticdataAffiliations::find()->orderBy('id')->asArray()->all();
 ?>
 
 <?= DetailView::widget([
@@ -39,11 +34,6 @@ $cttStaticdataAffiliation = CttStaticdataAffiliations::find()->orderBy('id')->as
             'type' => DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data' => ArrayHelper::map($cttStaticdataLanguage, 'id', 'name'),
-                'options' => [],
-                'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
-                'pluginEvents' => [
-                    'change' => 'function() { $("#cttstaticdatasourcetypes-lang").val( $(this).find("option:selected").text() ); }',
-                ],
             ],
         ],
         [
@@ -55,10 +45,10 @@ $cttStaticdataAffiliation = CttStaticdataAffiliations::find()->orderBy('id')->as
         ],
         [
             'attribute'=>'affiliation_id',
-            'type' => DetailView::INPUT_SELECT2,
+            'format'=>'raw',
+            'type' =>  DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data'=>ArrayHelper::map($cttStaticdataAffiliation, 'id', 'name'),
-                'pluginOptions' => ['allowClear' => true, 'width' => '100%']
             ],
         ],
         [
@@ -80,7 +70,7 @@ $cttStaticdataAffiliation = CttStaticdataAffiliations::find()->orderBy('id')->as
         ],
         [
             'attribute' => 'status',
-            'type' => DetailView::INPUT_SELECT2,
+            'type' => DetailView::INPUT_SELECT2 ,
             'widgetOptions'=>[
                 'data' => Yii::$app->params['status'],
                 'options' => [],

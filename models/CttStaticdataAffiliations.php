@@ -95,4 +95,14 @@ class CttStaticdataAffiliations extends ActiveRecord
 
         return $id;
     }
+
+    public static function getAffiliationList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_affiliations t2
+                        where t2.id = ctt_staticdata_affiliations.id
+                        group by id)')
+                ->all();
+    }
 }

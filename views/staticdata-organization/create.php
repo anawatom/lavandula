@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $this->render('_form', [
         'title' => Html::encode($this->title),
         'model' => $model,
+        'cttStaticdataLanguage' => $cttStaticdataLanguage,
+        'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
         'mode' => 'create',
     ]) ?>
 

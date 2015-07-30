@@ -1,5 +1,6 @@
 <?php
 	use yii\helpers\Html;
+	use yii\helpers\Url;
 ?>
 <div class="page-header">
   <h1>Article Search Result <br /><small>Keyword: <?= $keyword ?></small></h1>
@@ -15,7 +16,7 @@
 		<tr>
 		<?php foreach ($data as $key => $value) : ?>
 			<tr>
-				<td><?= $value['title'] ?></td>
+				<td><a href="?r=articles/public-view&id=<?= $value['id'] ?>"><?= $value['title'] ?></a></td>
 				<td>
 					<?php //echo $value['authors']; ?>
 					<?php $authors = json_decode($value['authors'], true); ?>

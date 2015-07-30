@@ -22,7 +22,7 @@ class ArticleSearchResultController extends base\AppController
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index'],
+                        'actions' => ['index', 'view'],
                     ],
                 ],
             ],

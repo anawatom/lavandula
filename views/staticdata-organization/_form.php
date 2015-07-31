@@ -31,9 +31,15 @@ $currentUser = \Yii::$app->user->getIdentity();
     'attributes' => [
         [
             'attribute' => 'lang_id',
+            'label' => Yii::t('app/backend', 'Lang'),
             'type' => DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data' => ArrayHelper::map($cttStaticdataLanguage, 'id', 'name'),
+                'options' => [],
+                'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
+                'pluginEvents' => [
+                    'change' => 'function() { $("#cttstaticdataorganizations-lang").val( $(this).find("option:selected").text() ); }',
+                ],
             ],
         ],
         [
@@ -45,7 +51,7 @@ $currentUser = \Yii::$app->user->getIdentity();
         ],
         [
             'attribute'=>'affiliation_id',
-            'format'=>'raw',
+            'label' => Yii::t('app/ctt_staticdata_organization', 'Affiliation'),
             'type' =>  DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data'=>ArrayHelper::map($cttStaticdataAffiliation, 'id', 'name'),

@@ -74,6 +74,7 @@ $config = [
                             'app/ctt_staticdata_sourcetype' => 'ctt_staticdata_sourcetype.php',
                             'app/ctt_staticdata_revisiontype' => 'ctt_staticdata_revisiontype.php',
                             'app/ctt_staticdata_affiliation' => 'ctt_staticdata_affiliation.php',
+                            'app/ctt_staticdata_organization' => 'ctt_staticdata_organization.php',
                         ],
                         // - ctt_staticdata_docsources
                         // - ctt_staticdata_authortypes

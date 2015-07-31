@@ -6,8 +6,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CttStaticdataOrganizations */
 
-$this->title = Yii::t('app', 'Create Ctt Staticdata Organizations');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Organizations'), 'url' => ['index']];
+$this->title = Yii::t('app/ctt_staticdata_organization', 'Create Ctt Staticdata Organizations');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_organization', 'Ctt Staticdata Organizations'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_organization', 'Ctt Staticdata Organizations(Language List)'),
+                                    'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-organizations-create">

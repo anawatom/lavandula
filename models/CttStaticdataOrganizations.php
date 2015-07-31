@@ -74,18 +74,18 @@ class CttStaticdataOrganizations extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'lang_id' => Yii::t('app', 'Lang ID'),
-            'lang' => Yii::t('app', 'Lang'),
-            'affiliation_id' => Yii::t('app', 'Affiliation ID'),
-            'name' => Yii::t('app', 'Name'),
-            'alias' => Yii::t('app', 'Alias'),
-            'address' => Yii::t('app', 'Address'),
-            'status' => Yii::t('app', 'Status'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang' => Yii::t('app/backend', 'Lang'),
+            'affiliation_id' => Yii::t('app/ctt_staticdata_organization', 'Affiliation ID'),
+            'name' => Yii::t('app/ctt_staticdata_organization', 'Name'),
+            'alias' => Yii::t('app/ctt_staticdata_organization', 'Alias'),
+            'address' => Yii::t('app/ctt_staticdata_organization', 'Address'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

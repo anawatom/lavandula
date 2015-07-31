@@ -17,12 +17,13 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-	'ID' => 'ID',
-	'Lang ID' => 'Lang ID',
-	'Lang' => 'Lang',
-	'Status' => 'Status',
-    'Created By' => 'Created By',
-    'Created Dtm' => 'Created Dtm',
-    'Modified By' => 'Modified By',
-    'Modified Dtm' => 'Modified Dtm',
+	// Model
+    'Name' => 'Name',
+    'Alias' => 'Alias',
+    'Address' => 'Address',
+    // UI
+    'Ctt Staticdata Affiliations' => 'Affiliation List',
+    'Ctt Staticdata Affiliations(Language List)' => 'Affiliation List (Language)',
+    'Create Ctt Staticdata Affiliations' => 'Create Affiliation',
+    'Update Ctt Staticdata Affiliations' => 'Update Affiliation',
 ];

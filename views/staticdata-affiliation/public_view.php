@@ -6,7 +6,7 @@ use kartik\tabs\TabsX;
 use kartik\detail\DetailView;
 
 $this->title = $model[0]->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $items = [];
@@ -18,9 +18,14 @@ foreach ($model as $key => $value) {
                         'model' => $value,
                         'attributes' => [
                             'id',
-                            'lang_id',
                             'lang',
                             'name',
+                            'alias',
+                            'address',
+                            [
+                                'attribute' => 'status',
+                                'value' => Yii::$app->params['status'][$value->status],
+                            ],
                             'created_by',
                             'created_dtm',
                             'modified_by',

@@ -68,17 +68,17 @@ class CttStaticdataAffiliations extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'lang_id' => 'Lang ID',
-            'lang' => 'Lang',
-            'name' => 'Name',
-            'alias' => 'Alias',
-            'address' => 'Address',
-            'status' => 'Status',
-            'created_by' => 'Created By',
-            'created_dtm' => 'Created Dtm',
-            'modified_by' => 'Modified By',
-            'modified_dtm' => 'Modified Dtm',
+            'id' =>  Yii::t('app/backend', 'ID'),
+            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang' => Yii::t('app/backend', 'Lang'),
+            'name' => Yii::t('app/ctt_staticdata_affiliation', 'Name'),
+            'alias' => Yii::t('app/ctt_staticdata_affiliation', 'Alias'),
+            'address' => Yii::t('app/ctt_staticdata_affiliation', 'Address'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

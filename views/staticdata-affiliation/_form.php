@@ -34,13 +34,14 @@ $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray(
     'attributes' => [
         [
             'attribute' => 'lang_id',
+            'label' => Yii::t('app/backend', 'Lang'),
             'type' => DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data' => ArrayHelper::map($cttStaticdataLanguage, 'id', 'name'),
                 'options' => [],
                 'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
                 'pluginEvents' => [
-                    'change' => 'function() { $("#cttstaticdatasourcetypes-lang").val( $(this).find("option:selected").text() ); }',
+                    'change' => 'function() { $("#cttstaticdataaffiliations-lang").val( $(this).find("option:selected").text() ); }',
                 ],
             ],
         ],

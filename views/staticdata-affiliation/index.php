@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttStaticdataAffiliationsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Ctt Staticdata Affiliations');
+$this->title = Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-affiliations-index">
@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'headingOptions' => ['class' => 'no-border-radius'],
             'before' => '<div class="clearfix"></div>'
                         .$this->render('_search', ['model' => $searchModel])
-                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_sourcetype', 'Create Ctt Staticdata Sourcetypes'),
+                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_affiliation', 'Create Ctt Staticdata Affiliations'),
                                 ['lang-list'],
                                 ['class' => 'btn btn-success']),
             ],

@@ -8,7 +8,9 @@ use kartik\detail\DetailView;
 /* @var $model app\models\CttStaticdataAffiliations */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations(Language List)'),
+                                    'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-staticdata-affiliations-view">
@@ -17,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'lang_id',
             'lang',
             'name',
             'alias',

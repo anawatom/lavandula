@@ -28,7 +28,6 @@ use yii\bootstrap\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'name') ?>
-    <?= $form->field($model, 'alias') ?>
 
     <div class="form-group">
         <div class="col-md-offset-3 col-md-9">

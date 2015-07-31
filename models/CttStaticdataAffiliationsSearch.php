@@ -62,7 +62,7 @@ class CttStaticdataAffiliationsSearch extends CttStaticdataAffiliations
                         and t2.name like :name
                         group by id)',
                         [
-                            ':name' => ($this->name)? $this->name: '%%'
+                            ':name' => ($this->name)? '%'.$this->name.'%': '%%',
                         ]);
 
         $query->andFilterWhere([

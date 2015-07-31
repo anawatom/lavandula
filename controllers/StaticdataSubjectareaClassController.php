@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CttStaticdataSubjectareaClassController implements the CRUD actions for CttStaticdataSubjectareaClass model.
  */
-class CttStaticdataSubjectareaClassController extends Controller
+class StaticdataSubjectareaClassController extends Controller
 {
     public function behaviors()
     {

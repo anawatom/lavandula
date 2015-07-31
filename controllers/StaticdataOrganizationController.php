@@ -181,7 +181,8 @@ class StaticdataOrganizationController extends base\AppController
             $this->findModel($id, $lang_id)->delete();
             FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
         } catch (Exception $e) {
-            FlashMessage::showSuccess(['msg' => 'Delete failed.']);
+            Yii::trace($e->getMessage(), 'debug');
+            FlashMessage::showError(['msg' => $e->getMessage()]);
         }
 
         return $this->redirect(['lang-list', 'id' => $id]);

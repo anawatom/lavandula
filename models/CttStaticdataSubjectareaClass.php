@@ -72,16 +72,16 @@ class CttStaticdataSubjectareaClass extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'lang_id' => Yii::t('app', 'Lang ID'),
-            'lang' => Yii::t('app', 'Lang'),
-            'name' => Yii::t('app', 'Name'),
-            'subjectarea_id' => Yii::t('app', 'Subjectarea ID'),
-            'status' => Yii::t('app', 'Status'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang' => Yii::t('app/backend', 'Lang'),
+            'name' => Yii::t('app/ctt_staticdata_subjectarea_class', 'Name'),
+            'subjectarea_id' => Yii::t('app/ctt_staticdata_subjectarea_class', 'Subjectarea ID'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

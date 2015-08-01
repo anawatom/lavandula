@@ -3,16 +3,22 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Exception;
+use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use app\components\FlashMessage;
+use app\components\GlobalVariable;
+use app\helpers\ErrorHelper;
 use app\models\CttStaticdataSubjectareaClass;
 use app\models\CttStaticdataSubjectareaClassSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use app\models\CttStaticdataLanguages;
+use app\models\CttStaticdataSubjectarea;
 
 /**
  * CttStaticdataSubjectareaClassController implements the CRUD actions for CttStaticdataSubjectareaClass model.
  */
-class StaticdataSubjectareaClassController extends Controller
+class StaticdataSubjectareaClassController extends base\AppController
 {
     public function behaviors()
     {
@@ -54,6 +60,32 @@ class StaticdataSubjectareaClassController extends Controller
         ]);
     }
 
+     public function actionPublicView($id)
+    {
+
+        return $this->render('public_view',
+                            [
+                                'model' => CttStaticdataSubjectareaClass::find()->where(['id' => $id])->all()
+                            ]);
+    }
+
+    /**
+     * Lists all CttStaticdataSubjectareaClass models in each name.
+     * @return mixed
+     */
+    public function actionLangList()
+    {
+        $searchModel = new CttStaticdataSubjectareaClassSearch();
+        $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
+
+        // GlobalVariable::fetchData();
+
+        return $this->render('lang_list', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Creates a new CttStaticdataSubjectareaClass model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -61,14 +93,38 @@ class StaticdataSubjectareaClassController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CttStaticdataSubjectareaClass();
+        try {
+            $model = new CttStaticdataSubjectareaClass();
+            $currentUser = \Yii::$app->user->getIdentity();
+            $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->asArray()->all();
+            $cttStaticdataSubjectareas = CttStaticdataSubjectarea::getSubjectareaList();
+            $renderParams = [
+                                'model' => $model,
+                                'currentUser' => $currentUser,
+                                'cttStaticdataLanguages' => $cttStaticdataLanguages,
+                                'cttStaticdataSubjectareas' => $cttStaticdataSubjectareas
+                            ];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
+                $model->id = (Yii::$app->request->getQueryParam('id'))
+                                ? Yii::$app->request->getQueryParam('id')
+                                : $model->getId();
+
+                if ($result = $model->save()) {
+                    FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                    return $this->redirect(['lang-list', 'id' => $model->id]);
+                } else {
+                    // Handler error in here.
+                    Yii::trace(print_r($model->errors, true), 'Debug');
+                    Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
+                    return $this->render('create', $renderParams);
+                }
+            } else {
+                return $this->render('create', $renderParams);
+            }
+        } catch (Exception $e) {
+            ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
         }
     }
 
@@ -82,13 +138,29 @@ class StaticdataSubjectareaClassController extends Controller
     public function actionUpdate($id, $lang_id)
     {
         $model = $this->findModel($id, $lang_id);
+        $currentUser = \Yii::$app->user->getIdentity();
+        $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->asArray()->all();
+        $cttStaticdataSubjectareas = CttStaticdataSubjectarea::getSubjectareaList();
+        $renderParams = [
+                            'model' => $model,
+                            'currentUser' => $currentUser,
+                            'cttStaticdataLanguages' => $cttStaticdataLanguages,
+                            'cttStaticdataSubjectareas' => $cttStaticdataSubjectareas
+                        ];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+
+            if ($model->save()) {
+                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                return $this->redirect(['lang-list', 'id' => $model->id]);
+            } else {
+                Yii::trace(print_r($model->errors, true), 'Debug');
+                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
+                return $this->render('update', $renderParams);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', $renderParams);
         }
     }
 
@@ -101,9 +173,15 @@ class StaticdataSubjectareaClassController extends Controller
      */
     public function actionDelete($id, $lang_id)
     {
-        $this->findModel($id, $lang_id)->delete();
+        try {
+            $this->findModel($id, $lang_id)->delete();
+            FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+        } catch (Exception $e) {
+            Yii::trace($e->getMessage(), 'debug');
+            FlashMessage::showError(['msg' => $e->getMessage()]);
+        }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['lang-list', 'id' => $id]);
     }
 
     /**

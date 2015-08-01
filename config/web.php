@@ -76,6 +76,7 @@ $config = [
                             'app/ctt_staticdata_affiliation' => 'ctt_staticdata_affiliation.php',
                             'app/ctt_staticdata_organization' => 'ctt_staticdata_organization.php',
                             'app/ctt_staticdata_subjectarea' => 'ctt_staticdata_subjectarea.php',
+                            'app/ctt_staticdata_subjectarea_class' => 'ctt_staticdata_subjectarea_class.php',
                         ],
                         // - ctt_staticdata_docsources
                         // - ctt_staticdata_authortypes

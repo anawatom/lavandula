@@ -7,8 +7,8 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttStaticdataCountrysSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations(Language List)');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
+$this->title = Yii::t('app/ctt_staticdata_subjectarea_class', 'Ctt Staticdata Subjectarea Classes(Language List)');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_subjectarea_class', 'Ctt Staticdata Subjectarea Classes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -43,15 +43,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'enableSorting' => true,
             ],
             [
-                'attribute' => 'alias',
+                'attribute' => 'subjectarea_id',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => 'alias',
+                'value' => function($model) {
+                    return $model->subjectarea->name;
+                },
                 'enableSorting' => true,
             ],
             [
                 'attribute' => 'status',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => 'status',
+                'value' => function($model) {
+                    return Yii::$app->params['status'][$model->status];
+                },
                 'enableSorting' => true,
             ],
 

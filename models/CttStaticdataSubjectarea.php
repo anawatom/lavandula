@@ -93,6 +93,16 @@ class CttStaticdataSubjectarea extends ActiveRecord
         return $id;
     }
 
+    public static function getSubjectareaList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_subjectarea t2
+                        where t2.id = ctt_staticdata_subjectarea.id
+                        group by id)')
+                ->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

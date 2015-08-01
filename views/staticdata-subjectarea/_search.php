@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CttStaticdataSubjectareaSearch */
@@ -13,29 +14,29 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'layout' => 'horizontal',
+        'fieldConfig' => [
+            'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+            'horizontalCssClasses' => [
+                'offset' => '',
+                'label' => 'col-md-3',
+                'wrapper' => 'col-md-5',
+                'error' => '',
+                'hint' => '',
+            ],
+        ]
     ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'lang_id') ?>
-
-    <?= $form->field($model, 'lang') ?>
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'created_by') ?>
-
-    <?php // echo $form->field($model, 'created_dtm') ?>
-
-    <?php // echo $form->field($model, 'modified_by') ?>
-
-    <?php // echo $form->field($model, 'modified_dtm') ?>
-
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <div class="col-md-offset-3 col-md-9">
+            <?= Html::submitButton(Yii::t('app/frontend', 'Search'),
+                                    ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app/frontend', 'Reset'),
+                        ['index'],
+                        ['class' => 'btn btn-danger']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

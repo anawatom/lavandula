@@ -91,7 +91,7 @@ class CttStaticdataSubjectareaClass extends ActiveRecord
         $data = parent::find()->where(['name' => $this->name])->one();
 
         if (empty($data)) {
-            $id = CttSequences::getValue('STATICDATA_SUBJECTAREA_SEQ');
+            $id = CttSequences::getValue('STATICDATA_SUBJECTAREACLASS_SEQ');
         } else {
            $id = $data->id;
         }

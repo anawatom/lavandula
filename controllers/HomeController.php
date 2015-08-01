@@ -43,9 +43,7 @@ class HomeController extends base\AppController
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}
-		finally {
-			return $this->render('index');
-		}
+		return $this->render('index');
     }
 	
     public function actionSite()
@@ -57,9 +55,7 @@ class HomeController extends base\AppController
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}
-		finally {
-			return $this->render('site');
-		}
+		return $this->render('site');
     }
 
     public function actionSetLanguage() {

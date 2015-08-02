@@ -4,9 +4,11 @@ namespace app\models;
 
 use Yii;
 use yii\base\NotSupportedException;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
+use yii\behaviors\TimestampBehavior;
 use yii\base\Security;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\web\IdentityInterface;
 use app\models\Role;
 
 /**
@@ -37,6 +39,20 @@ use app\models\Role;
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'update_time',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -51,11 +67,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['role_id', 'status'], 'required'],
-            [['role_id', 'status'], 'integer'],
+            [['role_id', 'email', 'username', 'password'], 'required'],
+            [['role_id'], 'integer'],
             [['login_time', 'create_time', 'update_time', 'ban_time'], 'safe'],
             [['email', 'new_email', 'username', 'password', 'auth_key', 'api_key', 'login_ip', 'create_ip', 'ban_reason'], 'string', 'max' => 255],
+            [['create_by', 'update_by'], 'string', 'max' => 45],
+            [['status'], 'string', 'max' => 1],
             [['email'], 'unique'],
+            [['email'], 'email'],
             [['username'], 'unique']
         ];
     }
@@ -66,22 +85,24 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'role_id' => Yii::t('app', 'Role ID'),
-            'status' => Yii::t('app', 'Status'),
-            'email' => Yii::t('app', 'Email'),
-            'new_email' => Yii::t('app', 'New Email'),
-            'username' => Yii::t('app', 'Username'),
-            'password' => Yii::t('app', 'Password'),
-            'auth_key' => Yii::t('app', 'Auth Key'),
-            'api_key' => Yii::t('app', 'Api Key'),
-            'login_ip' => Yii::t('app', 'Login Ip'),
-            'login_time' => Yii::t('app', 'Login Time'),
-            'create_ip' => Yii::t('app', 'Create Ip'),
-            'create_time' => Yii::t('app', 'Create Time'),
-            'update_time' => Yii::t('app', 'Update Time'),
-            'ban_time' => Yii::t('app', 'Ban Time'),
-            'ban_reason' => Yii::t('app', 'Ban Reason'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'role_id' => Yii::t('app/user', 'Role ID'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'email' => Yii::t('app/user', 'Email'),
+            'new_email' => Yii::t('app/user', 'New Email'),
+            'username' => Yii::t('app/user', 'Username'),
+            'password' => Yii::t('app/user', 'Password'),
+            'auth_key' => Yii::t('app/user', 'Auth Key'),
+            'api_key' => Yii::t('app/user', 'Api Key'),
+            'login_ip' => Yii::t('app/user', 'Login Ip'),
+            'login_time' => Yii::t('app/user', 'Login Time'),
+            'create_ip' => Yii::t('app/user', 'Create Ip'),
+            'create_by' => Yii::t('app/user', 'Create By'),
+            'create_time' => Yii::t('app/user', 'Create Time'),
+            'update_by' => Yii::t('app/user', 'Update By'),
+            'update_time' => Yii::t('app/user', 'Update Time'),
+            'ban_time' => Yii::t('app/user', 'Ban Time'),
+            'ban_reason' => Yii::t('app/user', 'Ban Reason'),
         ];
     }
 
@@ -176,15 +197,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->password === sha1($password);
     }
 
-    // /**
-    //  * Generates password hash from password and sets it to the model
-    //  *
-    //  * @param string $password
-    //  */
-    // public function setPassword($password)
-    // {
-    //     $this->password_hash = Security::generatePasswordHash($password);
-    // }
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function setPassword()
+    {
+        $this->password = sha1($this->password);
+    }
 
     /**
      * Generates "remember me" authentication key

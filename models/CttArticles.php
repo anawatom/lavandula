@@ -223,4 +223,18 @@ class CttArticles extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CttStaticdataOrganizations::className(), ['id' => 'organization_id']);
     }
+
+    public function getId() 
+    {
+        $id = '';
+        $data = parent::find()->where(['name' => $this->name])->one();
+
+        if (empty($data)) {
+            $id = CttSequences::getValue('ARTICLE_SEQ');
+        } else {
+           $id = $data->id;
+        }
+
+        return $id;
+    }
 }

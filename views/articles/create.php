@@ -4,15 +4,15 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CttStaticdataCountrys */
+/* @var $model app\models\CttArticles */
 
-$this->title = Yii::t('app/ctt_staticdata_country', 'Create Ctt Staticdata Countrys');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_country', 'Ctt Staticdata Countrys(Language List)'),
+$this->title = Yii::t('app/ctt_article', 'Create New Article');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_article', 'Articles'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_article', 'Articles (Language List)'),
 									'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ctt-staticdata-countrys-create">
+<div class="article-create">
 
     <?= $this->render('_form', [
 		'title' => Html::encode($this->title),

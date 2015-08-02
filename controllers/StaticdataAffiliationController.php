@@ -163,7 +163,7 @@ class StaticdataAffiliationController extends base\AppController
     {
         try {
             $this->findModel($id, $lang_id)->delete();
-            FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+            FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
         } catch (Exception $e) {
             Yii::trace($e->getMessage(), 'debug');
             FlashMessage::showError(['msg' => $e->getMessage()]);

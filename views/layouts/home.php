@@ -4,8 +4,9 @@
 	use yii\bootstrap\NavBar;
 	use yii\widgets\Breadcrumbs;
 	use yii\helpers\Url;
+	use yii\db\Expression;
 	use app\assets\AppAsset;
-	use app\models\WA_GROUP_USER;
+	use app\models\CttPageContents;
 	use himiklab\jqgrid\JqGridWidget;
 	use yii\web\Authentication;
 	use kartik\growl\Growl;
@@ -25,7 +26,7 @@
 <html lang="<?= Yii::$app->language ?>">
 	<head>
 		<meta charset="<?= Yii::$app->charset ?>"/>
-		<link rel="shortcut icon" type="image/ico" href="<?php echo Url::to('@web/images/favicon.ico'); ?>"/>
+		<link rel="shortcut icon" type="image/ico" href="<?php //echo Url::to('@web/images/favicon.ico'); ?>"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<?= Html::csrfMetaTags() ?>
 		<title>ACI</title>
@@ -101,20 +102,60 @@
 								<li class="bg-green">
 									<a class="nav-link" href="?r=home"><?= Yii::t('app/frontend', 'HOME'); ?> <span class="sr-only">(current)</span></a>
 								</li>
-								<li class="bg-yellow">
-									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'ABOUT'); ?></a>
-								</li>
-								<li class="bg-red">
-									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CRITERIA'); ?></a>
-								</li>
-								<li class="bg-sky">
-									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'JOURNAL SUBMISSION'); ?></a>
-								</li>
-								<li class="bg-purple">
-									<a class="nav-link" href="#"><?= Yii::t('app/frontend', 'CONTACT'); ?></a>
-								</li>
+								<?php 
+									function get_href($menu){
+										if(empty($menu['menu_type']) || $menu['menu_type']=='content'){
+											$href=Url::to(['/contents/index', 'id'=>$menu['id']]);
+										}else if($menu['menu_type']=='url'){
+											$href=$menu['contents'];
+										}
+										return $href;
+									}
+									function generate_menu($id){
+										
+										$is_content = new Expression("CASE WHEN menu_type='url' THEN contents ELSE 0 END AS contents");
+										
+										$pageContents_Main = CttPageContents::find()->select(['id','menu_id', 'elm_class', 'menu_type', 'name', $is_content])->where(['id' => $id, 'lang_id' => 1])->all();
+										$pageContents_Sub = CttPageContents::find()->select(['id','menu_id', 'elm_class', 'menu_type', 'name', $is_content])->where(['menu_id' => $id, 'lang_id' => 1])->all();
+										//echo '<pre>';print_r($pageContents_Main);echo '</pre>';
+										
+										$menu_sub = '';
+										if(count($pageContents_Sub)>0){
+											$menu_sub = "<ul class=\"dropdown-menu\" role=\"menu\">";
+											$href = '';
+											foreach($pageContents_Sub as $sub_menu){
+												$href = get_href($sub_menu);
+												$menu_sub .= "<li><a href=\"{$href}\">{$sub_menu['name']}</a></li>";
+											}
+											if (\Yii::$app->user->can('createData') ){
+												$menu_sub .= "<li><a href=\"#\">* Add New Page *</a></li>";
+											}
+											$menu_sub .= "</ul>";
+										}
+										
+										echo "<li class=\"{$pageContents_Main[0]['elm_class']}\">";
+										if(count($pageContents_Sub)>0){
+											echo "<a class=\"nav-link dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\" href=\"#\">".Yii::t('app/frontend', $pageContents_Main[0]['name'])."<span class=\"caret\"></span></a>";
+										}else{
+											echo "<a class=\"nav-link\" href=\"".get_href($pageContents_Main[0])."\">".Yii::t('app/frontend', $pageContents_Main[0]['name'])."</a>";
+										}
+										echo $menu_sub;
+										echo "</li>";
+									}
+								?>
+								
+								<?=generate_menu(1)?> <!-- ABOUT -->
+								
+								<?=generate_menu(2)?> <!-- CRITERIA -->
+								
+								<?=generate_menu(3)?> <!-- JOURNAL SUBMISSION -->
+								
+								<?=generate_menu(4)?> <!-- CONTACT -->
+								
+								<?=generate_menu(5)?> <!-- DOWNLOAD -->
+								
 								<?php if (\Yii::$app->user->can('createData') || \Yii::$app->user->can('updateData')) { ?>
-									<li class="bg-sky">
+									<li class="bg-yellow">
 										<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
 											<?= Yii::t('app/frontend', 'Admin'); ?>
 											<span class="caret"></span>
@@ -126,6 +167,7 @@
 											<li class="divider"></li>
 											<li><a href="#">User Management</a></li>
 											<li><a href="?r=articles">Article Management</a></li>
+											<li><a href="#">Issue Management</a></li>
 											<li><a href="#">Author Management</a></li>
 											<li><a href="#">Journal Management</a></li>
 											<li><a href="#">Publisher Management</a></li>
@@ -135,7 +177,6 @@
 											<li><a href="#">Subject Area Management</a></li>
 											<li><a href="#">Affiliation Management</a></li>
 											<li><a href="#">Document Type Management</a></li>
-											<li><a href="#">Issue Management</a></li>
 											<li class="divider"></li>
 										</ul>
 									</li>
@@ -184,7 +225,7 @@
 			</div><!-- End Breadcrumbs -->
 			<!-- Content -->
 			<div class="row">
-				<div class="col-sm-12 col-md-12 content-container">
+				<div class="col-sm-12 col-md-12 content-container" style="padding: 0 5px 5px 5px;">
 					<?php echo $content; ?>
 				</div>
 			</div>

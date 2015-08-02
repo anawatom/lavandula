@@ -13,7 +13,7 @@ use yii\helpers\Json;
 /**
  * StaticdataLanguagesController implements the CRUD actions for CttStaticdataLanguages model.
  */
-class CttStaticdataLanguagesController extends base\AppController
+class StaticdataLanguagesController extends base\AppController
 {
     public function behaviors()
     {

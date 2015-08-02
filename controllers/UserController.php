@@ -141,9 +141,15 @@ class UserController extends base\AppController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+            FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
+        } catch (Exception $e) {
+            Yii::trace($e->getMessage(), 'debug');
+            FlashMessage::showError(['msg' => $e->getMessage()]);
+        }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => $id]);
     }
 
     /**

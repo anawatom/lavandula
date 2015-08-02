@@ -52,7 +52,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => 'status',
+                'value' => function($model) {
+                    return Yii::$app->params['status'][$model->status];
+                },
                 'enableSorting' => true,
             ],
             [

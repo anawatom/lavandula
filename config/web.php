@@ -77,6 +77,7 @@ $config = [
                             'app/ctt_staticdata_organization' => 'ctt_staticdata_organization.php',
                             'app/ctt_staticdata_subjectarea' => 'ctt_staticdata_subjectarea.php',
                             'app/ctt_staticdata_subjectarea_class' => 'ctt_staticdata_subjectarea_class.php',
+                            'app/ctt_staticdata_historyindication' => 'ctt_staticdata_historyindication.php',
                             'app/user' => 'user.php',
                         ],
                         // - ctt_staticdata_docsources

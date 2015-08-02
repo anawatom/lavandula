@@ -50,7 +50,6 @@ use kartik\detail\DetailView;
         [
             'attribute' => 'username',
             'options' => [
-                'readonly' => true
             ],
         ],
         [
@@ -97,14 +96,3 @@ use kartik\detail\DetailView;
     ]
 ]);
 ?>
-
-<script>
-    $(function() {
-        $('#user-email').on('blur', function() {
-            var value = $(this).val();
-            var splitValue = value.split('@');
-
-            $('#user-username').val(splitValue[0]);
-        });
-    });
-</script>

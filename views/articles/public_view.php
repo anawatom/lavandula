@@ -2,12 +2,13 @@
 	use yii\helpers\Html;
 	use yii\helpers\Url;
 ?>
+
+<div style="height:10px;"></div>
+
+
 <div class="page-header">
   <h1>View Article <br /><small>Title Name</small></h1>
 </div>
-<pre>
-<?php //print_r($references);?>
-</pre>
 <?php if (!empty($data)) : ?>
 <h3>Publisher</h3>
 <p><?=$data[0]['publisher']?></p>
@@ -18,7 +19,7 @@
 <h3>Abstract</h3>
 <p><?=$data[0]['abstract']?></p>
 <div>
-<?php if (true || \Yii::$app->user->can('createData') || \Yii::$app->user->can('updateData')) : ?>
+<?php if (\Yii::$app->user->can('ArticleManagement')) : ?>
 	<?=Html::Button('Edit Article Details')?>
 <?php endif ?>
 </div>

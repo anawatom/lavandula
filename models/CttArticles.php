@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "ctt_articles".
@@ -236,5 +237,24 @@ class CttArticles extends \yii\db\ActiveRecord
         }
 
         return $id;
+    }
+    
+    public static function recently()
+    {
+    	$query = CttArticles::find();
+    
+    	$dataProvider = new ActiveDataProvider([
+    			'query' => $query->select(['id', 'title', 'authors', 'created_dtm']),
+    			'pagination' => [
+			        'pageSize' => 10,
+			    ]
+    	]);
+    
+    	$query->where('lang_id = (select min(lang_id)
+                        from ctt_articles t2
+                        where t2.id = ctt_articles.id
+                        group by id)');
+    
+    	return $dataProvider;
     }
 }

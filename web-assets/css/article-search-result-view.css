@@ -1,0 +1,39 @@
+ul.countrys a img{
+	vertical-align:middle;padding: 0 5px 3px 0;
+}
+.panel-body{
+	padding: 0 !important;
+}
+ul.search-results{
+	
+}
+ul.search-results li{
+	
+	border-bottom: 1px solid #EEE;
+}
+ul.search-results p.title{
+	font-weight: bold;
+	color: #428bca;
+}
+ul.search-results p.authors{
+	font-style: italic;
+}
+ul.search-results p.journal{
+	
+}
+ul.search-results p.cited{
+	text-align:center;
+	font-weight:bold;
+}
+ul.search-results p.title, ul.search-results p.journal{
+	margin: 0;
+}
+div.row{
+	margin:10px 0 15px 0 !important;
+}
+div.panel.refine-by p{
+	margin: 0px !important;
+}
+div.panel.refine-by p.refine-chk{
+	text-align:right;
+}

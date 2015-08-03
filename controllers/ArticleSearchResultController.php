@@ -53,7 +53,7 @@ class ArticleSearchResultController extends base\AppController
         $connection = Yii::$app->db;
 
         $data = $connection
-                ->createCommand('SELECT * FROM ctt_articles
+                ->createCommand('SELECT id, title, authors, journal, cited FROM ctt_articles
                                     WHERE status = :status
                                     AND lang_id=(SELECT min(lang_id)
                                                 FROM ctt_articles t2
@@ -65,7 +65,31 @@ class ArticleSearchResultController extends base\AppController
                                     'keyword' => $keyword
                                 ])
                 ->queryAll();
+        
+        $this->setParameter('data', $data);
+        $this->setParameter('keyword', $keyword);
+        $this->setParameter('refineByYears', $this->getRefineByYears($keyword));
 
-        return $this->render('index', ['data' => $data, 'keyword' => $keyword]);
+        return $this->cRender('index');
+    }
+    
+    private function getRefineByYears($keyword){
+    	$connection = Yii::$app->db;
+
+        $data = $connection
+                ->createCommand('
+			    	SELECT ctt_issues.year, COUNT(1) as cnt FROM ctt_articles, ctt_issues
+			    	WHERE ctt_articles.issue_id=ctt_issues.id AND ctt_articles.status = :status
+			    			AND lang_id=(SELECT min(lang_id)
+			    					FROM ctt_articles t2
+			    					WHERE t2.id=ctt_articles.id
+			    					AND MATCH (title_fulltext, abstract_fulltext, author_keyword, auto_keyword)
+			    					AGAINST (:keyword) GROUP BY id) GROUP BY ctt_issues.year ORDER BY ctt_issues.year DESC',
+                                [
+                                    'status' => 'A',
+                                    'keyword' => $keyword
+                                ])
+                ->queryAll();
+        return $data;
     }
 }

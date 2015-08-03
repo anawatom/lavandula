@@ -164,7 +164,7 @@ class StaticdataDocumenttypeController extends base\AppController
     {
         try {
             $this->findModel($id, $lang_id)->delete();
-            FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+            FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
         } catch (Exception $e) {
             FlashMessage::showSuccess(['msg' => 'Delete failed.']);
         }

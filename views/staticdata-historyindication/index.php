@@ -5,15 +5,15 @@ use yii\helpers\Url;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\UserSearch */
+/* @var $searchModel app\models\CttStaticdataHistoryindicationsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app/user', 'Users');
+$this->title = Yii::t('app/ctt_staticdata_historyindication', 'Ctt Staticdata Historyindications');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="ctt-staticdata-historyindications-index">
 
-    <?= GridView::widget([
+   <?= GridView::widget([
         'bordered' => true,
         'striped' => false,
         'condensed' => false,
@@ -28,48 +28,36 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                'attribute' => 'role',
+                'attribute' => 'lang',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => function($model) {
-                    return $model->role->name;
-                },
+                'value' => 'lang',
                 'enableSorting' => true,
             ],
             [
-                'attribute' => 'username',
+                'attribute' => 'name',
                 'headerOptions' => ['class' => 'center-content'],
-                'value' => 'username',
+                'value' => 'name',
                 'enableSorting' => true,
             ],
-            [
-                'attribute' => 'password',
-                'headerOptions' => ['class' => 'center-content'],
-                'value' => function($model) {
-                    return '********';
-                },
-                'enableSorting' => true,
-            ],
-            [
-                'attribute' => 'status',
-                'headerOptions' => ['class' => 'center-content'],
-                'value' => function($model) {
-                    return Yii::$app->params['status'][$model->status];
-                },
-                'enableSorting' => true,
-            ],
-            [
-                'attribute' => 'login_time',
-                'headerOptions' => ['class' => 'center-content'],
-                'value' => 'login_time',
-                'enableSorting' => true,
-            ],
-
 
             [
                 'class' => 'kartik\grid\ActionColumn',
                 'header' => 'Actions',
                 'headerOptions' => ['class' => 'center-content'],
                 'contentOptions' => ['class' => 'center-content'],
+                'template'=>'{view} {update}',
+                'buttons'=>[
+                    'view' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
+                                                ['public-view', 'id' => $model->id],
+                                                ['title' => Yii::t('app/frontend', 'View')]);
+                            },
+                    'update' => function ($url, $model) {
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>',
+                                                ['lang-list', 'id' => $model->id],
+                                                ['title' => Yii::t('app/frontend', 'Update')]);
+                            },
+                ],
             ],
         ],
         'panel'=>[
@@ -77,9 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> '.Html::encode($this->title).'</h3>',
             'headingOptions' => ['class' => 'no-border-radius'],
             'before' => '<div class="clearfix"></div>'
-                        .$this->render('_search', ['model' => $searchModel, 'roles' => $roles])
-                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/user', 'Create User'),
-                                ['create'],
+                        .$this->render('_search', ['model' => $searchModel])
+                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_historyindication', 'Create Ctt Staticdata Historyindications'),
+                                ['lang-list'],
                                 ['class' => 'btn btn-success']),
             ],
         ]);

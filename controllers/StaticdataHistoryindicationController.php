@@ -10,15 +10,14 @@ use yii\filters\VerbFilter;
 use app\components\FlashMessage;
 use app\components\GlobalVariable;
 use app\helpers\ErrorHelper;
-use app\models\CttStaticdataOrganizations;
-use app\models\CttStaticdataOrganizationsSearch;
+use app\models\CttStaticdataHistoryindications;
+use app\models\CttStaticdataHistoryindicationsSearch;
 use app\models\CttStaticdataLanguages;
-use app\models\CttStaticdataAffiliations;
 
 /**
- * StaticdataOrganizationController implements the CRUD actions for CttStaticdataOrganizations model.
+ * StaticdataHistoryindicationController implements the CRUD actions for CttStaticdataHistoryindications model.
  */
-class StaticdataOrganizationController extends base\AppController
+class StaticdataHistoryindicationController extends base\AppController
 {
     public function behaviors()
     {
@@ -33,12 +32,12 @@ class StaticdataOrganizationController extends base\AppController
     }
 
     /**
-     * Lists all CttStaticdataOrganizations models.
+     * Lists all CttStaticdataHistoryindications models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CttStaticdataOrganizationsSearch();
+        $searchModel = new CttStaticdataHistoryindicationsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -52,17 +51,20 @@ class StaticdataOrganizationController extends base\AppController
 
         return $this->render('public_view',
                             [
-                                'model' => CttStaticdataOrganizations::find()->where(['id' => $id])->all()
+                                'model' => CttStaticdataHistoryindications::find()
+                                            ->where(['id' => $id])
+                                            ->orderBy('lang_id')
+                                            ->all()
                             ]);
     }
 
     /**
-     * Lists all CttStaticdataOrganizations models in each name.
+     * Lists all CttStaticdataHistoryindications models in each name.
      * @return mixed
      */
     public function actionLangList()
     {
-        $searchModel = new CttStaticdataOrganizationsSearch();
+        $searchModel = new CttStaticdataHistoryindicationsSearch();
         $dataProvider = $searchModel->searchLangList(Yii::$app->request->queryParams);
 
         // GlobalVariable::fetchData();
@@ -73,8 +75,9 @@ class StaticdataOrganizationController extends base\AppController
         ]);
     }
 
+
     /**
-     * Displays a single CttStaticdataOrganizations model.
+     * Displays a single CttStaticdataHistoryindications model.
      * @param integer $id
      * @param integer $lang_id
      * @return mixed
@@ -87,17 +90,21 @@ class StaticdataOrganizationController extends base\AppController
     }
 
     /**
-     * Creates a new CttStaticdataOrganizations model.
+     * Creates a new CttStaticdataHistoryindications model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         try {
-            $model = new CttStaticdataOrganizations();
-
-            $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->asArray()->all();
-            $cttStaticdataAffiliation = CttStaticdataAffiliations::getAffiliationList();
+            $currentUser = Yii::$app->user->getIdentity();
+            $model = new CttStaticdataHistoryindications();
+            $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->all();
+            $renderParams = [
+                                'model' => $model,
+                                'currentUser' => $currentUser,
+                                'cttStaticdataLanguages' => $cttStaticdataLanguages
+                            ];
 
             if (Yii::$app->request->post()) {
                 $model->load(Yii::$app->request->post());
@@ -112,18 +119,10 @@ class StaticdataOrganizationController extends base\AppController
                     // Handler error in here.
                     Yii::trace(print_r($model->errors, true), 'Debug');
                     Yii::$app->session->setFlash('kv-detail-error', 'Save failed.');
-                    return $this->render('create', [
-                        'model' => $model,
-                        'cttStaticdataLanguage' => $cttStaticdataLanguage,
-                        'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
-                    ]);
+                    return $this->render('create', $renderParams);
                 }
             } else {
-                return $this->render('create', [
-                    'model' => $model,
-                    'cttStaticdataLanguage' => $cttStaticdataLanguage,
-                    'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
-                ]);
+                return $this->render('create', $renderParams);
             }
         } catch (Exception $e) {
             ErrorHelper::showErrorForCU($e, ['create', 'id' => $model->id]);
@@ -131,7 +130,7 @@ class StaticdataOrganizationController extends base\AppController
     }
 
     /**
-     * Updates an existing CttStaticdataOrganizations model.
+     * Updates an existing CttStaticdataHistoryindications model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @param integer $lang_id
@@ -139,10 +138,14 @@ class StaticdataOrganizationController extends base\AppController
      */
     public function actionUpdate($id, $lang_id)
     {
+        $currentUser = Yii::$app->user->getIdentity();
         $model = $this->findModel($id, $lang_id);
-
-        $cttStaticdataLanguage = CttStaticdataLanguages::find()->orderBy('id')->all();
-        $cttStaticdataAffiliation = CttStaticdataAffiliations::getAffiliationList();
+        $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->all();
+        $renderParams = [
+                            'model' => $model,
+                            'currentUser' => $currentUser,
+                            'cttStaticdataLanguages' => $cttStaticdataLanguages
+                        ];
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
@@ -153,23 +156,15 @@ class StaticdataOrganizationController extends base\AppController
             } else {
                 Yii::trace(print_r($model->errors, true), 'Debug');
                 Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
-                return $this->render('update', [
-                    'model' => $model,
-                    'cttStaticdataLanguage' => $cttStaticdataLanguage,
-                    'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
-                ]);
+                return $this->render('update', $renderParams);
             }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-                'cttStaticdataLanguage' => $cttStaticdataLanguage,
-                'cttStaticdataAffiliation' => $cttStaticdataAffiliation,
-            ]);
+            return $this->render('update', $renderParams);
         }
     }
 
     /**
-     * Deletes an existing CttStaticdataOrganizations model.
+     * Deletes an existing CttStaticdataHistoryindications model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @param integer $lang_id
@@ -189,16 +184,16 @@ class StaticdataOrganizationController extends base\AppController
     }
 
     /**
-     * Finds the CttStaticdataOrganizations model based on its primary key value.
+     * Finds the CttStaticdataHistoryindications model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @param integer $lang_id
-     * @return CttStaticdataOrganizations the loaded model
+     * @return CttStaticdataHistoryindications the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id, $lang_id)
     {
-        if (($model = CttStaticdataOrganizations::findOne(['id' => $id, 'lang_id' => $lang_id])) !== null) {
+        if (($model = CttStaticdataHistoryindications::findOne(['id' => $id, 'lang_id' => $lang_id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

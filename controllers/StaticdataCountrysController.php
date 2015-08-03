@@ -37,7 +37,7 @@ class StaticdataCountrysController extends base\AppController
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['superadmin'],
+                        'roles' => ['superAdministrator'],
                     ],
                 ],
             ],

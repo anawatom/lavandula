@@ -154,7 +154,7 @@
 								
 								<?=generate_menu(5)?> <!-- DOWNLOAD -->
 								
-								<?php if (\Yii::$app->user->can('createData') || \Yii::$app->user->can('updateData')) { ?>
+								<?php if (\Yii::$app->user->can('superAdministrator')) { ?>
 									<li class="bg-yellow">
 										<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" href="#">
 											<?= Yii::t('app/frontend', 'Admin'); ?>
@@ -165,7 +165,7 @@
 											<li><a href="#">Article Importer</a></li>
 											<li><a href="#">Article Approval</a></li>
 											<li class="divider"></li>
-											<li><a href="#">User Management</a></li>
+											<li><a href="?r=user">User Management</a></li>
 											<li><a href="?r=articles">Article Management</a></li>
 											<li><a href="#">Issue Management</a></li>
 											<li><a href="#">Author Management</a></li>
@@ -174,9 +174,11 @@
 											<li class="divider"></li>
 											<li><a href="?r=staticdata-countrys">Country Management</a></li>
 											<li><a href="?r=staticdata-languages">Language Management</a></li>
-											<li><a href="#">Subject Area Management</a></li>
-											<li><a href="#">Affiliation Management</a></li>
-											<li><a href="#">Document Type Management</a></li>
+											<li><a href="?r=staticdata-subjectarea">Subject Area Management</a></li>
+											<li><a href="?r=staticdata-affiliation">Affiliation Management</a></li>
+											<li><a href="?r=staticdata-documenttype">Document Type Management</a></li>
+											<li><a href="?r=staticdata-documentsource">Document Source Management</a></li>
+											<li><a href="?r=staticdata-sourcetype">Source Type Management</a></li>
 											<li class="divider"></li>
 										</ul>
 									</li>

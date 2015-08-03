@@ -1,0 +1,32 @@
+ul.countrys a img{
+	vertical-align:middle;padding: 0 5px 3px 0;
+}
+.panel-body{
+	padding: 0 !important;
+}
+ul.recently-article{
+	list-style-type: none;
+    padding-left: 13px;
+}
+ul.recently-article li{
+	padding: 10px 0;
+	border-bottom: 1px solid #EEE;
+}
+ul.recently-article p.article-release{
+	background: gray;
+    margin-right: 10px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+}
+ul.recently-article a.article-link{
+/* 	text-decoration: none; */
+}
+ul.recently-article p.title{
+	font-weight: bold;
+	color: #428bca;
+}
+ul.recently-article p.authors{
+	font-style: italic;
+}

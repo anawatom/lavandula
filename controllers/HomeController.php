@@ -7,6 +7,7 @@ use yii\base\ErrorException;
 use yii\helpers\Html;
 use yii\web\Session;
 use kartik\growl\Growl;
+use app\models\CttArticles;
 
 class HomeController extends base\AppController
 {
@@ -39,11 +40,22 @@ class HomeController extends base\AppController
 			// this is a error code
 			//$result = WA_PROVINCE::find()->where('aaaaaaaaaaaaaaaaaaaaaaaaa', aaa);
 		//TESTSSETET 
+		
+			//SELECT COUNT(1) as volume FROM (SELECT COUNT(1) AS volume FROM `ctt_articles` GROUP BY `id`) t1
+			$connection = Yii::$app->db;
+			
+			$article_count = $connection
+			->createCommand('SELECT COUNT(1) as cnt FROM (SELECT COUNT(1) AS volume FROM `ctt_articles` GROUP BY `id`) t1')->queryAll();
+			$this->setParameter('article_count',$article_count[0]['cnt']);
+			
+			$recently_articles = CttArticles::recently();
+			$this->setParameter('recently_articles', $recently_articles->getModels());
+			
 		} 
 		catch (ErrorException $e) {
 			$this->handlerError($e);
 		}
-		return $this->render('index');
+		return $this->cRender('index');
     }
 	
     public function actionSite()

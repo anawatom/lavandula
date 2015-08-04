@@ -227,7 +227,7 @@
 			</div><!-- End Breadcrumbs -->
 			<!-- Content -->
 			<div class="row">
-				<div class="col-sm-12 col-md-12 content-container" style="padding: 0 5px 5px 5px;">
+				<div class="col-sm-12 col-md-12 content-container">
 					<?php echo $content; ?>
 				</div>
 			</div>

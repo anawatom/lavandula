@@ -70,7 +70,6 @@ class CttStaticdataCountrysSearch extends CttStaticdataCountrys
             'lang_id' => $this->lang_id,
             'created_dtm' => $this->created_dtm,
             'modified_dtm' => $this->modified_dtm,
-            'status' => 'A',
         ]);
 
         // $query->andFilterWhere(['like', 'lang', $this->lang])

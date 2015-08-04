@@ -23,8 +23,6 @@ use yii\behaviors\TimestampBehavior;
  */
 class CttStaticdataCountrys extends ActiveRecord
 {
-
-
     public function behaviors()
     {
         return [
@@ -77,7 +75,7 @@ class CttStaticdataCountrys extends ActiveRecord
         ];
     }
 
-    public function getId() 
+    public function getId()
     {
         $id = '';
         $data = parent::find()->where(['name' => $this->name])->one();
@@ -89,6 +87,16 @@ class CttStaticdataCountrys extends ActiveRecord
         }
 
         return $id;
+    }
+
+    public static function getCountryList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_countrys t2
+                        where t2.id = ctt_staticdata_countrys.id
+                        group by id)')
+                ->all();
     }
 
     /**

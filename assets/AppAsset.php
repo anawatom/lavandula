@@ -61,6 +61,7 @@ class AppAsset extends AssetBundle {
        'web-assets/css/loading.css',
        'web-assets/css/all-krajee.css',
        'web-assets/css/main.css',
+       'web-assets/css/override.css',
     ];
 
 

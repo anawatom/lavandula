@@ -1,0 +1,37 @@
+/**
+ Override Bootstrap 
+ ***************************/
+.navbar-nav {
+	margin: 0;
+}
+.breadcrumb {
+	margin-bottom: 0;
+}
+.panel-heading {
+	border-radius: 0px
+}
+/* End Override Bootstrap */
+
+/**
+ Override krajee
+ ************************* */
+.kv-buttons-1 a {
+	color: #fff;
+}
+.kv-buttons-1 a:hover {
+	color: #fff;
+}
+.panel-footer {
+	text-align: center;
+}
+.panel-footer a {
+	color: #fff;
+}
+/*** Tab-X  */
+.tabs-above.tab-bordered .tab-content {
+	border: 0;
+}
+/************************* */
+/* End Override krajee */
+
+

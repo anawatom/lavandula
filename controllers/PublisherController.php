@@ -12,6 +12,7 @@ use app\components\GlobalVariable;
 use app\helpers\ErrorHelper;
 use app\models\CttPublishers;
 use app\models\CttPublishersSearch;
+use app\models\CttPublishersRevs;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataCountrys;
 
@@ -98,8 +99,6 @@ class PublisherController extends base\AppController
                                 : $model->getId();
 
                 if ($result = $model->save()) {
-                    // TODO: Add these data to ctt_publisher_revs table
-
                     FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
                     return $this->redirect(['index', 'id' => $model->id]);
                 } else {

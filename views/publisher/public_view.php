@@ -15,12 +15,13 @@ foreach ($model as $key => $value) {
     $footer = Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
                         .Yii::t('app/frontend', 'Back'),
                         Url::to(['index']),
-                        ['class' => 'btn btn-danger'])
-                .' '
-                .Html::a('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> '
+                        ['class' => 'btn btn-danger']);
+    if (\Yii::$app->user->can('publisherManagement')) {
+        $footer .= ' '.Html::a('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> '
                         .Yii::t('app/frontend', 'Edit'),
                         Url::to(['update', 'id' => $value->id, 'lang_id' => $value->lang_id]),
                         ['class' => 'btn btn-primary']);
+    }
 
     array_push($items,  [
         'label' => '<i class="glyphicon glyphicon-book"></i> '.$value->lang,

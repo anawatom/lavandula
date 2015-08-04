@@ -8,8 +8,6 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Create Ctt Publishers');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Publishers'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_historyindication', 'Ctt Staticdata Historyindications(Language List)'),
-                                    'url' => ['lang-list', 'id' => Yii::$app->request->getQueryParam('id')]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-publishers-create">

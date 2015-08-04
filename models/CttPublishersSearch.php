@@ -19,7 +19,7 @@ class CttPublishersSearch extends CttPublishers
     {
         return [
             [['id', 'lang_id', 'country_id'], 'integer'],
-            [['lang', 'aliasid', 'name', 'main_publisher', 'editor', 'address', 'country', 'phone', 'website', 'email', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'safe'],
+            [['lang', 'aliasid', 'name', 'main_publisher', 'address', 'country', 'phone', 'website', 'email', 'created_by', 'created_dtm', 'modified_by', 'modified_dtm'], 'safe'],
         ];
     }
 
@@ -45,9 +45,6 @@ class CttPublishersSearch extends CttPublishers
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => 20,
-            ],
         ]);
 
         $this->load($params);
@@ -58,6 +55,16 @@ class CttPublishersSearch extends CttPublishers
             return $dataProvider;
         }
 
+        // Conditions for filter
+        $query->where('lang_id = (select min(lang_id)
+                        from ctt_publishers t2
+                        where t2.id = ctt_publishers.id
+                        and t2.name like :name
+                        group by id)',
+                        [
+                            ':name' => ($this->name)? '%'.$this->name.'%': '%%',
+                        ]);
+
         $query->andFilterWhere([
             'id' => $this->id,
             'lang_id' => $this->lang_id,
@@ -66,18 +73,18 @@ class CttPublishersSearch extends CttPublishers
             'modified_dtm' => $this->modified_dtm,
         ]);
 
-        $query->andFilterWhere(['like', 'lang', $this->lang])
-            ->andFilterWhere(['like', 'aliasid', $this->aliasid])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'main_publisher', $this->main_publisher])
-            ->andFilterWhere(['like', 'editor', $this->editor])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'website', $this->website])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'created_by', $this->created_by])
-            ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
+        // $query->andFilterWhere(['like', 'lang', $this->lang])
+        //     ->andFilterWhere(['like', 'aliasid', $this->aliasid])
+        //     ->andFilterWhere(['like', 'name', $this->name])
+        //     ->andFilterWhere(['like', 'main_publisher', $this->main_publisher])
+        //     ->andFilterWhere(['like', 'editor', $this->editor])
+        //     ->andFilterWhere(['like', 'address', $this->address])
+        //     ->andFilterWhere(['like', 'country', $this->country])
+        //     ->andFilterWhere(['like', 'phone', $this->phone])
+        //     ->andFilterWhere(['like', 'website', $this->website])
+        //     ->andFilterWhere(['like', 'email', $this->email])
+        //     ->andFilterWhere(['like', 'created_by', $this->created_by])
+        //     ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
 
         return $dataProvider;
     }

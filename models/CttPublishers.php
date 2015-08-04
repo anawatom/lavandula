@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "ctt_publishers".
@@ -32,8 +35,22 @@ use Yii;
  * @property CttPublisherRevs[] $cttPublisherRevs
  * @property CttStaticdataCountrys $country0
  */
-class CttPublishers extends \yii\db\ActiveRecord
+class CttPublishers extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_dtm', 'modified_dtm'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'modified_dtm',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -54,9 +71,10 @@ class CttPublishers extends \yii\db\ActiveRecord
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],
             [['aliasid', 'country', 'phone', 'fax'], 'string', 'max' => 100],
-            [['name', 'main_publisher', 'website', 'email'], 'string', 'max' => 200],
+            [['name', 'main_publisher', 'website'], 'string', 'max' => 200],
             [['address'], 'string', 'max' => 500],
-            [['status'], 'string', 'max' => 1]
+            [['status'], 'string', 'max' => 1],
+            [['email'], 'email']
         ];
     }
 
@@ -86,6 +104,20 @@ class CttPublishers extends \yii\db\ActiveRecord
             'modified_by' => Yii::t('app', 'Modified By'),
             'modified_dtm' => Yii::t('app', 'Modified Dtm'),
         ];
+    }
+
+    public function getId()
+    {
+        $id = '';
+        $data = parent::find()->where(['name' => $this->name])->one();
+
+        if (empty($data)) {
+            $id = CttSequences::getValue('PUBLISHER');
+        } else {
+           $id = $data->id;
+        }
+
+        return $id;
     }
 
     /**

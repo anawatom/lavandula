@@ -12,6 +12,16 @@ $this->params['breadcrumbs'][] = $this->title;
 $items = [];
 
 foreach ($model as $key => $value) {
+    $footer = Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
+                        .Yii::t('app/frontend', 'Back'),
+                        Url::to(['index']),
+                        ['class' => 'btn btn-danger'])
+                .' '
+                .Html::a('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span> '
+                        .Yii::t('app/frontend', 'Edit'),
+                        Url::to(['update', 'id' => $value->id, 'lang_id' => $value->lang_id]),
+                        ['class' => 'btn btn-primary']);
+
     array_push($items,  [
         'label' => '<i class="glyphicon glyphicon-book"></i> '.$value->lang,
         'content' => DetailView::widget([
@@ -19,7 +29,16 @@ foreach ($model as $key => $value) {
                         'attributes' => [
                             'id',
                             'lang',
+                            'aliasid',
                             'name',
+                            'name_fulltext',
+                            'main_publisher',
+                            'address',
+                            'country',
+                            'phone',
+                            'fax',
+                            'website',
+                            'email',
                             [
                                 'attribute' => 'status',
                                 'value' => Yii::$app->params['status'][$value->status],
@@ -32,12 +51,9 @@ foreach ($model as $key => $value) {
                         'panel' => [
                             'heading' => $value->name,
                             'type' => DetailView::TYPE_PRIMARY,
-                            'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
-                                            .Yii::t('app/frontend', 'Back'),
-                                            Url::to(['index']),
-                                            ['class' => 'btn btn-danger']),
+                            'footer' => $footer,
                             'footerOptions' => [
-                                'tag' => 'div'
+                                'tag' => 'div',
                             ],
                         ],
                         'buttons1' => '',
@@ -47,7 +63,9 @@ foreach ($model as $key => $value) {
 
 echo TabsX::widget([
     'items'=>$items,
-    'position'=>TabsX::POS_LEFT,
+    'position'=>TabsX::POS_ABOVE,
     'bordered'=>true,
     'encodeLabels'=>false
 ]);
+
+echo '<br><br><br><br><br>List of Journal<br><br><br><br><br><br><br><br><br><br><br><br>';

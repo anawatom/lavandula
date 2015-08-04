@@ -33,11 +33,11 @@ class StaticdataCountrysController extends base\AppController
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['superAdministrator'],
+                        'actions' => ['index', 'lang-list', 'create', 'update', 'delete'],
+                        'roles' => ['countryManagement'],
                     ],
                 ],
             ],

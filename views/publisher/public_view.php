@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\tabs\TabsX;
 use kartik\detail\DetailView;
+use kartik\grid\GridView;
+use app\models\CttJournals;
 
 $this->title = $model[0]->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
@@ -24,6 +26,7 @@ foreach ($model as $key => $value) {
     }
 
     array_push($items,  [
+        'headerOptions' => ['class' => 'publisher-tabs'],
         'label' => '<i class="glyphicon glyphicon-book"></i> '.$value->lang,
         'content' => DetailView::widget([
                         'model' => $value,
@@ -60,6 +63,8 @@ foreach ($model as $key => $value) {
                         'buttons1' => '',
                     ])
     ]);
+
+   $journalContent = $this->render('_journal_list', ['model' => $value]);
 }
 
 echo TabsX::widget([
@@ -69,4 +74,12 @@ echo TabsX::widget([
     'encodeLabels'=>false
 ]);
 
-echo '<br><br><br><br><br>List of Journal<br><br><br><br><br><br><br><br><br><br><br><br>';
+echo $journalContent;
+?>
+<script>
+    $(function() {
+        $('.publisher-tabs').on('click',function() {
+            alert('OK');
+        });
+    });
+</script>

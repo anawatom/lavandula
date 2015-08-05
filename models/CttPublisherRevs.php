@@ -65,6 +65,18 @@ class CttPublisherRevs extends \yii\db\ActiveRecord
         ];
     }
 
+    public function inseratData($data)
+    {
+        $this->publisher_id = $data['publisher_id'];
+        $this->lang_id = $data['lang_id'];
+        $this->lang = $data['lang'];
+        $this->rev_type_id = $data['rev_type_id'];
+        $this->rev_type = $data['rev_type'];
+        $this->contents = $data['contents'];
+
+        return $this->save();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'aliasid',
             'name:ntext',
             'main_publisher',
-            'editor',
             'address',
             'country_id',
             'country',

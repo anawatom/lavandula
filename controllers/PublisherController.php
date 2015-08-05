@@ -139,7 +139,13 @@ class PublisherController extends base\AppController
             $model->load(Yii::$app->request->post());
 
             if ($model->save()) {
-                // TODO: Add these data to ctt_publisher_revs table
+                $cttPublishersRevs = new CttPublishersRevs();
+                $cttPublishersRevs->insertData(['publisher_id' => $model->publisher_id,
+                                                'lang_id' => $model->lang_id,
+                                                'lang' => $model->lang,
+                                                'rev_type_id' => '',
+                                                'rev_type' => '',
+                                                'contents' => '']);
 
                 FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
                 return $this->redirect(['index', 'id' => $model->id]);

@@ -3,6 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
+use app\helpers\ErrorHelper;
 
 /**
  * This is the model class for table "ctt_publisher_revs".
@@ -22,8 +26,22 @@ use Yii;
  * @property CttPublishers $publisher
  * @property CttStaticdataRevisiontypes $revType
  */
-class CttPublisherRevs extends \yii\db\ActiveRecord
+class CttPublisherRevs extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_dtm', 'modified_dtm'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'modified_dtm',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -41,7 +59,8 @@ class CttPublisherRevs extends \yii\db\ActiveRecord
             [['publisher_id', 'lang_id', 'rev_type_id'], 'required'],
             [['publisher_id', 'lang_id', 'rev_type_id'], 'integer'],
             [['created_dtm'], 'safe'],
-            [['lang', 'rev_type', 'contents', 'created_by', 'modified_by', 'modified_dtm'], 'string', 'max' => 45]
+            [['lang', 'rev_type', 'created_by', 'modified_by', 'modified_dtm'], 'string', 'max' => 45],
+            [['contents'], 'string'],
         ];
     }
 
@@ -65,7 +84,7 @@ class CttPublisherRevs extends \yii\db\ActiveRecord
         ];
     }
 
-    public function inseratData($data)
+    public function insertData($data)
     {
         $this->publisher_id = $data['publisher_id'];
         $this->lang_id = $data['lang_id'];
@@ -74,7 +93,11 @@ class CttPublisherRevs extends \yii\db\ActiveRecord
         $this->rev_type = $data['rev_type'];
         $this->contents = $data['contents'];
 
-        return $this->save();
+        if ($this->save()) {
+            return true;
+        } else {
+           ErrorHelper::throwActiveRecordError($this->errors);
+        }
     }
 
     /**

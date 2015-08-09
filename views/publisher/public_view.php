@@ -23,6 +23,19 @@ foreach ($model as $key => $value) {
                         .Yii::t('app/frontend', 'Edit'),
                         Url::to(['update', 'id' => $value->id, 'lang_id' => $value->lang_id]),
                         ['class' => 'btn btn-primary']);
+        /***
+        * Not working when send by POST type
+        *   See in
+        *   https://github.com/yiisoft/yii2/issues/2881
+        */
+        $footer .= ' '.Html::a('<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> '
+                        .Yii::t('app/frontend', 'Delete'),
+                        ['delete', 'id' => $value->id, 'lang_id' => $value->lang_id],
+                        [
+                            'class' => 'btn btn-danger delete-button',
+                            'title' => Yii::t('app/frontend', 'Delete'),
+                            'data-confirm' => Yii::t('app/frontend', 'Are you sure to delete this item?'),
+                        ]);
     }
 
     array_push($items,  [

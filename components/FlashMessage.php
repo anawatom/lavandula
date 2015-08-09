@@ -20,7 +20,7 @@ use kartik\growl\Growl;
 
 class FlashMessage
 {
-	private static $duration = 3000;
+	private static $duration = 10000;
 	private static $showSeparator = false;
 	private static $delay = 300;
 

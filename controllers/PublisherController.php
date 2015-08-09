@@ -32,7 +32,7 @@ class PublisherController extends base\AppController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['get'],
                 ],
             ],
         ];
@@ -195,7 +195,8 @@ class PublisherController extends base\AppController
     public function actionDelete($id, $lang_id)
     {
        try {
-            $this->findModel($id, $lang_id)->delete();
+            $model = $this->findModel($id, $lang_id);
+            $model->delete();
             FlashMessage::showSuccess(['msg' => 'Deleted successfully.']);
         } catch (Exception $e) {
             Yii::trace($e->getMessage(), 'debug');

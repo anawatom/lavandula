@@ -156,6 +156,16 @@ echo DetailView::widget([
     'resetOptions' => [
         'label' => '<span class="glyphicon glyphicon-ban-circle"></span>',
     ],
+    // 'deleteOptions' => [
+    //     'label' => Html::a('<span class="glyphicon glyphicon-remove"></span> '
+    //                     .Yii::t('app/frontend', 'Delete'),
+    //                     ['delete', 'id' => $model->id, 'lang_id' => $model->lang_id],
+    //                     [
+    //                         'class' => 'btn btn-danger delete-button',
+    //                         'title' => Yii::t('app/frontend', 'Delete'),
+    //                         'data-method' => 'post',
+    //                     ]),
+    ],
     'i18n' => [
         'class' => 'yii\i18n\PhpMessageSource',
         'basePath' => '@app/messages',

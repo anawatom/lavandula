@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Html;
 use yii\filters\AccessControl;
@@ -18,6 +19,7 @@ use app\models\CttPublisherRevs;
 use app\models\CttJournalsSearch;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataCountrys;
+use app\models\CttStaticdataRevisiontypes;
 
 /**
  * CttPublishersController implements the CRUD actions for CttPublishers model.
@@ -141,29 +143,32 @@ class PublisherController extends base\AppController
             $model = $this->findModel($id, $lang_id);
             $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->all();
             $cttStaticdataCountrys = CttStaticdataCountrys::getCountryList();
-            $revisionTypes = Yii::$app->params['className'];
+            $revisions = ArrayHelper::map(CttStaticdataRevisiontypes::getRevisiontypeList(),
+                                            'id',
+                                            'class_name');
             $renderParams = [
                                 'model' => $model,
                                 'currentUser' => $currentUser,
                                 'cttStaticdataLanguages' => $cttStaticdataLanguages,
                                 'cttStaticdataCountrys' => $cttStaticdataCountrys,
-                                'revisionType' => Yii::$app->params['className']
+                                'revisions' => $revisions
                             ];
 
             if (Yii::$app->request->post()) {
+                $revisionType = Yii::$app->request->post('revision_type');
                 $model->load(Yii::$app->request->post());
 
                 if ($model->save()) {
-                    // TODO: Need to manage the transection
                     $CttPublisherRevs = new CttPublisherRevs();
-                    $revisionType = 'Publisher';
-                    $content = Html::encode(Json::encode($model));
-                    $CttPublisherRevs->insertData(['publisher_id' => array_search($revisionType, $revisionTypes),
+                    $content = Json::encode($model);
+                    $CttPublisherRevs->insertData(['publisher_id' => $model->id,
                                                     'lang_id' => $model->lang_id,
                                                     'lang' => $model->lang,
-                                                    'rev_type_id' => array_search($revisionType, $revisionTypes),
-                                                    'rev_type' => $revisionType,
-                                                    'contents' => $content]);
+                                                    'rev_type_id' => $revisionType,
+                                                    'rev_type' => $revisions[$revisionType],
+                                                    'contents' => $content,
+                                                    'created_by' => $model->created_by,
+                                                    'modified_by' => $model->modified_by]);
                     $transaction->commit();
 
                     FlashMessage::showSuccess(['msg' => 'Updated successfully.']);

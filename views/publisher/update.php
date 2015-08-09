@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'cttStaticdataLanguages' => $cttStaticdataLanguages,
         'cttStaticdataCountrys' => $cttStaticdataCountrys,
         'currentUser' => $currentUser,
+        'revisions' => $revisions
     ]) ?>
 
 </div>

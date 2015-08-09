@@ -98,6 +98,16 @@ class CttStaticdataRevisiontypes extends ActiveRecord
         return $id;
     }
 
+    public static function getRevisiontypeList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_revisiontypes t2
+                        where t2.id = ctt_staticdata_revisiontypes.id
+                        group by id)')
+                ->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

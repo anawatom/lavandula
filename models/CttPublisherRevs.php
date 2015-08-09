@@ -92,6 +92,8 @@ class CttPublisherRevs extends ActiveRecord
         $this->rev_type_id = $data['rev_type_id'];
         $this->rev_type = $data['rev_type'];
         $this->contents = $data['contents'];
+        $this->created_by = $data['created_by'];
+        $this->modified_by = $data['modified_by'];
 
         if ($this->save()) {
             return true;

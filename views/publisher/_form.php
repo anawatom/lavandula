@@ -8,9 +8,15 @@ use kartik\detail\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\CttPublishers */
 /* @var $form yii\widgets\ActiveForm */
-?>
 
-<?= DetailView::widget([
+$id = Yii::$app->request->getQueryParam('id');
+if (empty($id)) {
+    $backUrl = Url::to(['index']);
+} else {
+    $backUrl = Url::to(['public-view', 'id' => $id]);
+}
+
+echo DetailView::widget([
     'model'=> $model,
     'condensed' => true,
     'hover' => true,
@@ -20,14 +26,21 @@ use kartik\detail\DetailView;
         'type' => DetailView::TYPE_PRIMARY,
         'footer' => Html::a('<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> '
                             .Yii::t('app/frontend', 'Back'),
-                            Url::to(['lang-list',
-                                    'id' => Yii::$app->request->getQueryParam('id')]),
+                            $backUrl,
                             ['class' => 'btn btn-danger']),
         'footerOptions' => [
             'tag' => 'div'
         ],
     ],
     'attributes' => [
+        [
+            'label' => Yii::t('app/ctt_publisher', 'Revision'),
+            'value' => '',
+            'visible' => ($mode == 'edit')? true: false,
+            'rowOptions' => [
+                'id' => 'revisionRows',
+            ]
+        ],
         [
             'attribute' => 'lang_id',
             'label' => Yii::t('app/backend', 'Lang'),
@@ -83,7 +96,6 @@ use kartik\detail\DetailView;
                 'options' => [],
                 'pluginOptions' => ['allowClear' => true, 'width' => '100%'],
                 'pluginEvents' => [
-                    'change' => 'function() { $("#cttpublishers-lang").val( $(this).find("option:selected").text() ); }',
                 ],
             ],
         ],
@@ -151,3 +163,18 @@ use kartik\detail\DetailView;
     ]
 ]);
 ?>
+
+<?php if ($mode == 'edit') : ?>
+    <?php
+        $htmlRevision = '<select id="revisionType" class="form-control" name="revision_type">';
+        foreach ($revisions as $key => $value) {
+            $htmlRevision .= '<option value="'.$key.'">'.$value.'</option>';
+        }
+        $htmlRevision .= '</select>';
+    ?>
+    <script>
+        $(function() {
+            $('#revisionRows .kv-form-attribute').html('<div class="input-group input-group-md"><?= $htmlRevision ?></div>');
+        })
+    </script>
+<?php endif ?>

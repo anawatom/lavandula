@@ -40,25 +40,32 @@ use kartik\grid\GridView;
                 [
                     'attribute' => 'name',
                     'headerOptions' => ['class' => 'center-content'],
-                    'value' => 'name',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        return Html::a($model->name, ['journal/view', 'id' => $model->id, 'lang_id' => $model->lang_id]);
+                    },
                     'enableSorting' => true,
                 ],
                 [
                     'attribute' => 'country_id',
                     'headerOptions' => ['class' => 'center-content'],
-                    'value' => 'country_id',
+                    'label' => Yii::t('app/ctt_staticdata_country', 'Country'),
+                    'value' => function($model) {
+                        return $model->country->name;
+                    },
                     'enableSorting' => true,
                 ],
                 [
                     'attribute' => 'email',
                     'headerOptions' => ['class' => 'center-content'],
-                    'value' => 'website',
+                    'format' => 'email',
+                    'value' => 'email',
                     'enableSorting' => true,
                 ],
                 [
-                    'attribute' => 'email',
+                    'attribute' => 'website',
                     'headerOptions' => ['class' => 'center-content'],
-                    'value' => 'website',
+                    'format' => 'url',
                     'enableSorting' => true,
                 ],
             ],

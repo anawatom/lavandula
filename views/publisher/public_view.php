@@ -31,11 +31,7 @@ foreach ($model as $key => $value) {
         'content' => DetailView::widget([
                         'model' => $value,
                         'attributes' => [
-                            'id',
-                            'lang',
-                            'aliasid',
                             'name',
-                            'name_fulltext',
                             'main_publisher',
                             'address',
                             'country',
@@ -43,14 +39,6 @@ foreach ($model as $key => $value) {
                             'fax',
                             'website',
                             'email',
-                            [
-                                'attribute' => 'status',
-                                'value' => Yii::$app->params['status'][$value->status],
-                            ],
-                            'created_by',
-                            'created_dtm',
-                            'modified_by',
-                            'modified_dtm',
                         ],
                         'panel' => [
                             'heading' => $value->name,

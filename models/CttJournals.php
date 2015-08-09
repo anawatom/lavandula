@@ -199,4 +199,12 @@ class CttJournals extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CttStaticdataSourcetypes::className(), ['id' => 'source_type_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(CttStaticdataCountrys::className(), ['id' => 'country_id']);
+    }
 }

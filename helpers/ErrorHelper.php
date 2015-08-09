@@ -44,4 +44,23 @@ class ErrorHelper extends Exception
 			Controller::redirect(Url::to($redirectTo));
 		}
     }
+
+    /**
+    * This function will throw the Exception object that has an formatted error string
+    * when the ActiveRecord has failed to validate data after saving or updating the data.
+    */
+    public static function throwActiveRecordError($errors)
+    {
+        $strError = '';
+
+        foreach ($errors as $key => $values) {
+            $strError .= $key.': ';
+
+            foreach ($values as $key => $value) {
+                $strError .= $value.'<br>';
+            }
+        }
+
+        throw new Exception($strError);
+    }
 }

@@ -26,7 +26,10 @@ foreach ($model as $key => $value) {
     }
 
     array_push($items,  [
-        'headerOptions' => ['class' => 'publisher-tabs'],
+        'headerOptions' => [
+            'class' => 'publisher-tabs',
+            'data-publisher-id' => $value->id
+        ],
         'label' => '<i class="glyphicon glyphicon-book"></i> '.$value->lang,
         'content' => DetailView::widget([
                         'model' => $value,
@@ -51,23 +54,26 @@ foreach ($model as $key => $value) {
                         'buttons1' => '',
                     ])
     ]);
+}
 
-   $journalContent = $this->render('_journal_list', ['model' => $value]);
+// Add button to create the another language data
+if (Yii::$app->user->can('publisherManagement')) {
+  array_push($items, [
+        'headerOptions' => [
+            'class' => 'publisher-tabs',
+        ],
+        'url' => Url::to(['create', 'id' => $model[0]->id]),
+        'label' => '<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/frontend', 'Add new language')
+        ]);
 }
 
 echo TabsX::widget([
     'items'=>$items,
     'position'=>TabsX::POS_ABOVE,
-    'bordered'=>true,
+    'bordered'=>false,
     'encodeLabels'=>false
 ]);
 
+$journalContent = $this->render('_journal_list', ['dataProvider' => $cttJournals]);
 echo $journalContent;
 ?>
-<script>
-    $(function() {
-        $('.publisher-tabs').on('click',function() {
-            alert('OK');
-        });
-    });
-</script>

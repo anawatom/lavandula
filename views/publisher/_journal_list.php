@@ -9,13 +9,13 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttPublishersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 ?>
-<div class="tab-content list-of-journal-container" data-publisher-id="<?= $model->id ?>">
+<div class="tab-content list-of-journal-container">
 
     <?php
         // https://github.com/yiisoft/yii2/issues/7240
-        $dataProvider = new ActiveDataProvider([
-            'query' => $model->getCttJournals(),
-        ]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => $model->getCttJournals(),
+        // ]);
 
         echo $journalContent = GridView::widget([
             'bordered' => true,
@@ -71,7 +71,7 @@ use kartik\grid\GridView;
             ],
             'panel'=>[
                 'type' => GridView::TYPE_PRIMARY.' no-margin no-border-radius',
-                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> List of Journam</h3>',
+                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> List of Journal</h3>',
                 'headingOptions' => ['class' => 'no-border-radius'],
                 ],
             ]);

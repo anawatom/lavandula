@@ -4,15 +4,18 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Exception;
-use yii\web\NotFoundHttpException;
+use yii\helpers\Json;
+use yii\helpers\Html;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 use app\components\FlashMessage;
 use app\components\GlobalVariable;
 use app\helpers\ErrorHelper;
 use app\models\CttPublishers;
 use app\models\CttPublishersSearch;
-use app\models\CttPublishersRevs;
+use app\models\CttPublisherRevs;
+use app\models\CttJournalsSearch;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataCountrys;
 
@@ -48,15 +51,23 @@ class PublisherController extends base\AppController
         ]);
     }
 
-     public function actionPublicView($id)
+    public function actionPublicView($id)
     {
+        $model = CttPublishers::find()
+                                ->where(['id' => $id])
+                                ->orderBy('lang_id')
+                                ->all();
+        $cttJournalsSearch = new CttJournalsSearch();
+        $cttJournals = $cttJournalsSearch->search([
+                                                    'CttJournalsSearch' => [
+                                                                            'publisher_id' => $model[0]->id
+                                                                            ]
+                                                ]);
 
         return $this->render('public_view',
                             [
-                                'model' => CttPublishers::find()
-                                            ->where(['id' => $id])
-                                            ->orderBy('lang_id')
-                                            ->all()
+                                'model' => $model,
+                                'cttJournals' => $cttJournals
                             ]);
     }
 
@@ -124,38 +135,48 @@ class PublisherController extends base\AppController
      */
     public function actionUpdate($id, $lang_id)
     {
-        $currentUser = Yii::$app->user->getIdentity();
-        $model = $this->findModel($id, $lang_id);
-        $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->all();
-        $cttStaticdataCountrys = CttStaticdataCountrys::getCountryList();
-        $renderParams = [
-                            'model' => $model,
-                            'currentUser' => $currentUser,
-                            'cttStaticdataLanguages' => $cttStaticdataLanguages,
-                            'cttStaticdataCountrys' => $cttStaticdataCountrys
-                        ];
+        try {
+            $transaction = Yii::$app->db->beginTransaction();
+            $currentUser = Yii::$app->user->getIdentity();
+            $model = $this->findModel($id, $lang_id);
+            $cttStaticdataLanguages = CttStaticdataLanguages::find()->orderBy('id')->all();
+            $cttStaticdataCountrys = CttStaticdataCountrys::getCountryList();
+            $revisionTypes = Yii::$app->params['className'];
+            $renderParams = [
+                                'model' => $model,
+                                'currentUser' => $currentUser,
+                                'cttStaticdataLanguages' => $cttStaticdataLanguages,
+                                'cttStaticdataCountrys' => $cttStaticdataCountrys,
+                                'revisionType' => Yii::$app->params['className']
+                            ];
 
-        if (Yii::$app->request->post()) {
-            $model->load(Yii::$app->request->post());
+            if (Yii::$app->request->post()) {
+                $model->load(Yii::$app->request->post());
 
-            if ($model->save()) {
-                $cttPublishersRevs = new CttPublishersRevs();
-                $cttPublishersRevs->insertData(['publisher_id' => $model->publisher_id,
-                                                'lang_id' => $model->lang_id,
-                                                'lang' => $model->lang,
-                                                'rev_type_id' => '',
-                                                'rev_type' => '',
-                                                'contents' => '']);
+                if ($model->save()) {
+                    // TODO: Need to manage the transection
+                    $CttPublisherRevs = new CttPublisherRevs();
+                    $revisionType = 'Publisher';
+                    $content = Html::encode(Json::encode($model));
+                    $CttPublisherRevs->insertData(['publisher_id' => array_search($revisionType, $revisionTypes),
+                                                    'lang_id' => $model->lang_id,
+                                                    'lang' => $model->lang,
+                                                    'rev_type_id' => array_search($revisionType, $revisionTypes),
+                                                    'rev_type' => $revisionType,
+                                                    'contents' => $content]);
+                    $transaction->commit();
 
-                FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
-                return $this->redirect(['index', 'id' => $model->id]);
+                    FlashMessage::showSuccess(['msg' => 'Updated successfully.']);
+                    return $this->redirect(['index', 'id' => $model->id]);
+                } else {
+                    ErrorHelper::throwActiveRecordError($model->errors);
+                }
             } else {
-                Yii::trace(print_r($model->errors, true), 'Debug');
-                Yii::$app->session->setFlash('kv-detail-error', 'Update failed.');
                 return $this->render('update', $renderParams);
             }
-        } else {
-            return $this->render('update', $renderParams);
+        } catch (Exception $e) {
+            $transaction->rollback();
+            ErrorHelper::showErrorForCU($e, ['update', 'id' => $model->id, 'lang_id' => $model->lang_id]);
         }
     }
 

@@ -55,6 +55,18 @@ class CttJournalsSearch extends CttJournals
             return $dataProvider;
         }
 
+        Yii::trace(print_r($this,true), 'debug');
+
+        // Conditions for filter
+        $query->where('lang_id = (select min(lang_id)
+                        from ctt_journals t2
+                        where t2.id = ctt_journals.id
+                        and t2.name like :name
+                        group by id)',
+                        [
+                            ':name' => ($this->name)? '%'.$this->name.'%': '%%',
+                        ]);
+
         $query->andFilterWhere([
             'id' => $this->id,
             'lang_id' => $this->lang_id,
@@ -65,35 +77,36 @@ class CttJournalsSearch extends CttJournals
             'country_id' => $this->country_id,
             'publisher_id' => $this->publisher_id,
             'organization_id' => $this->organization_id,
+            'publisher_id' => $this->publisher_id,
             'created_dtm' => $this->created_dtm,
             'modified_dtm' => $this->modified_dtm,
         ]);
 
-        $query->andFilterWhere(['like', 'lang', $this->lang])
-            ->andFilterWhere(['like', 'alias_id', $this->alias_id])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'name_fulltext', $this->name_fulltext])
-            ->andFilterWhere(['like', 'abbrev_name', $this->abbrev_name])
-            ->andFilterWhere(['like', 'issn', $this->issn])
-            ->andFilterWhere(['like', 'eissn', $this->eissn])
-            ->andFilterWhere(['like', 'isbn', $this->isbn])
-            ->andFilterWhere(['like', 'coverage', $this->coverage])
-            ->andFilterWhere(['like', 'editor', $this->editor])
-            ->andFilterWhere(['like', 'open_status', $this->open_status])
-            ->andFilterWhere(['like', 'access_status', $this->access_status])
-            ->andFilterWhere(['like', 'source_type', $this->source_type])
-            ->andFilterWhere(['like', 'print_lang', $this->print_lang])
-            ->andFilterWhere(['like', 'history_indication', $this->history_indication])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'fax', $this->fax])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'website', $this->website])
-            ->andFilterWhere(['like', 'subjectarea_class', $this->subjectarea_class])
-            ->andFilterWhere(['like', 'organization', $this->organization])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'created_by', $this->created_by])
-            ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
+        // $query->andFilterWhere(['like', 'lang', $this->lang])
+        //     ->andFilterWhere(['like', 'alias_id', $this->alias_id])
+        //     ->andFilterWhere(['like', 'name', $this->name])
+        //     ->andFilterWhere(['like', 'name_fulltext', $this->name_fulltext])
+        //     ->andFilterWhere(['like', 'abbrev_name', $this->abbrev_name])
+        //     ->andFilterWhere(['like', 'issn', $this->issn])
+        //     ->andFilterWhere(['like', 'eissn', $this->eissn])
+        //     ->andFilterWhere(['like', 'isbn', $this->isbn])
+        //     ->andFilterWhere(['like', 'coverage', $this->coverage])
+        //     ->andFilterWhere(['like', 'editor', $this->editor])
+        //     ->andFilterWhere(['like', 'open_status', $this->open_status])
+        //     ->andFilterWhere(['like', 'access_status', $this->access_status])
+        //     ->andFilterWhere(['like', 'source_type', $this->source_type])
+        //     ->andFilterWhere(['like', 'print_lang', $this->print_lang])
+        //     ->andFilterWhere(['like', 'history_indication', $this->history_indication])
+        //     ->andFilterWhere(['like', 'address', $this->address])
+        //     ->andFilterWhere(['like', 'phone', $this->phone])
+        //     ->andFilterWhere(['like', 'fax', $this->fax])
+        //     ->andFilterWhere(['like', 'email', $this->email])
+        //     ->andFilterWhere(['like', 'website', $this->website])
+        //     ->andFilterWhere(['like', 'subjectarea_class', $this->subjectarea_class])
+        //     ->andFilterWhere(['like', 'organization', $this->organization])
+        //     ->andFilterWhere(['like', 'status', $this->status])
+        //     ->andFilterWhere(['like', 'created_by', $this->created_by])
+        //     ->andFilterWhere(['like', 'modified_by', $this->modified_by]);
 
         return $dataProvider;
     }

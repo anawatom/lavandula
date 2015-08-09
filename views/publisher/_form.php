@@ -165,7 +165,7 @@ echo DetailView::widget([
     //                         'title' => Yii::t('app/frontend', 'Delete'),
     //                         'data-method' => 'post',
     //                     ]),
-    ],
+    // ],
     'i18n' => [
         'class' => 'yii\i18n\PhpMessageSource',
         'basePath' => '@app/messages',

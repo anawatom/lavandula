@@ -71,7 +71,7 @@ use kartik\grid\GridView;
             ],
             'panel'=>[
                 'type' => GridView::TYPE_PRIMARY.' no-margin no-border-radius',
-                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> List of Journal</h3>',
+                'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-globe"></i> '.Yii::t('app/ctt_journal', 'Ctt Journals').'</h3>',
                 'headingOptions' => ['class' => 'no-border-radius'],
                 ],
             ]);

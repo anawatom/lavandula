@@ -89,7 +89,7 @@ echo DetailView::widget([
         ],
         [
             'attribute' => 'country_id',
-            'label' => Yii::t('app/backend', 'Country'),
+            'label' => Yii::t('app/ctt_publisher', 'Country'),
             'type' => DetailView::INPUT_SELECT2,
             'widgetOptions'=>[
                 'data' => ArrayHelper::map($cttStaticdataCountrys, 'id', 'name'),

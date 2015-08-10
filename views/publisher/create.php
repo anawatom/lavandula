@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CttPublishers */
 
-$this->title = Yii::t('app', 'Create Ctt Publishers');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Publishers'), 'url' => ['index']];
+$this->title = Yii::t('app/ctt_publisher', 'Create Ctt Publishers');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_publisher', 'Ctt Publishers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-publishers-create">

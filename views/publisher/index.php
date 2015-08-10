@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\CttPublishersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Ctt Publishers');
+$this->title = Yii::t('app/ctt_publisher', 'Ctt Publishers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ctt-publishers-index">
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'headingOptions' => ['class' => 'no-border-radius'],
             'before' => '<div class="clearfix"></div>'
                         .$this->render('_search', ['model' => $searchModel])
-                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_staticdata_historyindication', 'Create Ctt Staticdata Historyindications'),
+                        .Html::a('<i class="glyphicon glyphicon-plus"></i> '.Yii::t('app/ctt_publisher', 'Create Ctt Publishers'),
                                 ['create'],
                                 ['class' => 'btn btn-success']),
             ],

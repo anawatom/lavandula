@@ -89,9 +89,9 @@ class CttJournals extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'lang_id' => Yii::t('app', 'Lang ID'),
-            'lang' => Yii::t('app', 'Lang'),
+            'id' => Yii::t('app/backend', 'ID'),
+            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang' => Yii::t('app/backend', 'Lang'),
             'alias_id' => Yii::t('app', 'Alias ID'),
             'name' => Yii::t('app', 'Name'),
             'name_fulltext' => Yii::t('app', 'Name Fulltext'),
@@ -120,11 +120,11 @@ class CttJournals extends \yii\db\ActiveRecord
             'subjectarea_class' => Yii::t('app', 'Subjectarea Class'),
             'organization_id' => Yii::t('app', 'Organization ID'),
             'organization' => Yii::t('app', 'Organization'),
-            'status' => Yii::t('app', 'Status'),
-            'created_by' => Yii::t('app', 'Created By'),
-            'created_dtm' => Yii::t('app', 'Created Dtm'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_dtm' => Yii::t('app', 'Modified Dtm'),
+            'status' => Yii::t('app/backend', 'Status'),
+            'created_by' => Yii::t('app/backend', 'Created By'),
+            'created_dtm' => Yii::t('app/backend', 'Created Dtm'),
+            'modified_by' => Yii::t('app/backend', 'Modified By'),
+            'modified_dtm' => Yii::t('app/backend', 'Modified Dtm'),
         ];
     }
 

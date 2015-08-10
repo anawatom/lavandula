@@ -8,7 +8,7 @@ use kartik\grid\GridView;
 use app\models\CttJournals;
 
 $this->title = $model[0]->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_staticdata_affiliation', 'Ctt Staticdata Affiliations'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_publisher', 'Ctt Publishers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $items = [];

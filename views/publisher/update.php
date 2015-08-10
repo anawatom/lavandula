@@ -5,12 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CttPublishers */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Ctt Publishers',
-]) . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ctt Publishers'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Update Ctt Publishers') . ': ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app/ctt_publisher', 'Ctt Publishers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id, 'lang_id' => $model->lang_id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app/frontend', 'Update');
 ?>
 <div class="ctt-publishers-update">
 

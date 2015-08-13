@@ -205,5 +205,7 @@ a.nav-link:hover {
 .center-content {
 	text-align: center;
 }
-
+.content-right {
+	text-align: right;
+}
 

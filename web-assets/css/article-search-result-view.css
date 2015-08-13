@@ -28,8 +28,8 @@ ul.search-results p.cited{
 ul.search-results p.title, ul.search-results p.journal{
 	margin: 0;
 }
-div.row{
-	/*margin:10px 0 15px 0 !important;*/
+div.row.result-list{
+	margin:10px 0 15px 0 !important;
 }
 div.panel.refine-by p{
 	margin: 0px !important;

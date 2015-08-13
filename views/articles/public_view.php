@@ -3,7 +3,71 @@
 	use yii\helpers\Url;
 ?>
 
-<div style="height:10px;"></div>
+
+<!--div style="height:10px;"></div>
+<div class="row content">
+	<div class="col-md-9">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-warning dummy-data refine-by">
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stacked countrys">
+							<li>
+								<div>
+									<div class="col-md-2"><p class="refine-chk"><input type="checkbox" disabled="disabled" /></p></div>
+									<div class="col-md-7"><p class="refine-name">55</p></div>
+									<div class="col-md-3"><p class="refine-cnt">66</p></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-warning dummy-data refine-by">
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stacked countrys">
+							<li>
+								<div>
+									<div class="col-md-2"><p class="refine-chk"><input type="checkbox" disabled="disabled" /></p></div>
+									<div class="col-md-7"><p class="refine-name">55</p></div>
+									<div class="col-md-3"><p class="refine-cnt">66</p></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row content">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-warning dummy-data refine-by">
+					<div class="panel-body">
+						<ul class="nav nav-pills nav-stacked countrys">
+							<li>
+								<div>
+									<div class="col-md-2"><p class="refine-chk"><input type="checkbox" disabled="disabled" /></p></div>
+									<div class="col-md-7"><p class="refine-name">55</p></div>
+									<div class="col-md-3"><p class="refine-cnt">66</p></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div-->
+
 
 
 <div class="page-header">

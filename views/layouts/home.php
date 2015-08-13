@@ -162,7 +162,8 @@
 										</a>
 										<ul class="dropdown-menu" role="menu">
 											<li class="divider"></li>
-											<li><a href="#">Article Importer</a></li>
+											<li><a href="?r=articles/metadata-extractor">PDF Metadata Extractor</a></li>
+											<li><a href="?r=articles/importer">Article Importer</a></li>
 											<li><a href="#">Article Approval</a></li>
 											<li class="divider"></li>
 											<li><a href="?r=user">User Management</a></li>
@@ -227,7 +228,7 @@
 			</div><!-- End Breadcrumbs -->
 			<!-- Content -->
 			<div class="row">
-				<div class="col-sm-12 col-md-12 content-container">
+				<div class="col-sm-12 col-md-12 content-container"  style="padding: 0 5px 5px 5px;">
 					<?php echo $content; ?>
 				</div>
 			</div>

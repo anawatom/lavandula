@@ -82,7 +82,7 @@ class ArticlesController extends base\AppController
     					'status' => 'A',
     					'id' => $id
     			])->queryAll();
-    			$this->setParameter('references', $references);
+    	$this->setParameter('references', $references);
     			 
     	return $this->cRender('public_view');
     	
@@ -194,6 +194,20 @@ class ArticlesController extends base\AppController
         }
 
         return $this->redirect(['lang-list', 'id' => $id]);
+    }
+    
+    public function actionMetadataExtractor(){
+    	return $this->cRender('metadataextractor');
+    }
+    
+    public function actionImporter(){
+    	
+    	return $this->cRender('importer');
+    }
+    
+    public function actionImporterSubmit(){
+    	
+    	return $this->cRender('importer');
     }
 
     /**

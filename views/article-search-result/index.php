@@ -47,7 +47,7 @@
 							<?php $results_count=1; ?>
 							<?php foreach($data as $key=>$row):?>
 							<li>
-								<div class="row">
+								<div class="row result-list">
 									<div class="col-md-1"><p class="result-no"><?=$results_count++?></p></div>
 									<div class="col-md-10">
 										<a href="<?=Url::to(['/articles/public-view', 'id'=>$row['id']]);?>" target="_blank"><p class="title"><?=$row['title']?></p></a>

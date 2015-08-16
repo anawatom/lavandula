@@ -3,6 +3,7 @@
 	use yii\helpers\Html;
 	use yii\helpers\ArrayHelper;
 	use yii\bootstrap\ActiveForm;
+	use kartik\select2\Select2;
 ?>
 <style type="text/css">
 div.head{
@@ -63,7 +64,7 @@ div.cke_show_borders{
 								->dropDownList(ArrayHelper::map($cttStaticdataLanguages, 'id', 'name')) ?>
 						<?= $form->field($model, 'documenttype_id')
 								->dropDownList(ArrayHelper::map($cttStaticdataDocumenttypes, 'id', 'name')) ?>
-						<?= $form->field($model, 'docsources')
+						<?= $form->field($model, 'docsource_id')
 								->inline()
 								->checkboxList(ArrayHelper::map($cttStaticdataDocsources, 'id', 'name'),
 												[
@@ -142,7 +143,14 @@ div.cke_show_borders{
 						<?= $form->field($model, 'codenid') ?>
 						<?= $form->field($model, 'pubmedid') ?>
 						<?= $form->field($model, 'subjectarea_class')
-								->dropDownList(ArrayHelper::map($cttStaticdataSubjectareas, 'id', 'name')) ?>
+								//->dropDownList(ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name'))
+								->widget(Select2::classname(), [
+									'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name'),
+									'options' => ['placeholder' => 'Select a state ...'],
+									'pluginOptions' => [
+										'allowClear' => true
+									],
+								]) ?>
 						<?= $form->field($model, 'journal_id')
 								->dropDownList(ArrayHelper::map($cttJournals, 'id', 'name')) ?>
 						<div class="form-group">

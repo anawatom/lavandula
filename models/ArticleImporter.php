@@ -5,7 +5,10 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use app\models\CttArticles;
+use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataReferences;
+use app\models\CttStaticdataDocumenttypes;
+use app\models\CttStaticdataDocsources;
 use app\models\CttAuthors;
 use app\models\CttIssue;
 
@@ -16,7 +19,7 @@ class ArticleImporter extends Model
 {
     public $lang_id;
     public $documenttype_id;
-    public $docsources;
+    public $docsource_id;
     public $title_en;
     public $abbrev_title_en;
     public $title_local;
@@ -53,7 +56,7 @@ class ArticleImporter extends Model
         return [
                 [['lang_id',
                 'documenttype_id',
-                'docsources',
+                'docsource_id',
                 'title_en',
                 'abbrev_title_en',
                 'title_local',
@@ -116,8 +119,8 @@ class ArticleImporter extends Model
 
         return [
             'lang_id' => Yii::t('app/article_importer', 'Local Language'),
-            'documenttype_id' => Yii::t('app/ctt_article', 'Documenttype ID'),
-            'docsources' => Yii::t('app/ctt_article', 'Docsource'),
+            'documenttype_id' => Yii::t('app/ctt_article', 'Documenttype'),
+            'docsource_id' => Yii::t('app/ctt_article', 'Docsource'),
             'title_en' => Yii::t('app/article_importer', 'Title En'),
             'abbrev_title_en' => Yii::t('app/article_importer', 'Abbrev Title En'),
             'title_local' => Yii::t('app/article_importer', 'Title Local'),
@@ -150,22 +153,46 @@ class ArticleImporter extends Model
 
     public function saveData()
     {
-       
-       
+        // Insert to CttArticles
+        if ($this->title_en &&
+            $this->abbrev_title_en &&
+            $this->author_keyword_en &&
+            $this->abstract_en) {
+            $this->createCttArticles('en');
+        }
+        if ($this->title_local &&
+            $this->abbrev_title_local &&
+            $this->author_keyword_local &&
+            $this->abstract_local) {
+            $this->createCttArticles('local');
+        }
+
+
+        // Insert to CttStaticdataReferences
+        // Insert to CttAuthors
+        // Insert to CttIssue
 
         return true;
     }
 
     private function createCttArticles($lang)
     {
-        // Create ctt_article
         $cttArticle = new CttArticles();
-        $cttArticle->load();
+        if ($lang == 'en') {
+            $cttArticle->lang_id = '1';
+        } else {
+            $cttArticle->lang_id = $this->lang_id;
+        }
+        $cttArticle->lang = CttStaticdataLanguages::findOne($this->lang_id);
+        $cttArticle->documenttype_id = $this->documenttype_id;
+        $cttArticle->documenttype =CttStaticdataDocumenttypes::findOne($this->documenttype_id);
+        $cttArticle->docsource_id = $this->docsource_id;
+        $cttArticle->docsource =CttStaticdataDocsources_id::findOne($this->docsource_id);
 
     //     [
-    //     'lang_id' => '1'
-    //     'documenttype_id' => '1'
-    //     'docsources' => ''
+    //     //'lang_id' => '1'
+    //     //'documenttype_id' => '1'
+    //     //'docsources_id' => ''
     //     'title_en' => ''
     //     'abbrev_title_en' => ''
     //     'title_local' => ''

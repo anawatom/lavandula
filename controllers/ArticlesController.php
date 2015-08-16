@@ -17,7 +17,7 @@ use app\models\ArticleImporter;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataDocumenttypes;
 use app\models\CttStaticdataDocsources;
-use app\models\CttStaticdataSubjectarea;
+use app\models\CttStaticdataSubjectareaClass;
 
 /**
  * ArticlesController implements the CRUD actions for CttArticles model.
@@ -215,7 +215,7 @@ class ArticlesController extends base\AppController
                             'cttStaticdataLanguages' => CttStaticdataLanguages::find()->orderBy('id')->all(),
                             'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
                             'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
-                            'cttStaticdataSubjectareas' => CttStaticdataSubjectarea::getSubjectareaList(),
+                            'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
                             'cttJournals' => CttJournals::getJournalList()
                         ];
         var_dump($postData);

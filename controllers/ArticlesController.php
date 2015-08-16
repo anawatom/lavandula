@@ -218,6 +218,7 @@ class ArticlesController extends base\AppController
                             'cttStaticdataSubjectareas' => CttStaticdataSubjectarea::getSubjectareaList(),
                             'cttJournals' => CttJournals::getJournalList()
                         ];
+        var_dump($postData);
 
         if ($postData) {
             $model->load($postData);
@@ -227,7 +228,6 @@ class ArticlesController extends base\AppController
         } else {
             return $this->render('importer', $renderParams);
         }
-        
     }
 
     public function actionImporterSubmit(){

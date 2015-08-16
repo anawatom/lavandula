@@ -246,22 +246,22 @@ div.cke_show_borders{
 		<div class=" field-authors-name col-md-12">
 			<label class="control-label col-md-1" for="authors-name">Name</label>
 			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors_name[]]" value="">
+				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
 				<div class="help-block help-block-error "></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-organization">Org.</label>
 			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors_organization[]]" value="">
+				<input type="text" class="form-control" name="ArticleImporter[authors][organization][]" value="">
 				<div class="help-block help-block-error "></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
 			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors_affiliation[]]" value="">
+				<input type="text" class="form-control" name="ArticleImporter[authors][affiliation][]" value="">
 				<div class="help-block help-block-error "></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-address">Addr.</label>
 			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors_address[]]" value="">
+				<input type="text" class="form-control" name="ArticleImporter[authors][address][]" value="">
 				<div class="help-block help-block-error "></div>
 			</div>
 		</div>

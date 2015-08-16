@@ -162,36 +162,53 @@ class ArticleImporter extends Model
         $cttArticle = new CttArticles();
         $cttArticle->load();
 
-//          [
-//     'lang_id' => '1'
-//     'documenttype_id' => '1'
-//     'docsources' => ''
-//     'title_en' => ''
-//     'abbrev_title_en' => ''
-//     'title_local' => ''
-//     'abbrev_title_local' => ''
-//     'author_keyword_en' => ''
-//     'author_keyword_local' => ''
-//     'abstract_en' => ''
-//     'abstract_local' => ''
-//     'authors' => ''
-//     'doi' => ''
-//     'link' => ''
-//     'funding' => ''
-//     'correspondence' => ''
-//     'sponsors' => ''
-//     'codenid' => ''
-//     'pubmedid' => ''
-//     'subjectarea_class' => '1'
-//     'journal_id' => '1'
-//     'year' => ''
-//     'volume' => ''
-//     'year_no' => ''
-//     'artnumber' => ''
-//     'page_start' => ''
-//     'page_end' => ''
-//     'page_count' => ''
-// ]
+    //     [
+    //     'lang_id' => '1'
+    //     'documenttype_id' => '1'
+    //     'docsources' => ''
+    //     'title_en' => ''
+    //     'abbrev_title_en' => ''
+    //     'title_local' => ''
+    //     'abbrev_title_local' => ''
+    //     'author_keyword_en' => ''
+    //     'author_keyword_local' => ''
+    //     'abstract_en' => ''
+    //     'abstract_local' => ''
+    //     'authors' => [
+    //         'name' => [
+    //             0 => '1'
+    //             1 => '2'
+    //         ]
+    //         'organization' => [
+    //             0 => '1'
+    //             1 => '2'
+    //         ]
+    //         'affiliation' => [
+    //             0 => '1'
+    //             1 => '2'
+    //         ]
+    //         'address' => [
+    //             0 => '1'
+    //             1 => '2'
+    //         ]
+    //     ]
+    //     'doi' => ''
+    //     'link' => ''
+    //     'funding' => ''
+    //     'correspondence' => ''
+    //     'sponsors' => ''
+    //     'codenid' => ''
+    //     'pubmedid' => ''
+    //     'subjectarea_class' => '1'
+    //     'journal_id' => '1'
+    //     'year' => ''
+    //     'volume' => ''
+    //     'year_no' => ''
+    //     'artnumber' => ''
+    //     'page_start' => ''
+    //     'page_end' => ''
+    //     'page_count' => ''
+    // ]
     }
 
 }

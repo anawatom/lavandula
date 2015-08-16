@@ -18,6 +18,7 @@
  */
 return [
     // Model
+    'Local Language' => 'Local Language' ,
     'Title En' => 'Title EN' ,
     'Abbrev Title En' => 'Abbrev Title EN',
     'Title Local' => 'Title Local',

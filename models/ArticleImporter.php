@@ -4,6 +4,10 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\CttArticles;
+use app\models\CttStaticdataReferences;
+use app\models\CttAuthors;
+use app\models\CttIssue;
 
 /**
  * ArticleImporter is the model behind the login form.
@@ -76,7 +80,7 @@ class ArticleImporter extends Model
                 'artnumber',
                 'page_start',
                 'page_end',
-                'page_count'], 'string']
+                'page_count'], 'string'],
         ];
     }
 
@@ -111,7 +115,7 @@ class ArticleImporter extends Model
         // page_count
 
         return [
-            'lang_id' => Yii::t('app/backend', 'Lang ID'),
+            'lang_id' => Yii::t('app/article_importer', 'Local Language'),
             'documenttype_id' => Yii::t('app/ctt_article', 'Documenttype ID'),
             'docsources' => Yii::t('app/ctt_article', 'Docsource'),
             'title_en' => Yii::t('app/article_importer', 'Title En'),
@@ -142,6 +146,52 @@ class ArticleImporter extends Model
             'page_end' => Yii::t('app/ctt_article', 'Page End'),
             'page_count' => Yii::t('app/ctt_article', 'Page Count')
         ];
+    }
+
+    public function saveData()
+    {
+       
+       
+
+        return true;
+    }
+
+    private function createCttArticles($lang)
+    {
+        // Create ctt_article
+        $cttArticle = new CttArticles();
+        $cttArticle->load();
+
+//          [
+//     'lang_id' => '1'
+//     'documenttype_id' => '1'
+//     'docsources' => ''
+//     'title_en' => ''
+//     'abbrev_title_en' => ''
+//     'title_local' => ''
+//     'abbrev_title_local' => ''
+//     'author_keyword_en' => ''
+//     'author_keyword_local' => ''
+//     'abstract_en' => ''
+//     'abstract_local' => ''
+//     'authors' => ''
+//     'doi' => ''
+//     'link' => ''
+//     'funding' => ''
+//     'correspondence' => ''
+//     'sponsors' => ''
+//     'codenid' => ''
+//     'pubmedid' => ''
+//     'subjectarea_class' => '1'
+//     'journal_id' => '1'
+//     'year' => ''
+//     'volume' => ''
+//     'year_no' => ''
+//     'artnumber' => ''
+//     'page_start' => ''
+//     'page_end' => ''
+//     'page_count' => ''
+// ]
     }
 
 }

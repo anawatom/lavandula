@@ -25,10 +25,16 @@ div.cke_show_borders{
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
+.remove-row-button {
+	cursor: pointer;
+}
+.remove-row-button:hover {
+	text-decoration: none;
+}
 </style>
 <?php
 	$form = ActiveForm::begin([
-		'action' => ['/article/importer-submit'],
+		'action' => ['articles/importer'],
 		'method' => 'post',
 		'layout' => 'horizontal',
 		'fieldConfig' => [
@@ -42,7 +48,6 @@ div.cke_show_borders{
 								],
 		]
 	]);
-
 ?>
 <div style="clear:both;padding:10px 0;"></div>
 <div class="row content">
@@ -82,7 +87,28 @@ div.cke_show_borders{
 									'options' => [
 									]
 								]) ?>
-						<?= $form->field($model, 'authors') ?>
+						<?php //$form->field($model, 'authors', [
+						//	'template' => "{label}\n{beginWrapper}\n{endWrapper}",
+						//	'horizontalCssClasses' => [
+						//								'offset' => '',
+						//								'label' => 'col-md-3',
+						//								'wrapper' => 'col-md-9 authors-input-container',
+						//								'error' => '',
+						//								'hint' => '',
+						//							],
+						//	]) ?>
+						<div class="form-group field-articleimporter-authors">
+							<label class="control-label col-md-3" for="articleimporter-authors">Authors</label>
+							<div class="col-md-9">
+								<div class="col-md-12 authors-input-container"></div>
+								<div class="col-md-12">
+									<a class="btn btn-primary add-author-button">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+										<?= Yii::t('app/article_importer', 'Add Author') ?>
+									</a>
+								</div>
+							</div>
+						</div>
 						<div class="form-group">
 							<?= $form->field($model, 'doi', [
 								'options' => [
@@ -198,8 +224,11 @@ div.cke_show_borders{
 						</div>
 						<div class="form-group">
 							<div class="col-md-offset-4 col-md-4">
-								<?= Html::submitButton(Yii::t('app/frontend', 'Save'), ['class' => 'btn btn-primary']) ?>
-								<?= Html::a(Yii::t('app/frontend', 'Reset'), Url::to(['staticdata-countrys/index']), ['class' => 'btn btn-danger']) ?>
+								<?= Html::submitButton('<span class="glyphicon glyphicon-save" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Save'),
+														['class' => 'btn btn-primary']) ?>
+								<?= Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Reset'),
+											Url::to(['staticdata-countrys/index']),
+											['class' => 'btn btn-danger']) ?>
 							</div>
 						</div>
 					</div>
@@ -209,6 +238,35 @@ div.cke_show_borders{
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+<div id="authors_template" class="hidden">
+	<div class="form-group authors-input-form-group">
+		<div class="col-md-12 content-right">
+			<a class="remove-row-button">[-]</a>
+		</div>
+		<div class=" field-authors-name col-md-12">
+			<label class="control-label col-md-1" for="authors-name">Name</label>
+			<div class="col-md-2">
+				<input type="text" class="form-control" name="ArticleImporter[authors_name[]]" value="">
+				<div class="help-block help-block-error "></div>
+			</div>
+			<label class="control-label col-md-1" for="authors-organization">Org.</label>
+			<div class="col-md-2">
+				<input type="text" class="form-control" name="ArticleImporter[authors_organization[]]" value="">
+				<div class="help-block help-block-error "></div>
+			</div>
+			<label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
+			<div class="col-md-2">
+				<input type="text" class="form-control" name="ArticleImporter[authors_affiliation[]]" value="">
+				<div class="help-block help-block-error "></div>
+			</div>
+			<label class="control-label col-md-1" for="authors-address">Addr.</label>
+			<div class="col-md-2">
+				<input type="text" class="form-control" name="ArticleImporter[authors_address[]]" value="">
+				<div class="help-block help-block-error "></div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript">
 // 	var exampleContainer = document.getElementById('example');
@@ -237,5 +295,23 @@ div.cke_show_borders{
 		language: 'en',
 		toolbar:'Full'				
 	});
-		
+
+	function addAuthorInput() {
+		var $authorsInputContainer = $('.authors-input-container');
+		var $authorsTemplate = $('#authors_template');
+
+		$authorsInputContainer.append($authorsTemplate.html());
+		$authorsInputContainer
+		.find('.remove-row-button:last')
+		.on('click', function() {
+			var $this = $(this);
+			$this.closest('.authors-input-form-group').remove();
+		});
+	}
+
+	$(function() {
+		$('.add-author-button').on('click', function() {
+			addAuthorInput()
+		}).trigger('click');
+	})
 </script>

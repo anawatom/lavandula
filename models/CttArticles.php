@@ -225,7 +225,7 @@ class CttArticles extends \yii\db\ActiveRecord
         return $this->hasOne(CttStaticdataOrganizations::className(), ['id' => 'organization_id']);
     }
 
-    public function getId() 
+    public function getId()
     {
         $id = '';
         $data = parent::find()->where(['name' => $this->name])->one();

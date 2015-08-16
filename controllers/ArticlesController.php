@@ -208,7 +208,7 @@ class ArticlesController extends base\AppController
 
     public function actionImporter()
     {
-
+        $postData = Yii::$app->request->post();
         $model = new ArticleImporter();
         $renderParams = [
                             'model' => $model,
@@ -219,7 +219,15 @@ class ArticlesController extends base\AppController
                             'cttJournals' => CttJournals::getJournalList()
                         ];
 
-        return $this->render('importer', $renderParams);
+        if ($postData) {
+            $model->load($postData);
+            $model->saveData();
+
+            return $this->render('importer', $renderParams);
+        } else {
+            return $this->render('importer', $renderParams);
+        }
+        
     }
 
     public function actionImporterSubmit(){

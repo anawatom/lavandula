@@ -1,6 +1,7 @@
 <?php 
 	use yii\helpers\Url;
 	use yii\helpers\Html;
+	use yii\helpers\ArrayHelper;
 	use yii\bootstrap\ActiveForm;
 ?>
 <style type="text/css">
@@ -25,21 +26,24 @@ div.cke_show_borders{
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 </style>
-<?php $form = ActiveForm::begin([
-	'action' => ['/article/importer-submit'],
-	'method' => 'post',
-	'layout' => 'horizontal',
-	'fieldConfig' => [
-	'template' => "{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
-	'horizontalCssClasses' => [
-								'offset' => '',
-								'label' => '',
-								'wrapper' => 'col-md-12',
-								'error' => '',
-								'hint' => '',
-							],
-	]
-]); ?>
+<?php
+	$form = ActiveForm::begin([
+		'action' => ['/article/importer-submit'],
+		'method' => 'post',
+		'layout' => 'horizontal',
+		'fieldConfig' => [
+		'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+		'horizontalCssClasses' => [
+									'offset' => '',
+									'label' => 'col-md-3',
+									'wrapper' => 'col-md-9',
+									'error' => '',
+									'hint' => '',
+								],
+		]
+	]);
+
+?>
 <div style="clear:both;padding:10px 0;"></div>
 <div class="row content">
 	<div class="col-md-12">
@@ -50,216 +54,152 @@ div.cke_show_borders{
 						<h3 class="panel-title">Article Details</h3>
 					</div>
 					<div class="panel-body">
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Local Language
-							</div>
-							<div class="col-md-3">
-								<select name="articles[lang_id]" class="form-control">
-									<option value="2">Thai</option>
-								</select>
-							</div>
+						<?= $form->field($model, 'lang_id')
+								->dropDownList(ArrayHelper::map($cttStaticdataLanguages, 'id', 'name')) ?>
+						<?= $form->field($model, 'documenttype_id')
+								->dropDownList(ArrayHelper::map($cttStaticdataDocumenttypes, 'id', 'name')) ?>
+						<?= $form->field($model, 'docsources')
+								->inline()
+								->checkboxList(ArrayHelper::map($cttStaticdataDocsources, 'id', 'name'),
+												[
+													'itemOptions' => [
+																	'class' => ''
+																]
+												]) ?>
+						<?= $form->field($model, 'title_en') ?>
+						<?= $form->field($model, 'abbrev_title_en') ?>
+						<?= $form->field($model, 'title_local') ?>
+						<?= $form->field($model, 'abbrev_title_local') ?>
+						<?= $form->field($model, 'author_keyword_en') ?>
+						<?= $form->field($model, 'author_keyword_local') ?>
+						<?= $form->field($model, 'abstract_en')
+								->textArea([
+									'options' => [
+									]
+								]) ?>
+						<?= $form->field($model, 'abstract_local')
+								->textArea([
+									'options' => [
+									]
+								]) ?>
+						<?= $form->field($model, 'authors') ?>
+						<div class="form-group">
+							<?= $form->field($model, 'doi', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-3',
+															'wrapper' => 'col-md-3',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
+							<?= $form->field($model, 'link',
+								[
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-2',
+															'wrapper' => 'col-md-4',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
 						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Document Type
-							</div>
-							<div class="col-md-3">
-								<select name="articles[documenttype_id]" class="form-control">
-									<option value="1">Article</option>
-								</select>
-							</div>
+						<?= $form->field($model, 'funding') ?>
+						<?= $form->field($model, 'correspondence') ?>
+						<?= $form->field($model, 'sponsors') ?>
+						<?= $form->field($model, 'codenid') ?>
+						<?= $form->field($model, 'pubmedid') ?>
+						<?= $form->field($model, 'subjectarea_class')
+								->dropDownList(ArrayHelper::map($cttStaticdataSubjectareas, 'id', 'name')) ?>
+						<?= $form->field($model, 'journal_id')
+								->dropDownList(ArrayHelper::map($cttJournals, 'id', 'name')) ?>
+						<div class="form-group">
+							<?= $form->field($model, 'year', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-3',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
+							<?= $form->field($model, 'volume', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-1',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
+							<?= $form->field($model, 'year_no', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-2',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
 						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Document Source
-							</div>
-							<div class="col-md-3">
-								<input id="docsource-1" type="checkbox" name="articles[docsources][]" checked="checked" value="1" /><label for="docsource-1">ACI</label>
-								<input id="docsource-1" type="checkbox" name="articles[docsources][]" value="2" /><label for="docsource-1">TCI</label>
-							</div>
+						<?= $form->field($model, 'artnumber') ?>
+						<div class="form-group">
+							<?= $form->field($model, 'page_start', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-3',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
+							<?= $form->field($model, 'page_end', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-1',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
+							<?= $form->field($model, 'page_count', [
+								'options' => [
+									'class' => '',
+								],
+								'horizontalCssClasses' => [
+															'offset' => '',
+															'label' => 'col-md-2',
+															'wrapper' => 'col-md-2',
+															'error' => '',
+															'hint' => '',
+														],
+								]) ?>
 						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								EN Title
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Abbrev EN Title
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[abbrev_title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Local Title
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Abbrev Local Title
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[abbrev_title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								EN Abstract
-							</div>
-							<div class="col-md-10">
-								<textarea id="abstract-en" name="articles[abstract_en]"></textarea>
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Local Abstract
-							</div>
-							<div class="col-md-10">
-								<textarea id="abstract-local" name="articles[title_en]"></textarea>
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Authors
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" data-role="tagsinput" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								DOI
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[abbrev_title_en]" class="form-control" style="width:100%;" />
-							</div>
-							<div class="col-md-2 head">
-								Fulltext URL
-							</div>
-							<div class="col-md-6">
-								<input type="text" name="articles[link]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Funding Details
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Correspondence Address
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Sponsors
-							</div>
-							<div class="col-md-10">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								CODEN ID
-							</div>
-							<div class="col-md-3">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Pubmed ID
-							</div>
-							<div class="col-md-3">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Subject Area
-							</div>
-							<div class="col-md-3">
-								<select name="articles[documenttype_id]" class="form-control">
-									<option value="1001">General</option>
-								</select>
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Journal
-							</div>
-							<div class="col-md-10">
-								<select name="articles[documenttype_id]" class="form-control">
-									<option value="1001">Kasetsart Journal (Natural Science)</option>
-								</select>
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Issue Years
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-							<div class="col-md-2 head">
-								Volume
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-							<div class="col-md-2 head">
-								Year No.
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Art. No.
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-2 head">
-								Page Start
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-							<div class="col-md-2 head">
-								Page End
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-							<div class="col-md-2 head">
-								Page Count
-							</div>
-							<div class="col-md-2">
-								<input type="text" name="articles[title_en]" class="form-control" style="width:100%;" />
-							</div>
-						</div>
-						<div class="row custom1">
-							<div class="col-md-12">
-								<button class="">Submit</button>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-4">
+								<?= Html::submitButton(Yii::t('app/frontend', 'Save'), ['class' => 'btn btn-primary']) ?>
+								<?= Html::a(Yii::t('app/frontend', 'Reset'), Url::to(['staticdata-countrys/index']), ['class' => 'btn btn-danger']) ?>
 							</div>
 						</div>
 					</div>
@@ -269,6 +209,7 @@ div.cke_show_borders{
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+
 <script type="text/javascript">
 // 	var exampleContainer = document.getElementById('example');
 	
@@ -288,11 +229,11 @@ div.cke_show_borders{
 // 		{ name: 'wiris', items : [ 'ckeditor_wiris_formulaEditor' ]}
 	];			
 	
-	CKEDITOR.inline('abstract-en', {
+	CKEDITOR.inline('articleimporter-abstract_en', {
 		language: 'en',
 		toolbar:'Full'
 	});
-	CKEDITOR.inline('abstract-local', {
+	CKEDITOR.inline('articleimporter-abstract_local', {
 		language: 'en',
 		toolbar:'Full'				
 	});

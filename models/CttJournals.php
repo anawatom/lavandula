@@ -128,6 +128,16 @@ class CttJournals extends \yii\db\ActiveRecord
         ];
     }
 
+     public static function getJournalList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_journals t2
+                        where t2.id = ctt_journals.id
+                        group by id)')
+                ->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

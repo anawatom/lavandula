@@ -93,6 +93,16 @@ class CttStaticdataDocumenttypes extends ActiveRecord
         return $id;
     }
 
+    public static function getDocumenttypeList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_documenttypes t2
+                        where t2.id = ctt_staticdata_documenttypes.id
+                        group by id)')
+                ->all();
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -12,6 +12,12 @@ use app\components\GlobalVariable;
 use app\helpers\ErrorHelper;
 use app\models\CttArticles;
 use app\models\CttSequences;
+use app\models\CttJournals;
+use app\models\ArticleImporter;
+use app\models\CttStaticdataLanguages;
+use app\models\CttStaticdataDocumenttypes;
+use app\models\CttStaticdataDocsources;
+use app\models\CttStaticdataSubjectarea;
 
 /**
  * ArticlesController implements the CRUD actions for CttArticles model.
@@ -30,16 +36,16 @@ class ArticlesController extends base\AppController
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['superadmin'],
-                    ],
-                ],
-            ],
+            // 'access' => [
+            //     'class' => AccessControl::className(),
+            //     'only' => ['index'],
+            //     'rules' => [
+            //         [
+            //             'allow' => true,
+            //             'roles' => ['superadmin'],
+            //         ],
+            //     ],
+            // ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -199,12 +205,23 @@ class ArticlesController extends base\AppController
     public function actionMetadataExtractor(){
     	return $this->cRender('metadataextractor');
     }
-    
-    public function actionImporter(){
-    	
-    	return $this->cRender('importer');
+
+    public function actionImporter()
+    {
+
+        $model = new ArticleImporter();
+        $renderParams = [
+                            'model' => $model,
+                            'cttStaticdataLanguages' => CttStaticdataLanguages::find()->orderBy('id')->all(),
+                            'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
+                            'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
+                            'cttStaticdataSubjectareas' => CttStaticdataSubjectarea::getSubjectareaList(),
+                            'cttJournals' => CttJournals::getJournalList()
+                        ];
+
+        return $this->render('importer', $renderParams);
     }
-    
+
     public function actionImporterSubmit(){
     	
     	return $this->cRender('importer');

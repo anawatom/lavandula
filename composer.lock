@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dfe7625ddcfd3e57b3f7c510a33e4bc0",
+    "hash": "f72966b557dabb616239b63c34c575d7",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -57,16 +57,16 @@
         },
         {
             "name": "bower-asset/free-jqgrid",
-            "version": "v4.9.1",
+            "version": "v4.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/free-jqgrid/jqGrid.git",
-                "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb"
+                "reference": "c6bc3a028e24c25dc2bcdb682f7027bdab540b11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
-                "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
+                "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/c6bc3a028e24c25dc2bcdb682f7027bdab540b11",
+                "reference": "c6bc3a028e24c25dc2bcdb682f7027bdab540b11",
                 "shasum": ""
             },
             "require": {
@@ -400,16 +400,16 @@
         },
         {
             "name": "himiklab/yii2-jqgrid-widget",
-            "version": "1.1.9",
+            "version": "1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/himiklab/yii2-jqgrid-widget.git",
-                "reference": "87917e818d7ff4acbdf286ed6417899e5d93d9b3"
+                "reference": "fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/himiklab/yii2-jqgrid-widget/zipball/87917e818d7ff4acbdf286ed6417899e5d93d9b3",
-                "reference": "87917e818d7ff4acbdf286ed6417899e5d93d9b3",
+                "url": "https://api.github.com/repos/himiklab/yii2-jqgrid-widget/zipball/fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103",
+                "reference": "fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103",
                 "shasum": ""
             },
             "require": {
@@ -441,7 +441,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-19 19:54:18"
+            "time": "2015-08-08 18:28:26"
         },
         {
             "name": "kartik-v/bootstrap-tabs-x",
@@ -811,7 +811,7 @@
         },
         {
             "name": "kartik-v/yii2-widget-select2",
-            "version": "dev-master",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-select2.git",
@@ -978,16 +978,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727"
+                "reference": "f42b2eb80f61992438661b01d0d74c6738e2ff38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
-                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f42b2eb80f61992438661b01d0d74c6738e2ff38",
+                "reference": "f42b2eb80f61992438661b01d0d74c6738e2ff38",
                 "shasum": ""
             },
             "require": {
@@ -1062,7 +1062,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-07-11 02:37:59"
+            "time": "2015-08-05 22:00:30"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1472,16 +1472,16 @@
         },
         {
             "name": "yiisoft/yii2-debug",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "5c7081b2be71c61d3a50d978b31edc3e0b6f2f97"
+                "reference": "1b302e67521d46feb2413d9d96ca94ed82b39b0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/5c7081b2be71c61d3a50d978b31edc3e0b6f2f97",
-                "reference": "5c7081b2be71c61d3a50d978b31edc3e0b6f2f97",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/1b302e67521d46feb2413d9d96ca94ed82b39b0e",
+                "reference": "1b302e67521d46feb2413d9d96ca94ed82b39b0e",
                 "shasum": ""
             },
             "require": {
@@ -1515,7 +1515,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2015-05-10 22:08:56"
+            "time": "2015-08-06 16:14:06"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -1620,9 +1620,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kartik-v/yii2-widget-select2": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

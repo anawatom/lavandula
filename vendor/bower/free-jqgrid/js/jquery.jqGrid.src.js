@@ -2,13 +2,13 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license jqGrid 4.9.1 - free jqGrid: https://github.com/free-jqgrid/jqGrid
+ * @license jqGrid 4.9.2 - free jqGrid: https://github.com/free-jqgrid/jqGrid
  * Copyright (c) 2008-2014, Tony Tomov, tony@trirand.com
  * Copyright (c) 2014-2015, Oleg Kiriljuk, oleg.kiriljuk@ok-soft-gmbh.com
  * Dual licensed under the MIT and GPL licenses
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl-2.0.html
- * Date: 2015-07-23
+ * Date: 2015-08-10
  */
 //jsHint options
 /*jshint evil:true, eqeqeq:false, eqnull:true, devel:true */
@@ -332,7 +332,7 @@
 
 	$.extend(true, jgrid, {
 		/** @const */
-		version: "4.8.0",
+		version: "4.9.2",
 		/** @const */
 		productName: "free jqGrid",
 		defaults: {},
@@ -2421,11 +2421,12 @@
 						self.resizing = { idx: i, startX: startX, sOL: startX, moved: false, delta: startX - x.pageX };
 						self.curGbox = $(p.rs);
 						self.curGbox.prependTo("body"); // change the parent to be able to move over the ranges of the gBox
-						self.curGbox.css({ display: "block", left: startX, top: y[1] + gridOffset.top, height: y[2] });
+						self.curGbox.css({ display: "block", left: startX, top: y[1] + gridOffset.top + 1, height: y[2] });
+						self.curGbox.css("height", (y[2] - (self.curGbox.outerHeight() - self.curGbox.height())) + "px");
 						self.curGbox.data("idx", i);
 						self.curGbox.data("delta", startX - x.pageX);
 						myResizerClickHandler.call(this.curGbox, x);
-						feedback.call(getGridComponent(COMPONENT_NAMES.BODY_TABLE, $bDiv), "resizeStart", x, i);
+						feedback.call(getGridComponent(COMPONENT_NAMES.BODY_TABLE, $bDiv)[0], "resizeStart", x, i);
 						document.onselectstart = function () { return false; };
 						$(document)
 							.bind("mousemove.jqGrid", function (e) {
@@ -2702,7 +2703,7 @@
 				},
 				formatCol = function (pos, rowInd, tv, rawObject, rowId, rdata) {
 					var cm = p.colModel[pos], cellAttrFunc, cellValue = tv, rPrefix,
-						result = "style='", classes = cm.classes,
+						result, classes = cm.classes,
 						styleValue = cm.align ? "text-align:" + cm.align + ";" : "",
 						attrStr, matches, value, tilteValue,
 						encodeAttr = function (v) {
@@ -2779,7 +2780,7 @@
 							}
 						}
 					}
-					result += styleValue + "'";
+					result = styleValue !== "" ? "style='" + styleValue + "'" : "";
 					result += (classes !== undefined ? (" class='" + classes + "'") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
 					result += rest;
 					return result;
@@ -3189,7 +3190,9 @@
 							if (typeof nameReader === "string" || isFunction(nameReader)) {
 								colReader[cmName] = nameReader;
 							}
-							setSimpleColReaderIfPossible(cmName);
+							if (!isFunction(nameReader)) {
+								setSimpleColReaderIfPossible(cmName);
+							}
 						}
 					}
 					nCol = additionalProperties.length;
@@ -3915,19 +3918,19 @@
 					if (p.rowList.length > 0) {
 						str = "<td dir='" + dir + "'>";
 						var pgrecs = getDef("pgrecs");
-						str += "<select class='" + getGuiStyles("pagerSelect", "ui-pg-selbox") + "' role='listbox' " + (pgrecs ? "title='" + pgrecs + "'" : "") + ">";
+						str += "<select class='" + getGuiStyles("pagerSelect", "ui-pg-selbox") + "' " + (pgrecs ? "title='" + pgrecs + "'" : "") + ">";
 						var strnm;
 						for (i = 0; i < p.rowList.length; i++) {
 							strnm = p.rowList[i].toString().split(":");
 							if (strnm.length === 1) {
 								strnm[1] = strnm[0];
 							}
-							str += "<option role=\"option\" value=\"" + strnm[0] + "\"" + ((intNum(p.rowNum, 0) === intNum(strnm[0], 0)) ? " selected=\"selected\"" : "") + ">" + strnm[1] + "</option>";
+							str += "<option value=\"" + strnm[0] + "\"" + ((intNum(p.rowNum, 0) === intNum(strnm[0], 0)) ? " selected=\"selected\"" : "") + ">" + strnm[1] + "</option>";
 						}
 						str += "</select></td>";
 					}
 					if (dir === "rtl") { pgl += str; }
-					if (p.pginput === true) { pginp = "<td dir='" + dir + "'>" + jgrid.format(getDef("pgtext") || "", "<input class='" + getGuiStyles("pagerInput", "ui-pg-input") + "' type='text' size='2' maxlength='7' value='0' role='textbox'/>", "<span id='sp_1_" + pgid + "'>0</span>") + "</td>"; }
+					if (p.pginput === true) { pginp = "<td dir='" + dir + "'>" + jgrid.format(getDef("pgtext") || "", "<input class='" + getGuiStyles("pagerInput", "ui-pg-input") + "' type='text' size='2' maxlength='7' value='0'/>", "<span id='sp_1_" + pgid + "'>0</span>") + "</td>"; }
 					pgid = "#" + jqID(pgid); // modify to id selector
 					if (p.pgbuttons === true) {
 						var po = ["first", "prev", "next", "last"],
@@ -4322,7 +4325,7 @@
 			}
 			if (p.rownumbers) {
 				p.colNames.unshift("");
-				p.colModel.unshift({ name: "rn", width: jgrid.cell_width ? p.rownumWidth + p.cellLayout : p.rownumWidth, labelClasses: "jqgh_rn", classes: "td_rn", sortable: false, resizable: false, hidedlg: true, search: false, align: "center", fixed: true, frozen: true });
+				p.colModel.unshift({ name: "rn", width: jgrid.cell_width ? p.rownumWidth + p.cellLayout : p.rownumWidth, labelClasses: "jqgh_rn", sortable: false, resizable: false, hidedlg: true, search: false, align: "center", fixed: true, frozen: true });
 			}
 			p.iColByName = buildColNameMap(p.colModel);
 			p.xmlReader = extend(true, {
@@ -4402,7 +4405,7 @@
 			for (iCol = 0; iCol < p.colNames.length; iCol++) {
 				cmi = p.colModel[iCol];
 				tooltip = p.headertitles || cmi.headerTitle ? (" title=\"" + stripHtml(typeof cmi.headerTitle === "string" ? cmi.headerTitle : p.colNames[iCol]) + "\"") : "";
-				thead += "<th id='" + p.id + "_" + cmi.name + "' role='columnheader' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
+				thead += "<th id='" + p.id + "_" + cmi.name + "' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
 				idn = cmi.index || cmi.name;
 				switch (cmi.labelAlign) {
 				case "left":
@@ -4448,8 +4451,8 @@
 				}
 			}
 			thead += "</tr></thead>";
-			$self0.append(thead);
-			$(ts.tHead)
+			var hTable = $("<table class='" + getGuiStyles("hTable", "ui-jqgrid-htable") + "' style='width:1px' role='presentation' aria-labelledby='gbox_" + p.id + "'" + (isMSIE7 ? " cellspacing='0'" : "") + ">" + thead + "<tbody><tr><td></td></tr></tbody></table>");
+			$(hTable[0].tHead)
 				.children("tr")
 				.children("th")
 				.hover(
@@ -4457,7 +4460,7 @@
 					function () { $(this).removeClass(hoverStateClasses); }
 				);
 			if (p.multiselect) {
-				$(p.cb, ts).bind("click", function () {
+				$(p.cb, hTable).bind("click", function () {
 					clearArray(p.selarrrow); // p.selarrrow = [];
 					var highlightClass = getGuiStyles("states.select"), toCheck, emp = [],
 						iColCb = p.iColByName.cb,
@@ -4505,6 +4508,7 @@
 			}
 			p.widthOrg = p.width;
 			setInitialColWidth();
+			hTable.css("width", p.tblwidth + "px");
 			$(eg).css("width", grid.width + "px")
 				.append("<div class='" + getGuiStyles("resizer", "ui-jqgrid-resize-mark") + "' id='" + p.rsId + "'>&#160;</div>");
 			$(p.rs)
@@ -4537,7 +4541,7 @@
 			if (p.footerrow) { tfoot += "<table role='presentation' style='width:" + p.tblwidth + "px' class='ui-jqgrid-ftable'" + (isMSIE7 ? " cellspacing='0'" : "") + "><tbody><tr role='row' class='" + getGuiStyles("rowFooter", "footrow footrow-" + dir) + "'>"; }
 			var firstr = "<tr class='jqgfirstrow' role='row' style='height:auto'>";
 			p.disableClick = false;
-			$("th", ts.tHead.rows[0])
+			$("th", hTable[0].tHead.rows[0])
 				.each(function (j) {
 					var cm = p.colModel[j], nm = cm.name, $th = $(this),
 						$sortableDiv = $th.children("div"),
@@ -4581,7 +4585,7 @@
 						if (p.multiSort) {
 							var notLso = cm.lso === "desc" ? "asc" : "desc";
 							if (p.viewsortcols[0]) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								if (cm.lso) {
 									$iconsSpan.children("span.ui-icon-" + cm.lso).removeClass(disabledStateClasses);
 									if (showOneSortIcon) {
@@ -4589,7 +4593,7 @@
 									}
 								}
 							} else if (cm.lso) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								$iconsSpan.children("span.ui-icon-" + cm.lso).removeClass(disabledStateClasses);
 								if (showOneSortIcon) {
 									$iconsSpan.children("span.ui-icon-" + notLso).hide();
@@ -4598,7 +4602,7 @@
 						} else {
 							var notSortOrder = p.sortorder === "desc" ? "asc" : "desc";
 							if (p.viewsortcols[0]) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								if (j === p.lastsort) {
 									$iconsSpan.children("span.ui-icon-" + p.sortorder).removeClass(disabledStateClasses);
 									if (showOneSortIcon) {
@@ -4606,7 +4610,7 @@
 									}
 								}
 							} else if (j === p.lastsort && p.sortname !== "") {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								$iconsSpan.children("span.ui-icon-" + p.sortorder).removeClass(disabledStateClasses);
 								if (showOneSortIcon) {
 									$iconsSpan.children("span.ui-icon-" + notSortOrder).hide();
@@ -4666,12 +4670,10 @@
 			}
 			if (p.footerrow) { tfoot += "</tr></tbody></table>"; }
 			firstr += "</tr>";
-			tbody = document.createElement("tbody");
-			ts.appendChild(tbody);
-			$self0.addClass(getGuiStyles("grid", "ui-jqgrid-btable")).append(firstr);
-			firstr = null;
-			var hTable = $("<table class='" + getGuiStyles("hTable", "ui-jqgrid-htable") + "' style='width:" + p.tblwidth + "px' role='presentation' aria-labelledby='gbox_" + p.id + "'" + (isMSIE7 ? " cellspacing='0'" : "") + "></table>").append(ts.tHead),
-				hg = (p.caption && p.hiddengrid === true) ? true : false,
+			$(ts).html("<tbody>" + firstr + "</tbody>");
+			//firstr = null;
+			$self0.addClass(getGuiStyles("grid", "ui-jqgrid-btable"));
+			var hg = (p.caption && p.hiddengrid === true) ? true : false,
 				hb = $("<div class='ui-jqgrid-hbox" + (dir === "rtl" ? "-rtl" : "") + "'></div>"),
 				bottomClasses = getGuiStyles("bottom");
 			grid.hDiv = document.createElement("div");
@@ -7536,15 +7538,20 @@
 					break;
 				case "select":
 					elem = document.createElement("select");
-					elem.setAttribute("role", "listbox");
-					var msl, ovm = [], cm, iCol;
-					iCol = p.iColByName[options.name];
-					cm = p.colModel[iCol];
+					var msl, ovm = [], iCol = p.iColByName[options.name], cm = p.colModel[iCol], isSelected;
 					if (options.multiple === true) {
 						msl = true;
 						elem.multiple = "multiple";
 						$(elem).attr("aria-multiselectable", "true");
-					} else { msl = false; }
+						ovm = vl.split(",");
+						ovm = $.map(ovm, function (n) { return $.trim(n); });
+					} else {
+						msl = false;
+						ovm[0] = $.trim(vl);
+					}
+					if (options.size === undefined) {
+						options.size = msl ? 3 : 1;
+					}
 					if (options.dataUrl !== undefined) {
 						var rowid = null, postData = options.postData || ajaxso.postData;
 						try {
@@ -7559,36 +7566,36 @@
 							type: "GET",
 							dataType: "html",
 							data: $.isFunction(postData) ? postData.call($t, rowid, vl, String(options.name)) : postData,
-							context: { elem: elem, options: options, vl: vl, cm: cm, iCol: iCol },
+							context: { elem: elem, options: options, cm: cm, iCol: iCol, ovm: ovm },
 							success: function (data, textStatus, jqXHR) {
-								var ovm1 = [], elem1 = this.elem, vl2 = this.vl, cm1 = this.cm, iCol1 = this.iCol,
+								var ovm1 = this.ovm, elem1 = this.elem, cm1 = this.cm, iCol1 = this.iCol,
 									options1 = $.extend({}, this.options),
-									msl1 = options1.multiple === true,
 									a = $.isFunction(options1.buildSelect) ? options1.buildSelect.call($t, data, jqXHR, cm1, iCol1) : data;
 								if (typeof a === "string") {
 									a = $($.trim(a)).html();
 								}
 								if (a) {
+									//$(elem1).empty(); // ???
 									$(elem1).append(a);
 									setAttributes(elem1, options1, postData ? ["postData"] : undefined);
-									if (options1.size === undefined) { options1.size = msl1 ? 3 : 1; }
-									if (msl1) {
-										ovm1 = vl2.split(",");
-										ovm1 = $.map(ovm1, function (n) { return $.trim(n); });
-									} else {
-										ovm1[0] = $.trim(vl2);
-									}
-									//$(elem).attr(options);
 									setTimeout(function () {
+										var isSelected1; // undefined
 										$("option", elem1).each(function (i) {
 											//if(i===0) { this.selected = ""; }
 											// fix IE8/IE7 problem with selecting of the first item on multiple=true
 											if (i === 0 && elem1.multiple) { this.selected = false; }
-											$(this).attr("role", "option");
-											if ($.inArray($.trim($(this).text()), ovm1) > -1 || $.inArray($.trim($(this).val()), ovm1) > -1) {
+											if ($.inArray($.trim($(this).val()), ovm1) > -1) {
 												this.selected = "selected";
+												isSelected1 = true;
 											}
 										});
+										if (!isSelected1) {
+											$("option", elem1).each(function (i) {
+												if ($.inArray($.trim($(this).text()), ovm1) > -1) {
+													this.selected = "selected";
+												}
+											});
+										}
 										jgrid.fullBoolFeedback.call($t, options1.selectFilled, "jqGridSelectFilled", {
 											elem: elem1,
 											options: options1,
@@ -7601,16 +7608,8 @@
 							}
 						}, ajaxso || {}));
 					} else if (options.value) {
-						var i;
-						if (options.size === undefined) {
-							options.size = msl ? 3 : 1;
-						}
-						if (msl) {
-							ovm = vl.split(",");
-							ovm = $.map(ovm, function (n) { return $.trim(n); });
-						}
 						if (typeof options.value === "function") { options.value = options.value(); }
-						var so, sv, ov, svv, svt,
+						var i, so, sv, ov, optionInfos = [], optionInfo,
 							sep = options.separator === undefined ? ":" : options.separator,
 							delim = options.delimiter === undefined ? ";" : options.delimiter,
 							mapFunc = function (n, ii) { if (ii > 0) { return n; } };
@@ -7621,32 +7620,49 @@
 								if (sv.length > 2) {
 									sv[1] = $.map(sv, mapFunc).join(sep);
 								}
-								ov = document.createElement("option");
-								ov.setAttribute("role", "option");
-								// consider to trim BEFORE filling the options
-								ov.value = sv[0];
-								ov.innerHTML = sv[1];
-								elem.appendChild(ov);
-								svv = $.trim(sv[0]);
-								svt = $.trim(sv[1]);
-								if (!msl && (svv === $.trim(vl) || svt === $.trim(vl))) {
-									ov.selected = "selected";
-								}
-								if (msl && ($.inArray(svt, ovm) > -1 || $.inArray(svv, ovm) > -1)) {
-									ov.selected = "selected";
-								}
+								optionInfos.push({
+									value: sv[0],
+									innerHtml: sv[1],
+									selectValue: $.trim(sv[0]),
+									selectText: $.trim(sv[1])
+								});
 							}
 						} else if (typeof options.value === "object") {
 							var oSv = options.value, key;
 							for (key in oSv) {
 								if (oSv.hasOwnProperty(key)) {
-									ov = document.createElement("option");
-									ov.setAttribute("role", "option");
-									ov.value = key;
-									ov.innerHTML = oSv[key];
-									elem.appendChild(ov);
-									if (!msl && ($.trim(key) === $.trim(vl) || $.trim(oSv[key]) === $.trim(vl))) { ov.selected = "selected"; }
-									if (msl && ($.inArray($.trim(oSv[key]), ovm) > -1 || $.inArray($.trim(key), ovm) > -1)) { ov.selected = "selected"; }
+									optionInfos.push({
+										value: key,
+										innerHtml: oSv[key],
+										selectValue: $.trim(key),
+										selectText: $.trim(oSv[key])
+									});
+								}
+							}
+						}
+						//$(elem).empty();
+						for (i = 0; i < optionInfos.length; i++) {
+							optionInfo = optionInfos[i];
+							ov = document.createElement("option");
+							ov.value = optionInfo.value;
+							ov.innerHTML = optionInfo.innerHtml;
+							elem.appendChild(ov);
+							if (!msl && optionInfo.selectValue === $.trim(vl)) {
+								ov.selected = "selected";
+								isSelected = true;
+							}
+							if (msl && $.inArray(optionInfo.selectValue, ovm) > -1) {
+								ov.selected = "selected";
+								isSelected = true;
+							}
+						}
+						if (!isSelected) {
+							for (i = 0; i < optionInfo.length; i++) {
+								if (!msl && optionInfo.selectText === $.trim(vl)) {
+									ov.selected = "selected";
+								}
+								if (msl && $.inArray(optionInfo.selectText, ovm) > -1) {
+									ov.selected = "selected";
 								}
 							}
 						}
@@ -8105,7 +8121,7 @@
 		filterToolbar: function (oMuligrid) {
 			// if one uses jQuery wrapper with multiple grids, then oMultiple specify the object with common options
 			return this.each(function () {
-				var $t = this, grid = $t.grid, $self = $($t), p = $t.p, bindEv = jgrid.bindEv, infoDialog = jgrid.info_dialog;
+				var $t = this, grid = $t.grid, $self = $($t), p = $t.p, bindEv = jgrid.bindEv, infoDialog = jgrid.info_dialog, htmlEncode = jgrid.htmlEncode;
 				if (this.ftoolbar) { return; }
 				// make new copy of the options and use it for ONE specific grid.
 				// p.searching can contains grid specific options
@@ -8394,7 +8410,7 @@
 									itemText = item.text;
 								}
 								selclass = selected === itemOper ? highlightClass : "";
-								str += '<li class="ui-menu-item ' + selclass + '" role="presentation"><a class="ui-corner-all g-menu-item" tabindex="0" role="menuitem" value="' + itemOper + '" data-oper="' + itemOperand + '"><table' + (jgrid.msie && jgrid.msiever() < 8 ? ' cellspacing="0"' : '') + '><tr><td style="width:25px">' + itemOperand + '</td><td>' + itemText + '</td></tr></table></a></li>';
+								str += '<li class="ui-menu-item ' + selclass + '" role="presentation"><a class="ui-corner-all g-menu-item" tabindex="0" role="menuitem" value="' + htmlEncode(itemOper) + '" data-oper="' + htmlEncode(itemOperand) + '"><table' + (jgrid.msie && jgrid.msiever() < 8 ? ' cellspacing="0"' : '') + '><tr><td style="width:25px">' + htmlEncode(itemOperand) + '</td><td>' + htmlEncode(itemText) + '</td></tr></table></a></li>';
 							}
 						}
 						str += "</ul>";
@@ -8418,12 +8434,12 @@
 						});
 					},
 					timeoutHnd,
-					tr = $("<tr class='ui-search-toolbar' role='row'></tr>");
+					tr = $("<tr></tr>", {"class": "ui-search-toolbar", role: "row"});
 
 				// create the row
 				$.each(colModel, function (ci) {
 					var cm = this, soptions, mode = "filter", surl, self, select = "", sot, so, i, searchoptions = cm.searchoptions, editoptions = cm.editoptions,
-						th = $("<th role='columnheader' class='" + getGuiStyles.call($t, "colHeaders", "ui-th-column ui-th-" + p.direction + " " + (o.applyLabelClasses ? cm.labelClasses || "" : "")) + "'></th>"),
+						th = $("<th></th>", {"class": getGuiStyles.call($t, "colHeaders", "ui-th-column ui-th-" + p.direction + " " + (o.applyLabelClasses ? cm.labelClasses || "" : ""))}),
 						thd = $("<div style='position:relative;height:auto;'></div>"),
 						stbl = $("<table class='ui-search-table'" + (jgrid.msie && jgrid.msiever() < 8 ? " cellspacing='0'" : "") + "><tr><td class='ui-search-oper'></td><td class='ui-search-input'></td><td class='ui-search-clear' style='width:1px'></td></tr></table>");
 					if (this.hidden === true) { $(th).css("display", "none"); }
@@ -8479,16 +8495,17 @@
 										context: { stbl: stbl, options: soptions, cm: cm, iCol: ci },
 										dataType: "html",
 										success: function (data, textStatus, jqXHR) {
-											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, $stbl1 = this.stbl, d,
-												$select = $stbl1.find("td.ui-search-input>select");// $stbl1.find(">tbody>tr>td.ui-search-input>select")
+											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, d,
+												$td = this.stbl.find(">tbody>tr>td.ui-search-input"), $select;
 											if (soptions1.buildSelect !== undefined) {
 												d = soptions1.buildSelect.call($t, data, jqXHR, cm1, iCol1);
 												if (d) {
-													$("td", $stbl1).eq(1).append(d);
+													$td.append(d);
 												}
 											} else {
-												$("td", $stbl1).eq(1).append(data);
+												$td.append(data);
 											}
+											$select = $td.children("select");
 											if (soptions1.defaultValue !== undefined) { $select.val(soptions1.defaultValue); }
 											$select.attr({ name: cm1.index || cm1.name, id: "gs_" + cm1.name });
 											if (soptions1.attr) { $select.attr(soptions1.attr); }
@@ -8526,7 +8543,7 @@
 									if (oSv) {
 										var elem = document.createElement("select");
 										elem.style.width = "100%";
-										$(elem).attr({ name: cm.index || cm.name, id: "gs_" + cm.name, role: "listbox" });
+										$(elem).attr({ name: cm.index || cm.name, id: "gs_" + cm.name });
 										var sv, ov, key, k;
 										if (typeof oSv === "string") {
 											so = oSv.split(delim);
@@ -8573,7 +8590,7 @@
 							case "text":
 								var df = soptions.defaultValue !== undefined ? soptions.defaultValue : "";
 
-								$("td", stbl).eq(1).append("<input type='text' role='textbox' class='" + dataFieldClass + "' style='width:100%;padding:0;' name='" + (cm.index || cm.name) + "' id='gs_" + cm.name + "' value='" + df + "'/>");
+								$("td", stbl).eq(1).append("<input type='text' class='" + dataFieldClass + "' style='width:100%;padding:0;' name='" + (cm.index || cm.name) + "' id='gs_" + cm.name + "' value='" + df + "'/>");
 								$(thd).append(stbl);
 
 								if (soptions.attr) { $("input", thd).attr(soptions.attr); }
@@ -8795,7 +8812,7 @@
 						// The next numberOfColumns headers will be moved in the next row
 						// in the current row will be placed the new column header with the titleText.
 						// The text will be over the cVisibleColumns columns
-						$colHeader = $("<th>").attr({ role: "columnheader" })
+						$colHeader = $("<th>")
 							.addClass(thClasses)
 							.css({ "height": "22px", "border-top": "0 none" })
 							.html(titleText);
@@ -8821,7 +8838,7 @@
 								// expand the header height to two rows
 								$th.attr("rowspan", $trLabels.length + 1);
 							} else {
-								$("<th>", { role: "columnheader" })
+								$("<th>")
 									.addClass(thClasses)
 									.css({ "display": cmi.hidden ? "none" : "", "border-top": "0 none" })
 									.insertBefore($th);
@@ -15200,8 +15217,7 @@
 		addSubGridCell: function (pos, iRow) {
 			var self = this[0], subGridOptions = self.p.subGridOptions;
 			return self == null || self.p == null || subGridOptions == null ? "" :
-					"<td role=\"gridcell\" aria-describedby=\"" + self.p.id +
-					"_subgrid\" class='" + base.getGuiStyles.call(this, "subgrid.tdStart", "ui-sgcollapsed sgcollapsed") + "' " +
+					"<td role=\"gridcell\" class='" + base.getGuiStyles.call(this, "subgrid.tdStart", "ui-sgcollapsed sgcollapsed") + "' " +
 					self.formatCol(pos, iRow) + "><a style='cursor:pointer;'><span class='" +
 					jgrid.mergeCssClasses(subGridOptions.commonIconClass, subGridOptions.plusicon) + "'></span></a></td>";
 		},
@@ -15347,7 +15363,7 @@
 					onClick = function () {
 						var tr = $(this).parent("tr")[0], r = tr.nextSibling, rowid = tr.id, subgridDivId = p.id + "_" + rowid, atd,
 							iconClass = function (iconName) {
-								return [p.subGridOptions.commonIconClass, p.subGridOptions[iconName]].join(" ");
+								return jgrid.mergeCssClasses(p.subGridOptions.commonIconClass, p.subGridOptions[iconName]);
 							},
 							nhc = 1;
 						$.each(p.colModel, function () {
@@ -15363,7 +15379,7 @@
 								}
 								$(tr).after("<tr role='row' class='" + rowClasses + "'>" + atd + "<td class='" + tdWithIconClasses +
 									"'><span class='" + iconClass("openicon") + "'></span></td><td colspan='" + parseInt(p.colNames.length - nhc, 10) +
-									"' class='" + tdDataClasses + "'><div id=" + subgridDivId + " class='tablediv'></div></td></tr>");
+									"' class='" + tdDataClasses + "'><div id='" + subgridDivId + "' class='tablediv'></div></td></tr>");
 								$(ts).triggerHandler("jqGridSubGridRowExpanded", [subgridDivId, rowid]);
 								if ($.isFunction(p.subGridRowExpanded)) {
 									p.subGridRowExpanded.call(ts, subgridDivId, rowid);
@@ -15627,7 +15643,7 @@
 						}
 					};
 
-				$self.unbind("jqGridBeforeSelectRow.setTreeNode", beforeSelectRow);
+				$self.unbind("jqGridBeforeSelectRow.setTreeNode");
 				$self.bind("jqGridBeforeSelectRow.setTreeNode", beforeSelectRow);
 
 			});
@@ -16699,7 +16715,7 @@
 			actions: function () {
 				return {
 					formatter: "actions",
-					width: (this.p != null && this.p.fontAwesomeIcons ? 33 : 36) + (jgrid.cellWidth() ? 5 : 0),
+					width: (this.p != null && this.p.fontAwesomeIcons ? 33 : 37) + (jgrid.cellWidth() ? 5 : 0),
 					align: "center",
 					label: "",
 					autoResizable: false,
@@ -17297,8 +17313,8 @@
 				return mergeCssClasses(op.commonIconClass, op[name + "icon"]);
 			},
 			hoverClass = mergeCssClasses(jgrid.getRes(jgrid.guiStyles[p.guiStyle], "states.hover")),
-			hoverAttributes = "onmouseover=jQuery(this).addClass('" + hoverClass +
-				"'); onmouseout=jQuery(this).removeClass('" + hoverClass + "'); ",
+			hoverAttributes = "onmouseover=\"jQuery(this).addClass('" + hoverClass +
+				"');\" onmouseout=\"jQuery(this).removeClass('" + hoverClass + "');\"",
 			buttonInfos = [
 				{ action: "edit", actionName: "formedit", display: op.editformbutton },
 				{ action: "edit", display: !op.editformbutton && op.editbutton },

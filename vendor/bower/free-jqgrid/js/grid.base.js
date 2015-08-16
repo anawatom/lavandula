@@ -2,13 +2,13 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license jqGrid 4.9.1 - free jqGrid: https://github.com/free-jqgrid/jqGrid
+ * @license jqGrid 4.9.2 - free jqGrid: https://github.com/free-jqgrid/jqGrid
  * Copyright (c) 2008-2014, Tony Tomov, tony@trirand.com
  * Copyright (c) 2014-2015, Oleg Kiriljuk, oleg.kiriljuk@ok-soft-gmbh.com
  * Dual licensed under the MIT and GPL licenses
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl-2.0.html
- * Date: 2015-07-23
+ * Date: 2015-08-10
  */
 //jsHint options
 /*jshint evil:true, eqeqeq:false, eqnull:true, devel:true */
@@ -332,7 +332,7 @@
 
 	$.extend(true, jgrid, {
 		/** @const */
-		version: "4.8.0",
+		version: "4.9.2",
 		/** @const */
 		productName: "free jqGrid",
 		defaults: {},
@@ -2421,11 +2421,12 @@
 						self.resizing = { idx: i, startX: startX, sOL: startX, moved: false, delta: startX - x.pageX };
 						self.curGbox = $(p.rs);
 						self.curGbox.prependTo("body"); // change the parent to be able to move over the ranges of the gBox
-						self.curGbox.css({ display: "block", left: startX, top: y[1] + gridOffset.top, height: y[2] });
+						self.curGbox.css({ display: "block", left: startX, top: y[1] + gridOffset.top + 1, height: y[2] });
+						self.curGbox.css("height", (y[2] - (self.curGbox.outerHeight() - self.curGbox.height())) + "px");
 						self.curGbox.data("idx", i);
 						self.curGbox.data("delta", startX - x.pageX);
 						myResizerClickHandler.call(this.curGbox, x);
-						feedback.call(getGridComponent(COMPONENT_NAMES.BODY_TABLE, $bDiv), "resizeStart", x, i);
+						feedback.call(getGridComponent(COMPONENT_NAMES.BODY_TABLE, $bDiv)[0], "resizeStart", x, i);
 						document.onselectstart = function () { return false; };
 						$(document)
 							.bind("mousemove.jqGrid", function (e) {
@@ -2702,7 +2703,7 @@
 				},
 				formatCol = function (pos, rowInd, tv, rawObject, rowId, rdata) {
 					var cm = p.colModel[pos], cellAttrFunc, cellValue = tv, rPrefix,
-						result = "style='", classes = cm.classes,
+						result, classes = cm.classes,
 						styleValue = cm.align ? "text-align:" + cm.align + ";" : "",
 						attrStr, matches, value, tilteValue,
 						encodeAttr = function (v) {
@@ -2779,7 +2780,7 @@
 							}
 						}
 					}
-					result += styleValue + "'";
+					result = styleValue !== "" ? "style='" + styleValue + "'" : "";
 					result += (classes !== undefined ? (" class='" + classes + "'") : "") + ((cm.title && cellValue) ? (" title=\"" + stripHtml(tv) + "\"") : "");
 					result += rest;
 					return result;
@@ -3189,7 +3190,9 @@
 							if (typeof nameReader === "string" || isFunction(nameReader)) {
 								colReader[cmName] = nameReader;
 							}
-							setSimpleColReaderIfPossible(cmName);
+							if (!isFunction(nameReader)) {
+								setSimpleColReaderIfPossible(cmName);
+							}
 						}
 					}
 					nCol = additionalProperties.length;
@@ -3915,19 +3918,19 @@
 					if (p.rowList.length > 0) {
 						str = "<td dir='" + dir + "'>";
 						var pgrecs = getDef("pgrecs");
-						str += "<select class='" + getGuiStyles("pagerSelect", "ui-pg-selbox") + "' role='listbox' " + (pgrecs ? "title='" + pgrecs + "'" : "") + ">";
+						str += "<select class='" + getGuiStyles("pagerSelect", "ui-pg-selbox") + "' " + (pgrecs ? "title='" + pgrecs + "'" : "") + ">";
 						var strnm;
 						for (i = 0; i < p.rowList.length; i++) {
 							strnm = p.rowList[i].toString().split(":");
 							if (strnm.length === 1) {
 								strnm[1] = strnm[0];
 							}
-							str += "<option role=\"option\" value=\"" + strnm[0] + "\"" + ((intNum(p.rowNum, 0) === intNum(strnm[0], 0)) ? " selected=\"selected\"" : "") + ">" + strnm[1] + "</option>";
+							str += "<option value=\"" + strnm[0] + "\"" + ((intNum(p.rowNum, 0) === intNum(strnm[0], 0)) ? " selected=\"selected\"" : "") + ">" + strnm[1] + "</option>";
 						}
 						str += "</select></td>";
 					}
 					if (dir === "rtl") { pgl += str; }
-					if (p.pginput === true) { pginp = "<td dir='" + dir + "'>" + jgrid.format(getDef("pgtext") || "", "<input class='" + getGuiStyles("pagerInput", "ui-pg-input") + "' type='text' size='2' maxlength='7' value='0' role='textbox'/>", "<span id='sp_1_" + pgid + "'>0</span>") + "</td>"; }
+					if (p.pginput === true) { pginp = "<td dir='" + dir + "'>" + jgrid.format(getDef("pgtext") || "", "<input class='" + getGuiStyles("pagerInput", "ui-pg-input") + "' type='text' size='2' maxlength='7' value='0'/>", "<span id='sp_1_" + pgid + "'>0</span>") + "</td>"; }
 					pgid = "#" + jqID(pgid); // modify to id selector
 					if (p.pgbuttons === true) {
 						var po = ["first", "prev", "next", "last"],
@@ -4322,7 +4325,7 @@
 			}
 			if (p.rownumbers) {
 				p.colNames.unshift("");
-				p.colModel.unshift({ name: "rn", width: jgrid.cell_width ? p.rownumWidth + p.cellLayout : p.rownumWidth, labelClasses: "jqgh_rn", classes: "td_rn", sortable: false, resizable: false, hidedlg: true, search: false, align: "center", fixed: true, frozen: true });
+				p.colModel.unshift({ name: "rn", width: jgrid.cell_width ? p.rownumWidth + p.cellLayout : p.rownumWidth, labelClasses: "jqgh_rn", sortable: false, resizable: false, hidedlg: true, search: false, align: "center", fixed: true, frozen: true });
 			}
 			p.iColByName = buildColNameMap(p.colModel);
 			p.xmlReader = extend(true, {
@@ -4402,7 +4405,7 @@
 			for (iCol = 0; iCol < p.colNames.length; iCol++) {
 				cmi = p.colModel[iCol];
 				tooltip = p.headertitles || cmi.headerTitle ? (" title=\"" + stripHtml(typeof cmi.headerTitle === "string" ? cmi.headerTitle : p.colNames[iCol]) + "\"") : "";
-				thead += "<th id='" + p.id + "_" + cmi.name + "' role='columnheader' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
+				thead += "<th id='" + p.id + "_" + cmi.name + "' class='" + getGuiStyles("colHeaders", "ui-th-column ui-th-" + dir + " " + (cmi.labelClasses || "")) + "'" + tooltip + ">";
 				idn = cmi.index || cmi.name;
 				switch (cmi.labelAlign) {
 				case "left":
@@ -4448,8 +4451,8 @@
 				}
 			}
 			thead += "</tr></thead>";
-			$self0.append(thead);
-			$(ts.tHead)
+			var hTable = $("<table class='" + getGuiStyles("hTable", "ui-jqgrid-htable") + "' style='width:1px' role='presentation' aria-labelledby='gbox_" + p.id + "'" + (isMSIE7 ? " cellspacing='0'" : "") + ">" + thead + "<tbody><tr><td></td></tr></tbody></table>");
+			$(hTable[0].tHead)
 				.children("tr")
 				.children("th")
 				.hover(
@@ -4457,7 +4460,7 @@
 					function () { $(this).removeClass(hoverStateClasses); }
 				);
 			if (p.multiselect) {
-				$(p.cb, ts).bind("click", function () {
+				$(p.cb, hTable).bind("click", function () {
 					clearArray(p.selarrrow); // p.selarrrow = [];
 					var highlightClass = getGuiStyles("states.select"), toCheck, emp = [],
 						iColCb = p.iColByName.cb,
@@ -4505,6 +4508,7 @@
 			}
 			p.widthOrg = p.width;
 			setInitialColWidth();
+			hTable.css("width", p.tblwidth + "px");
 			$(eg).css("width", grid.width + "px")
 				.append("<div class='" + getGuiStyles("resizer", "ui-jqgrid-resize-mark") + "' id='" + p.rsId + "'>&#160;</div>");
 			$(p.rs)
@@ -4537,7 +4541,7 @@
 			if (p.footerrow) { tfoot += "<table role='presentation' style='width:" + p.tblwidth + "px' class='ui-jqgrid-ftable'" + (isMSIE7 ? " cellspacing='0'" : "") + "><tbody><tr role='row' class='" + getGuiStyles("rowFooter", "footrow footrow-" + dir) + "'>"; }
 			var firstr = "<tr class='jqgfirstrow' role='row' style='height:auto'>";
 			p.disableClick = false;
-			$("th", ts.tHead.rows[0])
+			$("th", hTable[0].tHead.rows[0])
 				.each(function (j) {
 					var cm = p.colModel[j], nm = cm.name, $th = $(this),
 						$sortableDiv = $th.children("div"),
@@ -4581,7 +4585,7 @@
 						if (p.multiSort) {
 							var notLso = cm.lso === "desc" ? "asc" : "desc";
 							if (p.viewsortcols[0]) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								if (cm.lso) {
 									$iconsSpan.children("span.ui-icon-" + cm.lso).removeClass(disabledStateClasses);
 									if (showOneSortIcon) {
@@ -4589,7 +4593,7 @@
 									}
 								}
 							} else if (cm.lso) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								$iconsSpan.children("span.ui-icon-" + cm.lso).removeClass(disabledStateClasses);
 								if (showOneSortIcon) {
 									$iconsSpan.children("span.ui-icon-" + notLso).hide();
@@ -4598,7 +4602,7 @@
 						} else {
 							var notSortOrder = p.sortorder === "desc" ? "asc" : "desc";
 							if (p.viewsortcols[0]) {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								if (j === p.lastsort) {
 									$iconsSpan.children("span.ui-icon-" + p.sortorder).removeClass(disabledStateClasses);
 									if (showOneSortIcon) {
@@ -4606,7 +4610,7 @@
 									}
 								}
 							} else if (j === p.lastsort && p.sortname !== "") {
-								$iconsSpan.show();
+								$iconsSpan.css("display", "");
 								$iconsSpan.children("span.ui-icon-" + p.sortorder).removeClass(disabledStateClasses);
 								if (showOneSortIcon) {
 									$iconsSpan.children("span.ui-icon-" + notSortOrder).hide();
@@ -4666,12 +4670,10 @@
 			}
 			if (p.footerrow) { tfoot += "</tr></tbody></table>"; }
 			firstr += "</tr>";
-			tbody = document.createElement("tbody");
-			ts.appendChild(tbody);
-			$self0.addClass(getGuiStyles("grid", "ui-jqgrid-btable")).append(firstr);
-			firstr = null;
-			var hTable = $("<table class='" + getGuiStyles("hTable", "ui-jqgrid-htable") + "' style='width:" + p.tblwidth + "px' role='presentation' aria-labelledby='gbox_" + p.id + "'" + (isMSIE7 ? " cellspacing='0'" : "") + "></table>").append(ts.tHead),
-				hg = (p.caption && p.hiddengrid === true) ? true : false,
+			$(ts).html("<tbody>" + firstr + "</tbody>");
+			//firstr = null;
+			$self0.addClass(getGuiStyles("grid", "ui-jqgrid-btable"));
+			var hg = (p.caption && p.hiddengrid === true) ? true : false,
 				hb = $("<div class='ui-jqgrid-hbox" + (dir === "rtl" ? "-rtl" : "") + "'></div>"),
 				bottomClasses = getGuiStyles("bottom");
 			grid.hDiv = document.createElement("div");

@@ -48,15 +48,6 @@ return array (
       '@yii/codeception' => $vendorDir . '/yiisoft/yii2-codeception',
     ),
   ),
-  'yiisoft/yii2-debug' => 
-  array (
-    'name' => 'yiisoft/yii2-debug',
-    'version' => '2.0.4.0',
-    'alias' => 
-    array (
-      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
-    ),
-  ),
   'yiisoft/yii2-faker' => 
   array (
     'name' => 'yiisoft/yii2-faker',
@@ -73,15 +64,6 @@ return array (
     'alias' => 
     array (
       '@kartik/growl' => $vendorDir . '/kartik-v/yii2-widget-growl',
-    ),
-  ),
-  'himiklab/yii2-jqgrid-widget' => 
-  array (
-    'name' => 'himiklab/yii2-jqgrid-widget',
-    'version' => '1.1.9.0',
-    'alias' => 
-    array (
-      '@himiklab/jqgrid' => $vendorDir . '/himiklab/yii2-jqgrid-widget',
     ),
   ),
   'kartik-v/yii2-krajee-base' => 
@@ -138,10 +120,28 @@ return array (
       '@kartik/detail' => $vendorDir . '/kartik-v/yii2-detail-view',
     ),
   ),
+  'himiklab/yii2-jqgrid-widget' => 
+  array (
+    'name' => 'himiklab/yii2-jqgrid-widget',
+    'version' => '1.1.10.0',
+    'alias' => 
+    array (
+      '@himiklab/jqgrid' => $vendorDir . '/himiklab/yii2-jqgrid-widget',
+    ),
+  ),
+  'yiisoft/yii2-debug' => 
+  array (
+    'name' => 'yiisoft/yii2-debug',
+    'version' => '2.0.5.0',
+    'alias' => 
+    array (
+      '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
+    ),
+  ),
   'kartik-v/yii2-widget-select2' => 
   array (
     'name' => 'kartik-v/yii2-widget-select2',
-    'version' => '9999999-dev',
+    'version' => '2.0.2.0',
     'alias' => 
     array (
       '@kartik/select2' => $vendorDir . '/kartik-v/yii2-widget-select2',

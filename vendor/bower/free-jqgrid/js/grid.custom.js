@@ -208,7 +208,7 @@
 		filterToolbar: function (oMuligrid) {
 			// if one uses jQuery wrapper with multiple grids, then oMultiple specify the object with common options
 			return this.each(function () {
-				var $t = this, grid = $t.grid, $self = $($t), p = $t.p, bindEv = jgrid.bindEv, infoDialog = jgrid.info_dialog;
+				var $t = this, grid = $t.grid, $self = $($t), p = $t.p, bindEv = jgrid.bindEv, infoDialog = jgrid.info_dialog, htmlEncode = jgrid.htmlEncode;
 				if (this.ftoolbar) { return; }
 				// make new copy of the options and use it for ONE specific grid.
 				// p.searching can contains grid specific options
@@ -497,7 +497,7 @@
 									itemText = item.text;
 								}
 								selclass = selected === itemOper ? highlightClass : "";
-								str += '<li class="ui-menu-item ' + selclass + '" role="presentation"><a class="ui-corner-all g-menu-item" tabindex="0" role="menuitem" value="' + itemOper + '" data-oper="' + itemOperand + '"><table' + (jgrid.msie && jgrid.msiever() < 8 ? ' cellspacing="0"' : '') + '><tr><td style="width:25px">' + itemOperand + '</td><td>' + itemText + '</td></tr></table></a></li>';
+								str += '<li class="ui-menu-item ' + selclass + '" role="presentation"><a class="ui-corner-all g-menu-item" tabindex="0" role="menuitem" value="' + htmlEncode(itemOper) + '" data-oper="' + htmlEncode(itemOperand) + '"><table' + (jgrid.msie && jgrid.msiever() < 8 ? ' cellspacing="0"' : '') + '><tr><td style="width:25px">' + htmlEncode(itemOperand) + '</td><td>' + htmlEncode(itemText) + '</td></tr></table></a></li>';
 							}
 						}
 						str += "</ul>";
@@ -521,12 +521,12 @@
 						});
 					},
 					timeoutHnd,
-					tr = $("<tr class='ui-search-toolbar' role='row'></tr>");
+					tr = $("<tr></tr>", {"class": "ui-search-toolbar", role: "row"});
 
 				// create the row
 				$.each(colModel, function (ci) {
 					var cm = this, soptions, mode = "filter", surl, self, select = "", sot, so, i, searchoptions = cm.searchoptions, editoptions = cm.editoptions,
-						th = $("<th role='columnheader' class='" + getGuiStyles.call($t, "colHeaders", "ui-th-column ui-th-" + p.direction + " " + (o.applyLabelClasses ? cm.labelClasses || "" : "")) + "'></th>"),
+						th = $("<th></th>", {"class": getGuiStyles.call($t, "colHeaders", "ui-th-column ui-th-" + p.direction + " " + (o.applyLabelClasses ? cm.labelClasses || "" : ""))}),
 						thd = $("<div style='position:relative;height:auto;'></div>"),
 						stbl = $("<table class='ui-search-table'" + (jgrid.msie && jgrid.msiever() < 8 ? " cellspacing='0'" : "") + "><tr><td class='ui-search-oper'></td><td class='ui-search-input'></td><td class='ui-search-clear' style='width:1px'></td></tr></table>");
 					if (this.hidden === true) { $(th).css("display", "none"); }
@@ -582,16 +582,17 @@
 										context: { stbl: stbl, options: soptions, cm: cm, iCol: ci },
 										dataType: "html",
 										success: function (data, textStatus, jqXHR) {
-											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, $stbl1 = this.stbl, d,
-												$select = $stbl1.find("td.ui-search-input>select");// $stbl1.find(">tbody>tr>td.ui-search-input>select")
+											var cm1 = this.cm, iCol1 = this.iCol, soptions1 = this.options, d,
+												$td = this.stbl.find(">tbody>tr>td.ui-search-input"), $select;
 											if (soptions1.buildSelect !== undefined) {
 												d = soptions1.buildSelect.call($t, data, jqXHR, cm1, iCol1);
 												if (d) {
-													$("td", $stbl1).eq(1).append(d);
+													$td.append(d);
 												}
 											} else {
-												$("td", $stbl1).eq(1).append(data);
+												$td.append(data);
 											}
+											$select = $td.children("select");
 											if (soptions1.defaultValue !== undefined) { $select.val(soptions1.defaultValue); }
 											$select.attr({ name: cm1.index || cm1.name, id: "gs_" + cm1.name });
 											if (soptions1.attr) { $select.attr(soptions1.attr); }
@@ -629,7 +630,7 @@
 									if (oSv) {
 										var elem = document.createElement("select");
 										elem.style.width = "100%";
-										$(elem).attr({ name: cm.index || cm.name, id: "gs_" + cm.name, role: "listbox" });
+										$(elem).attr({ name: cm.index || cm.name, id: "gs_" + cm.name });
 										var sv, ov, key, k;
 										if (typeof oSv === "string") {
 											so = oSv.split(delim);
@@ -676,7 +677,7 @@
 							case "text":
 								var df = soptions.defaultValue !== undefined ? soptions.defaultValue : "";
 
-								$("td", stbl).eq(1).append("<input type='text' role='textbox' class='" + dataFieldClass + "' style='width:100%;padding:0;' name='" + (cm.index || cm.name) + "' id='gs_" + cm.name + "' value='" + df + "'/>");
+								$("td", stbl).eq(1).append("<input type='text' class='" + dataFieldClass + "' style='width:100%;padding:0;' name='" + (cm.index || cm.name) + "' id='gs_" + cm.name + "' value='" + df + "'/>");
 								$(thd).append(stbl);
 
 								if (soptions.attr) { $("input", thd).attr(soptions.attr); }
@@ -898,7 +899,7 @@
 						// The next numberOfColumns headers will be moved in the next row
 						// in the current row will be placed the new column header with the titleText.
 						// The text will be over the cVisibleColumns columns
-						$colHeader = $("<th>").attr({ role: "columnheader" })
+						$colHeader = $("<th>")
 							.addClass(thClasses)
 							.css({ "height": "22px", "border-top": "0 none" })
 							.html(titleText);
@@ -924,7 +925,7 @@
 								// expand the header height to two rows
 								$th.attr("rowspan", $trLabels.length + 1);
 							} else {
-								$("<th>", { role: "columnheader" })
+								$("<th>")
 									.addClass(thClasses)
 									.css({ "display": cmi.hidden ? "none" : "", "border-top": "0 none" })
 									.insertBefore($th);

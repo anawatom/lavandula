@@ -672,55 +672,6 @@
         ]
     },
     {
-        "name": "yiisoft/yii2-debug",
-        "version": "2.0.4",
-        "version_normalized": "2.0.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/yiisoft/yii2-debug.git",
-            "reference": "5c7081b2be71c61d3a50d978b31edc3e0b6f2f97"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/5c7081b2be71c61d3a50d978b31edc3e0b6f2f97",
-            "reference": "5c7081b2be71c61d3a50d978b31edc3e0b6f2f97",
-            "shasum": ""
-        },
-        "require": {
-            "yiisoft/yii2": ">=2.0.4",
-            "yiisoft/yii2-bootstrap": "*"
-        },
-        "time": "2015-05-10 22:08:56",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "yii\\debug\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Qiang Xue",
-                "email": "qiang.xue@gmail.com"
-            }
-        ],
-        "description": "The debugger extension for the Yii framework",
-        "keywords": [
-            "debug",
-            "debugger",
-            "yii2"
-        ]
-    },
-    {
         "name": "yiisoft/yii2-faker",
         "version": "2.0.3",
         "version_normalized": "2.0.3.0",
@@ -927,53 +878,6 @@
             "email",
             "mail",
             "mailer"
-        ]
-    },
-    {
-        "name": "himiklab/yii2-jqgrid-widget",
-        "version": "1.1.9",
-        "version_normalized": "1.1.9.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/himiklab/yii2-jqgrid-widget.git",
-            "reference": "87917e818d7ff4acbdf286ed6417899e5d93d9b3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/himiklab/yii2-jqgrid-widget/zipball/87917e818d7ff4acbdf286ed6417899e5d93d9b3",
-            "reference": "87917e818d7ff4acbdf286ed6417899e5d93d9b3",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/free-jqgrid": "*",
-            "yiisoft/yii2": "*",
-            "yiisoft/yii2-jui": "*"
-        },
-        "time": "2015-06-19 19:54:18",
-        "type": "yii2-extension",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "himiklab\\jqgrid\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "HimikLab",
-                "homepage": "https://github.com/himiklab"
-            }
-        ],
-        "description": "A powerful ajax-enabled grid widget for Yii2",
-        "keywords": [
-            "ajax",
-            "grid",
-            "jqgrid",
-            "widget",
-            "yii2"
         ]
     },
     {
@@ -1218,96 +1122,6 @@
         ]
     },
     {
-        "name": "yiisoft/yii2",
-        "version": "2.0.5",
-        "version_normalized": "2.0.5.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/yiisoft/yii2-framework.git",
-            "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
-            "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/jquery": "2.1.*@stable | 1.11.*@stable",
-            "bower-asset/jquery.inputmask": "3.1.*",
-            "bower-asset/punycode": "1.3.*",
-            "bower-asset/yii2-pjax": ">=2.0.1",
-            "cebe/markdown": "~1.0.0 | ~1.1.0",
-            "ext-mbstring": "*",
-            "ezyang/htmlpurifier": "4.6.*",
-            "lib-pcre": "*",
-            "php": ">=5.4.0",
-            "yiisoft/yii2-composer": "*"
-        },
-        "time": "2015-07-11 02:37:59",
-        "bin": [
-            "yii"
-        ],
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "yii\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Qiang Xue",
-                "email": "qiang.xue@gmail.com",
-                "homepage": "http://www.yiiframework.com/",
-                "role": "Founder and project lead"
-            },
-            {
-                "name": "Alexander Makarov",
-                "email": "sam@rmcreative.ru",
-                "homepage": "http://rmcreative.ru/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Maurizio Domba",
-                "homepage": "http://mdomba.info/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Carsten Brandt",
-                "email": "mail@cebe.cc",
-                "homepage": "http://cebe.cc/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Timur Ruziev",
-                "email": "resurtm@gmail.com",
-                "homepage": "http://resurtm.com/",
-                "role": "Core framework development"
-            },
-            {
-                "name": "Paul Klimov",
-                "email": "klimov.paul@gmail.com",
-                "role": "Core framework development"
-            }
-        ],
-        "description": "Yii PHP Framework Version 2",
-        "homepage": "http://www.yiiframework.com/",
-        "keywords": [
-            "framework",
-            "yii2"
-        ]
-    },
-    {
         "name": "kartik-v/bootstrap-tabs-x",
         "version": "v1.3.2",
         "version_normalized": "1.3.2.0",
@@ -1518,65 +1332,6 @@
         ]
     },
     {
-        "name": "bower-asset/free-jqgrid",
-        "version": "v4.9.1",
-        "version_normalized": "4.9.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/free-jqgrid/jqGrid.git",
-            "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
-            "reference": "d7ed4ae23ae7225135624d7051af1569dcb2ecfb",
-            "shasum": ""
-        },
-        "require": {
-            "bower-asset/jquery": ">=1.7.2"
-        },
-        "type": "bower-asset-library",
-        "extra": {
-            "bower-asset-main": [
-                "js/jquery.jqgrid.min.js",
-                "js/jquery.jqgrid.src.js",
-                "js/jquery.jqgrid.min.map",
-                "css/ui.jqgrid.css"
-            ],
-            "bower-asset-ignore": [
-                "**/.*",
-                "node_modules",
-                "bower_components",
-                "test",
-                "tests",
-                "gradlew.bat",
-                "gradle/wrapper",
-                ".gradle",
-                "gradlew"
-            ]
-        },
-        "installation-source": "dist",
-        "license": [
-            "MIT",
-            "GPL-2.0"
-        ],
-        "description": "grid as jQuery plugin - fork of jqGrid before licensing change",
-        "keywords": [
-            "Subgrid",
-            "TreeGrid",
-            "editing",
-            "grid",
-            "grid",
-            "grouping",
-            "jQuery",
-            "jqGrid",
-            "paging",
-            "searching",
-            "sorting",
-            "table"
-        ]
-    },
-    {
         "name": "kartik-v/yii2-detail-view",
         "version": "v1.7.1",
         "version_normalized": "1.7.1.0",
@@ -1627,9 +1382,254 @@
         ]
     },
     {
+        "name": "bower-asset/free-jqgrid",
+        "version": "v4.9.2",
+        "version_normalized": "4.9.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/free-jqgrid/jqGrid.git",
+            "reference": "c6bc3a028e24c25dc2bcdb682f7027bdab540b11"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/free-jqgrid/jqGrid/zipball/c6bc3a028e24c25dc2bcdb682f7027bdab540b11",
+            "reference": "c6bc3a028e24c25dc2bcdb682f7027bdab540b11",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": ">=1.7.2"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "js/jquery.jqgrid.min.js",
+                "js/jquery.jqgrid.src.js",
+                "js/jquery.jqgrid.min.map",
+                "css/ui.jqgrid.css"
+            ],
+            "bower-asset-ignore": [
+                "**/.*",
+                "node_modules",
+                "bower_components",
+                "test",
+                "tests",
+                "gradlew.bat",
+                "gradle/wrapper",
+                ".gradle",
+                "gradlew"
+            ]
+        },
+        "installation-source": "dist",
+        "license": [
+            "MIT",
+            "GPL-2.0"
+        ],
+        "description": "grid as jQuery plugin - fork of jqGrid before licensing change",
+        "keywords": [
+            "Subgrid",
+            "TreeGrid",
+            "editing",
+            "grid",
+            "grid",
+            "grouping",
+            "jQuery",
+            "jqGrid",
+            "paging",
+            "searching",
+            "sorting",
+            "table"
+        ]
+    },
+    {
+        "name": "yiisoft/yii2",
+        "version": "2.0.6",
+        "version_normalized": "2.0.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yiisoft/yii2-framework.git",
+            "reference": "f42b2eb80f61992438661b01d0d74c6738e2ff38"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/f42b2eb80f61992438661b01d0d74c6738e2ff38",
+            "reference": "f42b2eb80f61992438661b01d0d74c6738e2ff38",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": "2.1.*@stable | 1.11.*@stable",
+            "bower-asset/jquery.inputmask": "3.1.*",
+            "bower-asset/punycode": "1.3.*",
+            "bower-asset/yii2-pjax": ">=2.0.1",
+            "cebe/markdown": "~1.0.0 | ~1.1.0",
+            "ext-mbstring": "*",
+            "ezyang/htmlpurifier": "4.6.*",
+            "lib-pcre": "*",
+            "php": ">=5.4.0",
+            "yiisoft/yii2-composer": "*"
+        },
+        "time": "2015-08-05 22:00:30",
+        "bin": [
+            "yii"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "yii\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Qiang Xue",
+                "email": "qiang.xue@gmail.com",
+                "homepage": "http://www.yiiframework.com/",
+                "role": "Founder and project lead"
+            },
+            {
+                "name": "Alexander Makarov",
+                "email": "sam@rmcreative.ru",
+                "homepage": "http://rmcreative.ru/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Maurizio Domba",
+                "homepage": "http://mdomba.info/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Carsten Brandt",
+                "email": "mail@cebe.cc",
+                "homepage": "http://cebe.cc/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Timur Ruziev",
+                "email": "resurtm@gmail.com",
+                "homepage": "http://resurtm.com/",
+                "role": "Core framework development"
+            },
+            {
+                "name": "Paul Klimov",
+                "email": "klimov.paul@gmail.com",
+                "role": "Core framework development"
+            }
+        ],
+        "description": "Yii PHP Framework Version 2",
+        "homepage": "http://www.yiiframework.com/",
+        "keywords": [
+            "framework",
+            "yii2"
+        ]
+    },
+    {
+        "name": "himiklab/yii2-jqgrid-widget",
+        "version": "1.1.10",
+        "version_normalized": "1.1.10.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/himiklab/yii2-jqgrid-widget.git",
+            "reference": "fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/himiklab/yii2-jqgrid-widget/zipball/fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103",
+            "reference": "fe441e1b330e4ea8bb8f5f504b2b5ca6fdc07103",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/free-jqgrid": "*",
+            "yiisoft/yii2": "*",
+            "yiisoft/yii2-jui": "*"
+        },
+        "time": "2015-08-08 18:28:26",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "himiklab\\jqgrid\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "HimikLab",
+                "homepage": "https://github.com/himiklab"
+            }
+        ],
+        "description": "A powerful ajax-enabled grid widget for Yii2",
+        "keywords": [
+            "ajax",
+            "grid",
+            "jqgrid",
+            "widget",
+            "yii2"
+        ]
+    },
+    {
+        "name": "yiisoft/yii2-debug",
+        "version": "2.0.5",
+        "version_normalized": "2.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/yiisoft/yii2-debug.git",
+            "reference": "1b302e67521d46feb2413d9d96ca94ed82b39b0e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/1b302e67521d46feb2413d9d96ca94ed82b39b0e",
+            "reference": "1b302e67521d46feb2413d9d96ca94ed82b39b0e",
+            "shasum": ""
+        },
+        "require": {
+            "yiisoft/yii2": ">=2.0.4",
+            "yiisoft/yii2-bootstrap": "*"
+        },
+        "time": "2015-08-06 16:14:06",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "yii\\debug\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Qiang Xue",
+                "email": "qiang.xue@gmail.com"
+            }
+        ],
+        "description": "The debugger extension for the Yii framework",
+        "keywords": [
+            "debug",
+            "debugger",
+            "yii2"
+        ]
+    },
+    {
         "name": "kartik-v/yii2-widget-select2",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "v2.0.2",
+        "version_normalized": "2.0.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/kartik-v/yii2-widget-select2.git",

@@ -143,16 +143,21 @@ div.cke_show_borders{
 						<?= $form->field($model, 'codenid') ?>
 						<?= $form->field($model, 'pubmedid') ?>
 						<?= $form->field($model, 'subjectarea_class')
-								//->dropDownList(ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name'))
 								->widget(Select2::classname(), [
 									'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name'),
-									'options' => ['placeholder' => 'Select a state ...'],
+									'options' => [],
 									'pluginOptions' => [
 										'allowClear' => true
 									],
 								]) ?>
 						<?= $form->field($model, 'journal_id')
-								->dropDownList(ArrayHelper::map($cttJournals, 'id', 'name')) ?>
+								->widget(Select2::classname(), [
+									'data' => ArrayHelper::map($cttJournals, 'id', 'name'),
+									'options' => [],
+									'pluginOptions' => [
+										'allowClear' => true
+									],
+								]) ?>
 						<div class="form-group">
 							<?= $form->field($model, 'year', [
 								'options' => [
@@ -246,6 +251,7 @@ div.cke_show_borders{
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+
 <div id="authors_template" class="hidden">
 	<div class="form-group authors-input-form-group">
 		<div class="col-md-12 content-right">

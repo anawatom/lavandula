@@ -1,5 +1,5 @@
-assets/
-tmp-assets/
+/assets/
+/tmp-assets/
 
 # OS generated files #
 ######################

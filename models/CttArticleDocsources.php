@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "ctt_article_docsources".
@@ -16,8 +19,21 @@ use Yii;
  * @property CttStaticdataDocsources $docsource
  * @property CttArticles $article
  */
-class CttArticleDocsources extends \yii\db\ActiveRecord
+class CttArticleDocsources extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_dtm'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */

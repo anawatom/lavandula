@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\base\Exception;
+use app\helpers\ErrorHelper;
 use app\models\CttArticles;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataReferences;
@@ -193,7 +194,7 @@ class ArticleImporter extends Model
 
             return true;
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            ErrorHelper::throwActiveRecordError($e->getMessage());
 
             return false;
         }
@@ -207,10 +208,12 @@ class ArticleImporter extends Model
         }
         $cttArticle->id = $this->id;
         if ($lang == 'en') {
-            $cttArticle->lang_id = '1';
+            // TODO: Getting this data from database directly
+            $lang_id = 1;
         } else if ($lang == 'local') {
-            $cttArticle->lang_id = $this->lang_id;
+            $lang_id = $this->lang_id;
         }
+        $cttArticle->lang_id = $lang_id;
         $cttArticle->lang = CttStaticdataLanguages::findOne($this->lang_id)->name;
         $cttArticle->documenttype_id = $this->documenttype_id;
         $cttArticle->documenttype =CttStaticdataDocumenttypes::findOne($this->documenttype_id)->name;
@@ -225,8 +228,14 @@ class ArticleImporter extends Model
             $cttArticle->author_keyword = $this->author_keyword_local;
             $cttArticle->abstract = $this->abstract_local;
         }
-        //**** Insert to CttAuthors
-        //**** Insert to CttAuthors
+        // CttAuthors
+        $tmpAuthors = '';
+        foreach ($this->authors['name'] as $key => $value) {
+           $checkCttAuthors = $this->checkCttAuthors($value, $lang_id);
+           $tmpAuthors .= ','.$value;
+        }
+        $this->authors = $tmpAuthors;
+        // CttAuthors
         $cttArticle->doi = $this->doi;
         $cttArticle->link = $this->link;
         $cttArticle->funding = $this->funding;
@@ -249,7 +258,9 @@ class ArticleImporter extends Model
         $cttArticle->page_count = $this->page_count;
         $cttArticle->created_by = $this->created_by;
         $cttArticle->modified_by = $this->created_by;
-        $cttArticle->save();
+        if (!$cttArticle->save()) {
+            ErrorHelper::throwActiveRecordError($cttArticle->errors);
+        }
 
         // CttArticleDocsources
         // field docsource_id, docsource ใน table artcle ก็ไม่ต้องเอาอะไรลงไป ให้มา insert ที่ table ctt_article_docsources แทน
@@ -258,7 +269,9 @@ class ArticleImporter extends Model
             $cttArticleDocsources->article_id = $cttArticle->id;
             $cttArticleDocsources->docsource_id = $value;
             $cttArticleDocsources->created_by = $created_by;
-            $cttArticleDocsources->save();
+            if (!$cttArticleDocsources->save()) {
+                ErrorHelper::throwActiveRecordError($cttArticleDocsources->errors);
+            }
         }
         // CttArticleDocsources
 
@@ -279,29 +292,33 @@ class ArticleImporter extends Model
             $cttIssues->created_by = $this->created_by;
             $cttIssues->modified_by = $this->created_by;
 
-            $cttIssues->save();
+            if (!$cttIssues->save()) {
+                ErrorHelper::throwActiveRecordError($cttIssues->errors);
+            }
         }
 
         return $cttIssues;
     }
 
-    // private function checkCttAuthors()
-    // {
-    //     $cttIssues = CttAuthors::find()->where(['year' => $this->year, 'volume' => $this->volume);
-    //     if (empty($cttIssues)) {
-    //         $cttIssues = new CttIssues();
-    //         $cttIssues->id = $cttIssues->getId();
-    //         $cttIssues->journal_id = $this->journal_id;
-    //         $cttIssues->year = $this->year;
-    //         $cttIssues->year_no = $this->year_no;
-    //         $cttIssues->volume = $this->volume
-    //         $cttIssues->status = 'A';
-    //         $cttIssues->created_by = $this->created_by;
-    //         $cttIssues->modified_by = $this->created_by;
+    private function checkCttAuthors($name, $lang_id)
+    {
+        $cttAuthors = CttAuthors::find()->where(['fname' => $name]);
+        if (empty($cttIssues)) {
+            $cttAuthors = new CttAuthors();
+            $cttAuthors->id = $cttAuthors->getId();
+            $cttAuthors->lang_id = $lang_id;
+            $cttAuthors->fname = $name;
+            // $cttAuthors->affiliation_id = $this->year_no;
+            // $cttAuthors->organization_id = $this->volume
+            $cttAuthors->status = 'A';
+            $cttAuthors->created_by = $this->created_by;
+            $cttAuthors->modified_by = $this->created_by;
 
-    //         $cttIssues->save();
-    //     }
+            if (!$cttAuthors->save()) {
+                ErrorHelper::throwActiveRecordError($cttAuthors->errors);
+            }
+        }
 
-    //     return $cttIssues;
-    // }
+        return $cttIssues;
+    }
 }

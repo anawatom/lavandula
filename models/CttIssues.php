@@ -85,6 +85,13 @@ class CttIssues extends ActiveRecord
         ];
     }
 
+     public function getId()
+    {
+        $id = CttSequences::getValue('ISSUE');
+
+        return $id;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

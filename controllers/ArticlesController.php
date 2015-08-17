@@ -61,8 +61,6 @@ class ArticlesController extends base\AppController
      */
     public function actionIndex()
     {
-        
-
         // GlobalVariable::fetchData();
 
         return $this->render('index');
@@ -208,25 +206,36 @@ class ArticlesController extends base\AppController
 
     public function actionImporter()
     {
-        $postData = Yii::$app->request->post();
-        $model = new ArticleImporter();
-        $renderParams = [
-                            'model' => $model,
-                            'cttStaticdataLanguages' => CttStaticdataLanguages::find()->orderBy('id')->all(),
-                            'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
-                            'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
-                            'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
-                            'cttJournals' => CttJournals::getJournalList()
-                        ];
-        var_dump($postData);
+        try {
+            $postData = Yii::$app->request->post();
+            $model = new ArticleImporter();
+            $renderParams = [
+                                'model' => $model,
+                                'cttStaticdataLanguages' => CttStaticdataLanguages::find()->orderBy('id')->all(),
+                                'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
+                                'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
+                                'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
+                                'cttJournals' => CttJournals::getJournalList()
+                            ];
+            var_dump($postData);
 
-        if ($postData) {
-            $model->load($postData);
-            $model->saveData();
+            $transaction = Yii::$app->db->beginTransaction();
+            if ($postData) {
+                $currentUser = Yii::$app->user->getIdentity();
 
-            return $this->render('importer', $renderParams);
-        } else {
-            return $this->render('importer', $renderParams);
+                $model->load($postData);
+                $model->created_by = $currentUser;
+                $model->saveData();
+
+                $transaction->commit();
+                FlashMessage::showSuccess(['msg' => 'Saved successfully.']);
+                return $this->redirect(['public-view', 'id' => $model->id]);
+            } else {
+                return $this->render('importer', $renderParams);
+            }
+        } catch (Exception $e) {
+            $transaction->rollback();
+            ErrorHelper::handlerError($e, ['importer']);
         }
     }
 

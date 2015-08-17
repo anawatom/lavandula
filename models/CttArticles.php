@@ -245,7 +245,7 @@ class CttArticles extends ActiveRecord
     public function getId()
     {
         $id = '';
-        $data = parent::find()->where(['name' => $this->name])->one();
+        $data = parent::find()->where(['title' => $this->title])->one();
 
         if (empty($data)) {
             $id = CttSequences::getValue('ARTICLE_SEQ');

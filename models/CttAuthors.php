@@ -113,6 +113,13 @@ class CttAuthors extends ActiveRecord
         ];
     }
 
+    public function getId()
+    {
+        $id = CttSequences::getValue('AUTHOR');
+
+        return $id;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

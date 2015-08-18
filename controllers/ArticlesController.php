@@ -211,20 +211,19 @@ class ArticlesController extends base\AppController
             $model = new ArticleImporter();
             $renderParams = [
                                 'model' => $model,
-                                'cttStaticdataLanguages' => CttStaticdataLanguages::find()->orderBy('id')->all(),
+                                'cttStaticdataLanguages' => CttStaticdataLanguages::find()->where(['NOT', ['name' => 'English']])->orderBy('id')->all(),
                                 'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
                                 'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
                                 'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
                                 'cttJournals' => CttJournals::getJournalList()
                             ];
-            var_dump($postData);
 
             $transaction = Yii::$app->db->beginTransaction();
             if ($postData) {
                 $currentUser = Yii::$app->user->getIdentity();
 
                 $model->load($postData);
-                $model->created_by = $currentUser;
+                $model->created_by = $currentUser->email;
                 $model->saveData();
 
                 $transaction->commit();
@@ -234,6 +233,7 @@ class ArticlesController extends base\AppController
                 return $this->render('importer', $renderParams);
             }
         } catch (Exception $e) {
+            Yii::trace($e->getMessage(), 'debug');
             $transaction->rollback();
             ErrorHelper::handlerError($e, ['importer']);
         }

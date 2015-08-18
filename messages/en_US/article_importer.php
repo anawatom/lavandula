@@ -19,13 +19,14 @@
 return [
     // Model
     'Local Language' => 'Local Language' ,
-    'Title En' => 'Title EN' ,
-    'Abbrev Title En' => 'Abbrev Title EN',
+    'Docsource' => 'Docsource *',
+    'Title En' => 'Title EN *',
+    'Abbrev Title En' => 'Abbrev Title EN *',
     'Title Local' => 'Title Local',
     'Abbrev Title Local' => 'Abbrev Title Local',
-    'Author Keyword En' => 'Author Keyword EN',
+    'Author Keyword En' => 'Author Keyword EN *',
     'Author Keyword Local' => 'Author Keyword Local',
-    'Abstract En' => 'Abstract EN',
+    'Abstract En' => 'Abstract EN *',
     'Abstract Local' => 'Abstract Local',
     // UI
     // 'Ctt Journals' => 'Journal List',

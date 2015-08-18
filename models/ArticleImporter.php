@@ -5,12 +5,15 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\base\Exception;
+use yii\helpers\Json;
 use app\helpers\ErrorHelper;
 use app\models\CttArticles;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataReferences;
 use app\models\CttStaticdataDocumenttypes;
 use app\models\CttStaticdataDocsources;
+use app\models\CttStaticdataOrganizations;
+use app\models\CttStaticdataAffiliations;
 use app\models\CttAuthors;
 use app\models\CttJournals;
 use app\models\CttIssues;
@@ -34,6 +37,7 @@ class ArticleImporter extends Model
     public $abstract_en;
     public $abstract_local;
     public $authors;
+    public $authors_string;
     public $doi;
     public $link;
     public $funding;
@@ -145,7 +149,7 @@ class ArticleImporter extends Model
             'id' => Yii::t('app/backend', 'ID'),
             'lang_id' => Yii::t('app/article_importer', 'Local Language'),
             'documenttype_id' => Yii::t('app/ctt_article', 'Documenttype'),
-            'docsource_id' => Yii::t('app/ctt_article', 'Docsource'),
+            'docsource_id' => Yii::t('app/article_importer', 'Docsource'),
             'title_en' => Yii::t('app/article_importer', 'Title En'),
             'abbrev_title_en' => Yii::t('app/article_importer', 'Abbrev Title En'),
             'title_local' => Yii::t('app/article_importer', 'Title Local'),
@@ -178,7 +182,7 @@ class ArticleImporter extends Model
 
     public function saveData()
     {
-        try {
+        // try {
             if ($this->title_en &&
                 $this->abbrev_title_en &&
                 $this->author_keyword_en &&
@@ -193,13 +197,23 @@ class ArticleImporter extends Model
             }
 
             return true;
-        } catch (Exception $e) {
-            ErrorHelper::throwActiveRecordError($e->getMessage());
-
-            return false;
-        }
+        // } catch (Exception $e) {
+        //     throw new Exception($e->getMessage(), 1);
+        //     return false;
+        // }
     }
 
+    /**
+    * The workflow for this function will add the data into these tables
+    *   - ctt_articles
+    *   - ctt_authors
+    *       -- ctt_staticdata_affiliations
+    *       -- ctt_staticdata_organizations
+    *   - ctt_issues
+    *   - CttArticleDocsources
+    * By the first this function will search the old data by the data that user inpu
+    * If these data doesn't match with old data. this function will insert the new record and use it.
+    */
     public function saveDataByLange($lang)
     {
         $cttArticle = new CttArticles();
@@ -229,12 +243,25 @@ class ArticleImporter extends Model
             $cttArticle->abstract = $this->abstract_local;
         }
         // CttAuthors
-        $tmpAuthors = '';
-        foreach ($this->authors['name'] as $key => $value) {
-           $checkCttAuthors = $this->checkCttAuthors($value, $lang_id);
-           $tmpAuthors .= ','.$value;
+        if (empty($this->authors_string)) {
+            $tmpAuthors = '';
+            foreach ($this->authors['name'] as $key => $value) {
+                $tmpData = [
+                            'name' => $this->authors['name'][$key],
+                            'organization' => $this->authors['organization'][$key],
+                            'affiliation' => $this->authors['affiliation'][$key],
+                            'address' => $this->authors['address'][$key]
+                            ];
+                $checkCttAuthors = $this->checkCttAuthors($tmpData, $lang_id);
+                if (empty($tmp)) {
+                    $tmpAuthors .= Json::encode($checkCttAuthors);
+                } else {
+                    $tmpAuthors .= ','.Json::encode($checkCttAuthors);
+                }
+            }
+            $this->authors_string = $tmpAuthors;
         }
-        $this->authors = $tmpAuthors;
+        $cttArticle->authors = $this->authors_string;
         // CttAuthors
         $cttArticle->doi = $this->doi;
         $cttArticle->link = $this->link;
@@ -247,10 +274,17 @@ class ArticleImporter extends Model
         $cttArticle->journal_id = $this->journal_id;
         $cttArticle->journal = CttJournals::findOne($this->journal_id)->name;
         // Insert to CttIssue
-        $checkCttIssues = $this->checkCttIssues();
-        $cttArticle->year = $checkCttIssues->year;
-        $cttArticle->volume = $checkCttIssues->volume;
-        $cttArticle->year_no = $checkCttIssues->year_no;
+        if (empty($this->issue_id)) {
+            $checkCttIssues = $this->checkCttIssues();
+            $this->issue_id = $checkCttIssues->id;
+            $this->year = $checkCttIssues->year;
+            // $this->year_no = $checkCttIssues->year_no;
+            $this->volume = $checkCttIssues->volume;
+        }
+        $cttArticle->issue_id = $this->issue_id;
+        $cttArticle->year = $this->year;
+        $cttArticle->volume = $this->volume;
+        //$cttArticle->year_no = $this->year_no;
         // Insert to CttIssue
         $cttArticle->artnumber = $this->artnumber;
         $cttArticle->page_start = $this->page_start;
@@ -268,7 +302,7 @@ class ArticleImporter extends Model
             $cttArticleDocsources = new CttArticleDocsources();
             $cttArticleDocsources->article_id = $cttArticle->id;
             $cttArticleDocsources->docsource_id = $value;
-            $cttArticleDocsources->created_by = $created_by;
+            $cttArticleDocsources->created_by = $this->created_by;
             if (!$cttArticleDocsources->save()) {
                 ErrorHelper::throwActiveRecordError($cttArticleDocsources->errors);
             }
@@ -280,7 +314,7 @@ class ArticleImporter extends Model
 
     private function checkCttIssues()
     {
-        $cttIssues = CttIssues::find()->where(['year' => $this->year, 'volume' => $this->volume]);
+        $cttIssues = CttIssues::find()->where(['year' => $this->year, 'volume' => $this->volume])->all();
         if (empty($cttIssues)) {
             $cttIssues = new CttIssues();
             $cttIssues->id = $cttIssues->getId();
@@ -288,6 +322,7 @@ class ArticleImporter extends Model
             $cttIssues->year = $this->year;
             $cttIssues->year_no = $this->year_no;
             $cttIssues->volume = $this->volume;
+            // TODO:: Need to re-factor to pull properly the status data
             $cttIssues->status = 'A';
             $cttIssues->created_by = $this->created_by;
             $cttIssues->modified_by = $this->created_by;
@@ -300,16 +335,23 @@ class ArticleImporter extends Model
         return $cttIssues;
     }
 
-    private function checkCttAuthors($name, $lang_id)
+    private function checkCttAuthors($data, $lang_id)
     {
-        $cttAuthors = CttAuthors::find()->where(['fname' => $name]);
+        $cttAuthors = CttAuthors::find()->where(['fname' => $data['name']])->all();
         if (empty($cttIssues)) {
             $cttAuthors = new CttAuthors();
             $cttAuthors->id = $cttAuthors->getId();
             $cttAuthors->lang_id = $lang_id;
-            $cttAuthors->fname = $name;
-            // $cttAuthors->affiliation_id = $this->year_no;
-            // $cttAuthors->organization_id = $this->volume
+            $cttAuthors->fname = $data['name'];
+            // CttStaticdataAffiliations
+            $checkCttStaticdataAffiliations = $this->checkCttStaticdataAffiliations($data['affiliation'], $lang_id);
+            $cttAuthors->affiliation_id = $checkCttStaticdataAffiliations->id;
+            // CttStaticdataAffiliations
+            // checkCttStaticdataOrganizations
+            $checkCttStaticdataOrganizations = $this->checkCttStaticdataOrganizations($checkCttStaticdataAffiliations->id, $data['organization'], $lang_id);
+            $cttAuthors->organization_id = $checkCttStaticdataOrganizations->id;
+            // checkCttStaticdataOrganizations
+            // TODO:: Need to re-factor to pull properly the status data
             $cttAuthors->status = 'A';
             $cttAuthors->created_by = $this->created_by;
             $cttAuthors->modified_by = $this->created_by;
@@ -319,6 +361,49 @@ class ArticleImporter extends Model
             }
         }
 
-        return $cttIssues;
+        return $cttAuthors;
+    }
+
+    private function checkCttStaticdataAffiliations($name, $lang_id)
+    {
+        $cttStaticdataAffiliations = CttStaticdataAffiliations::find()->where(['name' => $name])->all();
+        if (empty($cttStaticdataAffiliations)) {
+            $cttStaticdataAffiliations = new CttStaticdataAffiliations();
+            $cttStaticdataAffiliations->lang_id = $lang_id;
+            $cttStaticdataAffiliations->name = $name;
+            // TODO:: Need to re-factor to pull properly the status data
+            $cttStaticdataAffiliations->status = 'A';
+            $cttStaticdataAffiliations->created_by = $this->created_by;
+            $cttStaticdataAffiliations->modified_by = $this->created_by;
+            $cttStaticdataAffiliations->id = $cttStaticdataAffiliations->getId();
+
+            if (!$cttStaticdataAffiliations->save()) {
+                ErrorHelper::throwActiveRecordError($cttStaticdataAffiliations->errors);
+            }
+        }
+
+        return $cttStaticdataAffiliations;
+    }
+
+    private function checkCttStaticdataOrganizations($affiliation_id, $name, $lang_id)
+    {
+        $cttStaticdataOrganizations = CttStaticdataOrganizations::find()->where(['name' => $name])->all();
+        if (empty($cttStaticdataOrganizations)) {
+            $cttStaticdataOrganizations = new CttStaticdataOrganizations();
+            $cttStaticdataOrganizations->lang_id = $lang_id;
+            $cttStaticdataOrganizations->name = $name;
+            $cttStaticdataOrganizations->affiliation_id = $affiliation_id;
+            // TODO:: Need to re-factor to pull properly the status data
+            $cttStaticdataOrganizations->status = 'A';
+            $cttStaticdataOrganizations->created_by = $this->created_by;
+            $cttStaticdataOrganizations->modified_by = $this->created_by;
+            $cttStaticdataOrganizations->id = $cttStaticdataOrganizations->getId();
+
+            if (!$cttStaticdataOrganizations->save()) {
+                ErrorHelper::throwActiveRecordError($cttStaticdataOrganizations->errors);
+            }
+        }
+
+        return $cttStaticdataOrganizations;
     }
 }

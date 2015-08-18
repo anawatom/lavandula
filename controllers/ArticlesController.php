@@ -232,7 +232,9 @@ class ArticlesController extends base\AppController
             } else {
                 return $this->render('importer', $renderParams);
             }
-        } catch (Exception $e) {
+        }
+        // TODO: Need for covering more exception like Database Exception – yii\db\Exception
+        catch (Exception $e) {
             $transaction->rollback();
             ErrorHelper::handlerError($e, ['importer']);
         }

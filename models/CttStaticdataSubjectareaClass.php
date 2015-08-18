@@ -106,7 +106,7 @@ class CttStaticdataSubjectareaClass extends ActiveRecord
                         from ctt_staticdata_subjectarea_class t2
                         where t2.id = ctt_staticdata_subjectarea_class.id
                         group by id)')
-                ->orderBy('name')
+                ->orderBy('subjectarea_id, name')
                 ->all();
     }
 

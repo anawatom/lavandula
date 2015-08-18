@@ -233,7 +233,6 @@ class ArticlesController extends base\AppController
                 return $this->render('importer', $renderParams);
             }
         } catch (Exception $e) {
-            Yii::trace($e->getMessage(), 'debug');
             $transaction->rollback();
             ErrorHelper::handlerError($e, ['importer']);
         }

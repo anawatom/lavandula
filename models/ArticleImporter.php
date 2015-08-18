@@ -182,12 +182,15 @@ class ArticleImporter extends Model
 
     public function saveData()
     {
-        // try {
+        try {
             if ($this->title_en &&
                 $this->abbrev_title_en &&
                 $this->author_keyword_en &&
                 $this->abstract_en) {
                 $this->saveDataByLange('en');
+            } else {
+                // TODO: Need to validate from frontend
+                throw new Exception('\"Title EN\", \"Abbrev Title En\", \"Author Keyword En\", \"Abstract En\": can\'t be blank.');
             }
             if ($this->title_local &&
                 $this->abbrev_title_local &&
@@ -197,10 +200,10 @@ class ArticleImporter extends Model
             }
 
             return true;
-        // } catch (Exception $e) {
-        //     throw new Exception($e->getMessage(), 1);
-        //     return false;
-        // }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+            return false;
+        }
     }
 
     /**

@@ -144,7 +144,7 @@ div.cke_show_borders{
 						<?= $form->field($model, 'pubmedid') ?>
 						<?= $form->field($model, 'subjectarea_class')
 								->widget(Select2::classname(), [
-									'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name'),
+									'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name', 'subjectarea.name'),
 									'options' => [],
 									'pluginOptions' => [
 										'allowClear' => true

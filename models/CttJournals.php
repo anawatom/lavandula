@@ -135,6 +135,7 @@ class CttJournals extends \yii\db\ActiveRecord
                         from ctt_journals t2
                         where t2.id = ctt_journals.id
                         group by id)')
+                ->orderBy('name')
                 ->all();
     }
 

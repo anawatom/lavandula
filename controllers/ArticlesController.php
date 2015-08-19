@@ -219,7 +219,34 @@ class ArticlesController extends base\AppController
                             ];
 
             $transaction = Yii::$app->db->beginTransaction();
-            if ($postData) {
+            // TODO: Need to refactor later
+            if (isset($postData['action']) && $postData['action'] == 'metadataextractor') {
+
+                $xml = simplexml_load_file('web/assets/29205-tag.xml');
+                // $sampleXML = [
+                //     'title_local' => $xml->metadata->{'title-local'},
+                //     'title_eng' => $xml->metadata->{'title-eng'},
+                //     'authors' => $xml->metadata->{'authors'},
+                //     'abstract_local' => $xml->metadata->{'abstract-local'},
+                //     'abstract_eng' => $xml->metadata->{'abstract-eng'},
+                //     'keyword_local' => $xml->metadata->{'keyword-local'},
+                //     'keyword_eng' => $xml->metadata->{'keyword-eng'},
+                // ];
+                $model->docsource_id = ['1', '2'];
+                $model->title_local = strip_tags($xml->metadata->{'title-local'});
+                $model->abbrev_title_local = strip_tags($xml->metadata->{'title-local'});
+                $model->title_en = strip_tags($xml->metadata->{'title-eng'});
+                $model->abbrev_title_en = strip_tags($xml->metadata->{'title-eng'});
+                $model->authors = strip_tags($xml->metadata->authors->author);
+                $model->abstract_local = strip_tags($xml->{'abstract-local'});
+                $model->abstract_en = strip_tags($xml->{'abstract-eng'});
+                $model->author_keyword_local = strip_tags($xml->{'keyword-local'});
+                $model->author_keyword_en = strip_tags($xml->{'keyword-eng'});
+                $renderParams['model'] = $model;
+                // var_dump($renderParams['model']);
+
+                return $this->render('importer', $renderParams);
+            } else if ($postData) {
                 $currentUser = Yii::$app->user->getIdentity();
 
                 $model->load($postData);

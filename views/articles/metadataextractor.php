@@ -16,7 +16,7 @@ div.row label{
 }
 </style>
 <?php $form = ActiveForm::begin([
-	'action' => ['/article/importer'],
+	'action' => ['/articles/importer'],
 	'method' => 'post',
 	'layout' => 'horizontal',
 	'fieldConfig' => [
@@ -46,7 +46,7 @@ div.row label{
 								PDF File Browse
 							</div>
 							<div class="col-md-4">
-								<input type="file" name="uploadFile" class="form-control" />
+								<input type="file" name="uploadFile" class="form-control"/>
 							</div>
 						</div>
 						<div class="row custom1">

@@ -347,12 +347,22 @@ class ArticleImporter extends Model
             $cttAuthors->lang_id = $lang_id;
             $cttAuthors->fname = $data['name'];
             // CttStaticdataAffiliations
-            $checkCttStaticdataAffiliations = $this->checkCttStaticdataAffiliations($data['affiliation'], $lang_id);
-            $cttAuthors->affiliation_id = $checkCttStaticdataAffiliations->id;
+            if (empty($data['affiliation'])) {
+                // TODO: Delete this line later It is used for metadata-extractor page
+                $cttAuthors->affiliation_id = '7985';
+            } else {
+                $checkCttStaticdataAffiliations = $this->checkCttStaticdataAffiliations($data['affiliation'], $lang_id);
+                $cttAuthors->affiliation_id = $checkCttStaticdataAffiliations->id;
+            }
             // CttStaticdataAffiliations
             // checkCttStaticdataOrganizations
-            $checkCttStaticdataOrganizations = $this->checkCttStaticdataOrganizations($checkCttStaticdataAffiliations->id, $data['organization'], $lang_id);
-            $cttAuthors->organization_id = $checkCttStaticdataOrganizations->id;
+            if (empty($data['organization'])) {
+                // TODO: Delete this line later It is used for metadata-extractor page
+                $cttAuthors->organization_id = '16612';
+            } else {
+                $checkCttStaticdataOrganizations = $this->checkCttStaticdataOrganizations($checkCttStaticdataAffiliations->id, $data['organization'], $lang_id);
+                $cttAuthors->organization_id = $checkCttStaticdataOrganizations->id;
+            }
             // checkCttStaticdataOrganizations
             // TODO:: Need to re-factor to pull properly the status data
             $cttAuthors->status = 'A';

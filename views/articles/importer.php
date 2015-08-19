@@ -330,10 +330,5 @@ div.cke_show_borders{
 
 		// TODO:: Need to refactor later
 		$('input[name="ArticleImporter[authors][name][]"').val('<?= $model->authors ?>');
-		if ('<?= $model->title_en ?>'.length) {
-			setTimeout(function() {
-				$('button[type="submit"]').trigger('click');
-			}, 5000);
-		}
 	})
 </script>

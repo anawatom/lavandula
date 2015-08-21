@@ -283,6 +283,7 @@ div.cke_show_borders{
 </div>
 
 <script type="text/javascript">
+	var authors = <?= json_encode($model->authors) ?>;
 // 	var exampleContainer = document.getElementById('example');
 	
 // 	if (exampleContainer.innerHTML.trim().length == 0) {
@@ -310,25 +311,40 @@ div.cke_show_borders{
 		toolbar:'Full'				
 	});
 
-	function addAuthorInput() {
+	function addAuthorInput(data) {
 		var $authorsInputContainer = $('.authors-input-container');
 		var $authorsTemplate = $('#authors_template');
 
-		$authorsInputContainer.append($authorsTemplate.html());
-		$authorsInputContainer
-		.find('.remove-row-button:last')
+		var $authorsInputFormGroup = $authorsInputContainer
+										.append($authorsTemplate.html())
+										.find('.authors-input-form-group:last');
+		$authorsInputFormGroup
+		.find('.remove-row-button')
 		.on('click', function() {
 			var $this = $(this);
 			$this.closest('.authors-input-form-group').remove();
 		});
+
+		if (data) {
+			if (data.name) {
+				$authorsInputFormGroup
+				.find('input[name="ArticleImporter[authors][name][]"]')
+				.val(data.name);
+			}
+		}
 	}
 
 	$(function() {
-		$('.add-author-button').on('click', function() {
-			addAuthorInput()
-		}).trigger('click');
+		if (authors) {
+			$.each(authors, function(key, value) {
+				addAuthorInput({name: value});
+			});
+		} else {
+			addAuthorInput();
+		}
 
-		// TODO:: Need to refactor later
-		$('input[name="ArticleImporter[authors][name][]"').val('<?= $model->authors ?>');
+		$('.add-author-button').on('click', function() {
+			addAuthorInput();
+		});
 	})
 </script>

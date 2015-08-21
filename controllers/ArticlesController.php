@@ -237,7 +237,13 @@ class ArticlesController extends base\AppController
                 $model->abbrev_title_local = strip_tags($xml->metadata->{'title-local'});
                 $model->title_en = strip_tags($xml->metadata->{'title-eng'});
                 $model->abbrev_title_en = strip_tags($xml->metadata->{'title-eng'});
-                $model->authors = strip_tags($xml->metadata->authors->author);
+                $authors_array = [];
+                $authors = $xml->metadata->authors->children();
+                $count_authors = count($authors);
+                for ($i = 0; $i < $count_authors; $i++ ) {
+                    $authors_array[$i] = strip_tags((string) $authors[$i]);
+                }
+                $model->authors =  $authors_array;
                 $model->abstract_local = strip_tags($xml->{'abstract-local'});
                 $model->abstract_en = strip_tags($xml->{'abstract-eng'});
                 $model->author_keyword_local = strip_tags($xml->{'keyword-local'});

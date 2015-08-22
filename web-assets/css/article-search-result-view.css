@@ -34,6 +34,24 @@ div.row.result-list{
 div.panel.refine-by p{
 	margin: 0px !important;
 }
-div.panel.refine-by p.refine-chk{
-	text-align:right;
+div.panel-body.refine-by .refine-name{
+	text-align:left;
+	padding: 0 5px;
+}
+div.panel-body.refine-by .refine-cnt{
+	text-align:center;
+	padding: 0 5px;
+	width:100px;
+}
+div.panel-body.refine-by .show-all{
+	color:#428bca;
+	text-align: center; 
+	background-color: white;
+	border: 1px solid transparent; 
+	border-radius: 0 0 4px 4px;cursor:pointer;
+}
+div.panel-body.refine-by .show-all:hover{
+	font-weight: bold;
+	color:white;
+	background-color: #428bca;
 }

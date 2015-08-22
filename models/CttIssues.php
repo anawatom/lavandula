@@ -57,7 +57,7 @@ class CttIssues extends ActiveRecord
         return [
             [['id', 'journal_id'], 'required'],
             [['id', 'journal_id', 'year', 'year_no'], 'integer'],
-            [['created_dtm', 'modified_dtm'], 'safe'],
+            [['publish_date', 'created_dtm', 'modified_dtm'], 'safe'],
             [['alias_id'], 'string', 'max' => 50],
             [['volume'], 'string', 'max' => 10],
             [['status'], 'string', 'max' => 1],
@@ -78,6 +78,7 @@ class CttIssues extends ActiveRecord
             'year_no' => Yii::t('app', 'Year No'),
             'volume' => Yii::t('app', 'Volume'),
             'status' => Yii::t('app', 'Status'),
+            'publish_date' => Yii::t('app', 'Publish Date'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_dtm' => Yii::t('app', 'Created Dtm'),
             'modified_by' => Yii::t('app', 'Modified By'),

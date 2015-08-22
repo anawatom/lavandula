@@ -50,7 +50,7 @@ div.cke_show_borders{
 		]
 	]);
 ?>
-<div style="clear:both;padding:10px 0;"></div>
+<div style="clear:both;"></div>
 <div class="row content">
 	<div class="col-md-12">
 		<div class="row">

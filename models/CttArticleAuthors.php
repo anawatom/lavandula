@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "ctt_article_authors".
@@ -21,8 +24,22 @@ use Yii;
  * @property CttAuthors $author
  * @property CttStaticdataAuthortypes $authortype0
  */
-class CttArticleAuthors extends \yii\db\ActiveRecord
+class CttArticleAuthors extends ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_dtm', 'modified_dtm'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'modified_dtm',
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */

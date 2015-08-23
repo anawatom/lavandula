@@ -256,7 +256,7 @@ class ArticleImporter extends Model
                 $tmpData = [
                             'main_author' => $this->authors['main_author'][$key],
                             'name' => $this->authors['name'][$key],
-                            'organization' => $this->authors['organization'][$key]
+                            'organization' => isset($this->authors['organization'][$key])? $this->authors['organization'][$key]: ''
                             ];
                 $checkCttAuthors = $this->checkCttAuthors($tmpData, $lang_id);
 
@@ -343,10 +343,16 @@ class ArticleImporter extends Model
             $cttAuthors->fname = $data['name'];
             // checkCttStaticdataOrganizations
             $cttStaticdataOrganizations = CttStaticdataOrganizations::findOne($data['organization']);
-            $cttAuthors->organization_id = $cttStaticdataOrganizations->id;
+            $organization_id = '';
+            $affiliation_id = '';
+            if (!empty($cttStaticdataOrganizations)) {
+                $organization_id = $cttStaticdataOrganizations->id;
+                $affiliation_id = $cttStaticdataOrganizations->affiliation_id;
+            }
+            $cttAuthors->organization_id = $organization_id;
             // checkCttStaticdataOrganizations
             // CttStaticdataAffiliations
-            $cttAuthors->affiliation_id = $cttStaticdataOrganizations->affiliation_id;
+            $cttAuthors->affiliation_id = $affiliation_id;
             // CttStaticdataAffiliations
             // TODO:: Need to re-factor to pull properly the status data
             $cttAuthors->status = 'A';

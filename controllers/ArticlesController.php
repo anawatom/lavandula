@@ -4,8 +4,11 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Exception;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\components\FlashMessage;
@@ -219,7 +222,7 @@ class ArticlesController extends base\AppController
                                 'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
                                 'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
                                 'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
-                                'cttStaticdataOrganizations' => CttStaticdataOrganizations::getOrganizationList(),
+                                //'cttStaticdataOrganizations' => CttStaticdataOrganizations::getOrganizationList(),
                                 'cttJournals' => CttJournals::getJournalList()
                             ];
             $transaction = Yii::$app->db->beginTransaction();
@@ -289,7 +292,10 @@ class ArticlesController extends base\AppController
                         }
                     }
 
-                    $organizations_array[$i] = $cttStaticdataOrganizations->id;
+                    $organizations_array[$i] = [
+                                                    'id' => $cttStaticdataOrganizations->id,
+                                                    'name' => $cttStaticdataOrganizations->name_full
+                                                ];
                 }
                 $transaction->commit();
                 // $model->authors['org'] =  $organizations_array;
@@ -337,6 +343,34 @@ class ArticlesController extends base\AppController
     public function actionImporterSubmit(){
     	
     	return $this->cRender('importer');
+    }
+
+    public function actionOrganizationList($q = null, $id = null)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $out = ['results' => ['id' => '', 'text' => 'aaaa']];
+        if (!is_null($q)) {
+            $query = new Query;
+            $query->select('id, name_full AS text')
+                ->from('ctt_staticdata_organizations')
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_organizations t2
+                        where t2.id = ctt_staticdata_organizations.id
+                        and t2.name_full like :name_full
+                        group by id)',
+                        [
+                            ':name_full' => '%'.$q.'%',
+                        ])
+                ->limit(10);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = $data;
+        }
+        elseif ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => CttStaticdataOrganizations::find($id)->name_full];
+        }
+        return $out;
     }
 
     /**

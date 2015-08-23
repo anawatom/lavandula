@@ -105,13 +105,17 @@ class CttStaticdataOrganizations extends ActiveRecord
         return $id;
     }
 
-    public static function getOrganizationList()
+    public static function getOrganizationList($params = null)
     {
         return self::find()
                 ->where('lang_id = (select min(lang_id)
                         from ctt_staticdata_organizations t2
                         where t2.id = ctt_staticdata_organizations.id
-                        group by id)')
+                        and t2.name like :name
+                        group by id)',
+                        [
+                            ':name' => isset($params['name'])? '%'.$params['name'].'%': '%%',
+                        ])
                 ->all();
     }
 

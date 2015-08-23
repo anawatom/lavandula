@@ -3,6 +3,7 @@
 	use yii\helpers\Html;
 	use yii\helpers\ArrayHelper;
 	use yii\bootstrap\ActiveForm;
+	use yii\web\JsExpression;
 	use kartik\select2\Select2;
 ?>
 <style type="text/css">
@@ -273,12 +274,20 @@ div.cke_show_borders{
 						echo Select2::widget([
 									'model' => $model,
 									'name' => 'ArticleImporter[authors][organization][]',
-									'data' => ArrayHelper::map($cttStaticdataOrganizations, 'id', 'name_full'),
 									'options' => [
 													'class' => 'form-control'
 												],
 									'pluginOptions' => [
-										'allowClear' => true
+										'allowClear' => true,
+										'minimumInputLength' => 3,
+										'ajax' => [
+											'url' => \yii\helpers\Url::to(['organization-list']),
+											'dataType' => 'json',
+											'data' => new JsExpression('function(params) { return {q:params.term}; }')
+										],
+										// 'escapeMarkup' => new JsExpression('function(markup) { return markup; }'),
+										// 'templateResult' => new JsExpression('function(data) { return data.name_full; }'),
+										// 'templateSelection' => new JsExpression('function(data) { return data.name_full; }'),
 									],
 									'addon' => [
 												'append' => [
@@ -384,13 +393,13 @@ div.cke_show_borders{
 			if (data.organization) {
 				$authorsInputFormGroup
 				.find('select[name="ArticleImporter[authors][organization][]"]')
-				.val(data.organization);
+				.html('<option value="'+data.organization.id+'">'+data.organization.name+'</option>');
 			}
 		}
 
 		// Reinitialize select2
 		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
-				settings = $select2El.attr('data-krajee-select2');
+			settings = $select2El.attr('data-krajee-select2');
 		settings = window[settings];
 		$select2El.select2(settings);
 	}

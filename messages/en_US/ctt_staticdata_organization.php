@@ -21,6 +21,7 @@ return [
     'Affiliation ID' => 'Affiliation ID',
     'Affiliation' => 'Affiliation',
     'Name' => 'Name',
+    'Name Full' => 'Name Full',
     'Alias' => 'Alias',
     'Address' => 'Address',
     // UI

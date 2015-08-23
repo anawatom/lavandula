@@ -255,13 +255,18 @@ div.cke_show_borders{
 <div id="authors_template" class="hidden">
 	<div class="form-group authors-input-form-group">
 		<div class=" field-authors-name col-md-12">
+			<label class="control-label col-md-2" for="authors-name">Main Author</label>
+			<div class="col-md-1">
+				<input type="checkbox" class="" name="ArticleImporter[authors][main][]" value="">
+				<div class="help-block help-block-error"></div>
+			</div>
 			<label class="control-label col-md-1" for="authors-name">Name</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
 				<div class="help-block help-block-error"></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-organization">Org.</label>
-			<div class="col-md-7">
+			<div class="col-md-4">
 				<div class="input-group">
 					<?php
 						echo Select2::widget([

@@ -3,6 +3,7 @@
 namespace app\controllers\base;
 
 use yii;
+use app\models\CttStaticdataLanguages;
 
 class AppController extends \yii\web\Controller
 {
@@ -15,6 +16,18 @@ class AppController extends \yii\web\Controller
 	}
 	protected function cRender($view){
 		return $this->render($view, $this->parameter);
+	}
+	
+	protected function getLanguages(){
+		$languages = CttStaticdataLanguages::find()->select(['id', 'name'])->all();
+		$output = [];
+		
+		foreach($languages as $language){
+			$output[$language->id] = $language->name;
+		}
+		
+		return $output;
+		
 	}
 	
 }

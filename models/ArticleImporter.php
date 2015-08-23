@@ -17,6 +17,7 @@ use app\models\CttStaticdataAffiliations;
 use app\models\CttAuthors;
 use app\models\CttJournals;
 use app\models\CttIssues;
+use app\models\CttArticleAuthors;
 use app\models\CttArticleDocsources;
 
 /**
@@ -213,27 +214,6 @@ class ArticleImporter extends Model
             $cttArticle->author_keyword = $this->author_keyword_local;
             $cttArticle->abstract = $this->abstract_local;
         }
-        // CttAuthors
-        if (empty($this->authors_string)) {
-            $tmpAuthors = '';
-            foreach ($this->authors['name'] as $key => $value) {
-                $tmpData = [
-                            'name' => $this->authors['name'][$key],
-                            'organization' => $this->authors['organization'][$key],
-                            'affiliation' => $this->authors['affiliation'][$key],
-                            'address' => $this->authors['address'][$key]
-                            ];
-                $checkCttAuthors = $this->checkCttAuthors($tmpData, $lang_id);
-                if (empty($tmp)) {
-                    $tmpAuthors .= Json::encode($checkCttAuthors);
-                } else {
-                    $tmpAuthors .= ','.Json::encode($checkCttAuthors);
-                }
-            }
-            $this->authors_string = $tmpAuthors;
-        }
-        $cttArticle->authors = $this->authors_string;
-        // CttAuthors
         $cttArticle->doi = $this->doi;
         $cttArticle->link = $this->link;
         $cttArticle->funding = $this->funding;
@@ -267,6 +247,53 @@ class ArticleImporter extends Model
             ErrorHelper::throwActiveRecordError($cttArticle->errors);
         }
 
+        // CttAuthors
+        // Need to produce after save ctt_articles
+        // because error CONSTRAINT `fk_ctt_article_authors_ctt_articles1`.
+        if (empty($this->authors_string)) {
+            $tmpAuthors = [];
+            foreach ($this->authors['name'] as $key => $value) {
+                $tmpData = [
+                            'main_author' => $this->authors['main_author'][$key],
+                            'name' => $this->authors['name'][$key],
+                            'organization' => $this->authors['organization'][$key]
+                            ];
+                $checkCttAuthors = $this->checkCttAuthors($tmpData, $lang_id);
+
+                // ctt_article_authors
+                $cttArticleAuthors = new CttArticleAuthors();
+                $cttArticleAuthors->article_id = $this->id;
+                $cttArticleAuthors->author_id = $checkCttAuthors->id;
+                $cttArticleAuthors->authortype_id = $tmpData['main_author'];
+                $cttArticleAuthors->created_by = $this->created_by;
+                $cttArticleAuthors->modified_by = $this->created_by;
+                if (!$cttArticleAuthors->save()) {
+                    ErrorHelper::throwActiveRecordError($cttArticleAuthors->errors);
+                }
+                /* ************************** */
+
+                // format of the author field
+                // [
+                //     {"382":{"name":"Harnbunchong, A.", "authortype_id":"20"}},
+                //     {"383":{"name":"Jaroensri, S.", "authortype_id":"20"}},
+                //     {"384":{"name":"Sinchermsiri, D.", "authortype_id":"20"}}
+                // ]
+                array_push($tmpAuthors, [
+                            $checkCttAuthors->id => [
+                                'name' => $checkCttAuthors->fname,
+                                'authortype_id' => $cttArticleAuthors->authortype_id
+                            ]
+                        ]);
+            }
+            $this->authors_string = Json::encode($tmpAuthors);
+        }
+        $cttArticle = CttArticles::findOne($this->id);
+        $cttArticle->authors = $this->authors_string;
+        if (!$cttArticle->save()) {
+            ErrorHelper::throwActiveRecordError($cttArticle->errors);
+        }
+        /* ********************* */
+
         // CttArticleDocsources
         // field docsource_id, docsource ใน table artcle ก็ไม่ต้องเอาอะไรลงไป ให้มา insert ที่ table ctt_article_docsources แทน
         foreach ($this->docsource_id as $key => $value) {
@@ -278,7 +305,7 @@ class ArticleImporter extends Model
                 ErrorHelper::throwActiveRecordError($cttArticleDocsources->errors);
             }
         }
-        // CttArticleDocsources
+        /* ********************* */
 
         //**** Insert to CttStaticdataReferences
     }
@@ -314,24 +341,13 @@ class ArticleImporter extends Model
             $cttAuthors->id = $cttAuthors->getId();
             $cttAuthors->lang_id = $lang_id;
             $cttAuthors->fname = $data['name'];
-            // CttStaticdataAffiliations
-            if (empty($data['affiliation'])) {
-                // TODO: Delete this line later It is used for metadata-extractor page
-                $cttAuthors->affiliation_id = '7985';
-            } else {
-                $checkCttStaticdataAffiliations = $this->checkCttStaticdataAffiliations($data['affiliation'], $lang_id);
-                $cttAuthors->affiliation_id = $checkCttStaticdataAffiliations->id;
-            }
-            // CttStaticdataAffiliations
             // checkCttStaticdataOrganizations
-            if (empty($data['organization'])) {
-                // TODO: Delete this line later It is used for metadata-extractor page
-                $cttAuthors->organization_id = '16612';
-            } else {
-                $checkCttStaticdataOrganizations = $this->checkCttStaticdataOrganizations($checkCttStaticdataAffiliations->id, $data['organization'], $lang_id);
-                $cttAuthors->organization_id = $checkCttStaticdataOrganizations->id;
-            }
+            $cttStaticdataOrganizations = CttStaticdataOrganizations::findOne($data['organization']);
+            $cttAuthors->organization_id = $cttStaticdataOrganizations->id;
             // checkCttStaticdataOrganizations
+            // CttStaticdataAffiliations
+            $cttAuthors->affiliation_id = $cttStaticdataOrganizations->affiliation_id;
+            // CttStaticdataAffiliations
             // TODO:: Need to re-factor to pull properly the status data
             $cttAuthors->status = 'A';
             $cttAuthors->created_by = $this->created_by;

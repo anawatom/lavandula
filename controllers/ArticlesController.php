@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\Exception;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -222,6 +223,7 @@ class ArticlesController extends base\AppController
                                 'cttJournals' => CttJournals::getJournalList()
                             ];
             $transaction = Yii::$app->db->beginTransaction();
+
             // TODO: Need to refactor later
             if (isset($postData['action']) && $postData['action'] == 'metadataextractor') {
 
@@ -314,7 +316,6 @@ class ArticlesController extends base\AppController
 
                 return $this->render('importer', $renderParams);
             } else if ($postData) {
-
                 $model->load($postData);
                 $model->created_by = $currentUser->email;
                 $model->saveData();

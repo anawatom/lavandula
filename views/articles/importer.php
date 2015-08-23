@@ -257,7 +257,8 @@ div.cke_show_borders{
 		<div class=" field-authors-name col-md-12">
 			<label class="control-label col-md-2" for="authors-name">Main Author</label>
 			<div class="col-md-1">
-				<input type="checkbox" class="" name="ArticleImporter[authors][main][]" value="">
+				<input type="hidden" class="" name="ArticleImporter[authors][main_author][]" value="20">
+				<input type="checkbox" class="main-author-checkbox" data-check="10" data-uncheck="20">
 				<div class="help-block help-block-error"></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-name">Name</label>
@@ -350,11 +351,28 @@ div.cke_show_borders{
 		var $authorsInputFormGroup = $authorsInputContainer
 										.append($authorsTemplate.html())
 										.find('.authors-input-form-group:last');
+		// listening events.
 		$authorsInputFormGroup
 		.find('.remove-row-button')
 		.on('click', function() {
 			var $this = $(this);
 			$this.closest('.authors-input-form-group').remove();
+		});
+		$authorsInputFormGroup
+		.find('.main-author-checkbox')
+		.on('change', function() {
+			var $this = $(this),
+				value;
+
+			if ($this.is(':checked')) {
+				value = $this.attr('data-check');
+			} else {
+				value = $this.attr('data-uncheck');
+			}
+
+			$(this).parent()
+			.find('input[name="ArticleImporter[authors][main_author][]"]')
+			.val(value);
 		});
 
 		if (data) {

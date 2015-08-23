@@ -43,8 +43,8 @@ div.cke_show_borders{
 		'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
 		'horizontalCssClasses' => [
 									'offset' => '',
-									'label' => 'col-md-3',
-									'wrapper' => 'col-md-9',
+									'label' => 'col-md-2',
+									'wrapper' => 'col-md-10',
 									'error' => '',
 									'hint' => '',
 								],
@@ -54,41 +54,174 @@ div.cke_show_borders{
 <div style="clear:both;"></div>
 <div class="row content">
 	<div class="col-md-12">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-warning dummy-data">
-					<div class="panel-heading">
-						<h3 class="panel-title">Article Details</h3>
+		<div class="panel panel-warning dummy-data">
+			<div class="panel-body">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#metadata" aria-controls="home" role="tab" data-toggle="tab">Metadata</a></li>
+					<li role="presentation"><a href="#author" aria-controls="profile" role="tab" data-toggle="tab">Authors</a></li>
+					<li role="presentation"><a href="#reference" aria-controls="messages" role="tab" data-toggle="tab">Reference</a></li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="metadata">
+						<div class="col-md-12">
+							<?= $form->field($model, 'lang_id')
+									->dropDownList(ArrayHelper::map($cttStaticdataLanguages, 'id', 'name')) ?>
+							<?= $form->field($model, 'documenttype_id')
+									->dropDownList(ArrayHelper::map($cttStaticdataDocumenttypes, 'id', 'name')) ?>
+							<?= $form->field($model, 'docsource_id')
+									->inline()
+									->checkboxList(ArrayHelper::map($cttStaticdataDocsources, 'id', 'name'),
+													[
+														'itemOptions' => [
+																		'class' => ''
+																	]
+													]) ?>
+							<?= $form->field($model, 'title_en') ?>
+							<?php // $form->field($model, 'abbrev_title_en') ?>
+							<?= $form->field($model, 'title_local') ?>
+							<?php // $form->field($model, 'abbrev_title_local') ?>
+							<?= $form->field($model, 'author_keyword_en') ?>
+							<?= $form->field($model, 'author_keyword_local') ?>
+							<?= $form->field($model, 'abstract_en')
+									->textArea([
+										'options' => [
+										]
+									]) ?>
+							<?= $form->field($model, 'abstract_local')
+									->textArea([
+										'options' => [
+										]
+									]) ?>
+							<div class="form-group">
+								<?= $form->field($model, 'doi', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-4',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+								<?= $form->field($model, 'link',
+									[
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-4',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+							</div>
+							<?= $form->field($model, 'funding') ?>
+							<?php // $form->field($model, 'correspondence') ?>
+							<?= $form->field($model, 'sponsors') ?>
+							<?= $form->field($model, 'codenid') ?>
+							<?= $form->field($model, 'pubmedid') ?>
+							<?= $form->field($model, 'subjectarea_class')
+									->widget(Select2::classname(), [
+										'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name', 'subjectarea.name'),
+										'options' => [],
+										'pluginOptions' => [
+											'allowClear' => true
+										],
+									]) ?>
+							<?= $form->field($model, 'journal_id')
+									->widget(Select2::classname(), [
+										'data' => ArrayHelper::map($cttJournals, 'id', 'name'),
+										'options' => [],
+										'pluginOptions' => [
+											'allowClear' => true
+										],
+									]) ?>
+							<div class="form-group">
+								<?= $form->field($model, 'year', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+								<?= $form->field($model, 'volume', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+								<?= $form->field($model, 'year_no', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+							</div>
+							<?= $form->field($model, 'artnumber') ?>
+							<div class="form-group">
+								<?= $form->field($model, 'page_start', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+								<?= $form->field($model, 'page_end', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+								<?= $form->field($model, 'page_count', [
+									'options' => [
+										'class' => '',
+									],
+									'horizontalCssClasses' => [
+																'offset' => '',
+																'label' => 'col-md-2',
+																'wrapper' => 'col-md-2',
+																'error' => '',
+																'hint' => '',
+															],
+									]) ?>
+							</div>
+						</div>
 					</div>
-					<div class="panel-body">
-						<?= $form->field($model, 'lang_id')
-								->dropDownList(ArrayHelper::map($cttStaticdataLanguages, 'id', 'name')) ?>
-						<?= $form->field($model, 'documenttype_id')
-								->dropDownList(ArrayHelper::map($cttStaticdataDocumenttypes, 'id', 'name')) ?>
-						<?= $form->field($model, 'docsource_id')
-								->inline()
-								->checkboxList(ArrayHelper::map($cttStaticdataDocsources, 'id', 'name'),
-												[
-													'itemOptions' => [
-																	'class' => ''
-																]
-												]) ?>
-						<?= $form->field($model, 'title_en') ?>
-						<?php // $form->field($model, 'abbrev_title_en') ?>
-						<?= $form->field($model, 'title_local') ?>
-						<?php // $form->field($model, 'abbrev_title_local') ?>
-						<?= $form->field($model, 'author_keyword_en') ?>
-						<?= $form->field($model, 'author_keyword_local') ?>
-						<?= $form->field($model, 'abstract_en')
-								->textArea([
-									'options' => [
-									]
-								]) ?>
-						<?= $form->field($model, 'abstract_local')
-								->textArea([
-									'options' => [
-									]
-								]) ?>
+					<div role="tabpanel" class="tab-pane" id="author">
 						<?php //$form->field($model, 'authors', [
 						//	'template' => "{label}\n{beginWrapper}\n{endWrapper}",
 						//	'horizontalCssClasses' => [
@@ -100,152 +233,25 @@ div.cke_show_borders{
 						//							],
 						//	]) ?>
 						<div class="form-group field-articleimporter-authors">
-							<label class="control-label col-md-3" for="articleimporter-authors">Authors</label>
-							<div class="col-md-9">
-								<div class="col-md-12 authors-input-container"></div>
-								<div class="col-md-12">
-									<a class="btn btn-primary add-author-button">
-										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-										<?= Yii::t('app/article_importer', 'Add Author') ?>
-									</a>
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<?= $form->field($model, 'doi', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-3',
-															'wrapper' => 'col-md-3',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-							<?= $form->field($model, 'link',
-								[
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-2',
-															'wrapper' => 'col-md-4',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-						</div>
-						<?= $form->field($model, 'funding') ?>
-						<?php // $form->field($model, 'correspondence') ?>
-						<?= $form->field($model, 'sponsors') ?>
-						<?= $form->field($model, 'codenid') ?>
-						<?= $form->field($model, 'pubmedid') ?>
-						<?= $form->field($model, 'subjectarea_class')
-								->widget(Select2::classname(), [
-									'data' => ArrayHelper::map($cttStaticdataSubjectareaClass, 'id', 'name', 'subjectarea.name'),
-									'options' => [],
-									'pluginOptions' => [
-										'allowClear' => true
-									],
-								]) ?>
-						<?= $form->field($model, 'journal_id')
-								->widget(Select2::classname(), [
-									'data' => ArrayHelper::map($cttJournals, 'id', 'name'),
-									'options' => [],
-									'pluginOptions' => [
-										'allowClear' => true
-									],
-								]) ?>
-						<div class="form-group">
-							<?= $form->field($model, 'year', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-3',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-							<?= $form->field($model, 'volume', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-1',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-							<?= $form->field($model, 'year_no', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-2',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-						</div>
-						<?= $form->field($model, 'artnumber') ?>
-						<div class="form-group">
-							<?= $form->field($model, 'page_start', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-3',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-							<?= $form->field($model, 'page_end', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-1',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-							<?= $form->field($model, 'page_count', [
-								'options' => [
-									'class' => '',
-								],
-								'horizontalCssClasses' => [
-															'offset' => '',
-															'label' => 'col-md-2',
-															'wrapper' => 'col-md-2',
-															'error' => '',
-															'hint' => '',
-														],
-								]) ?>
-						</div>
-						<div class="form-group">
-							<div class="col-md-offset-4 col-md-4">
-								<?= Html::submitButton('<span class="glyphicon glyphicon-save" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Save'),
-														['class' => 'btn btn-primary']) ?>
-								<?= Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Reset'),
-											Url::to(['staticdata-countrys/index']),
-											['class' => 'btn btn-danger']) ?>
+							<div class="col-md-12 authors-input-container"></div>
+							<div class="col-md-12">
+								<a class="btn btn-primary add-author-button">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+									<?= Yii::t('app/article_importer', 'Add Author') ?>
+								</a>
 							</div>
 						</div>
 					</div>
+					<div role="tabpanel" class="tab-pane" id="reference">
+						Reference section
+					</div>
+				</div>
+				<div class="col-md-offset-4 col-md-4">
+					<?= Html::submitButton('<span class="glyphicon glyphicon-save" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Save'),
+											['class' => 'btn btn-primary']) ?>
+					<?= Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> '.Yii::t('app/frontend', 'Reset'),
+								Url::to(['staticdata-countrys/index']),
+								['class' => 'btn btn-danger']) ?>
 				</div>
 			</div>
 		</div>

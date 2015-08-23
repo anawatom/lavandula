@@ -66,6 +66,8 @@ class ArticleSearchResultController extends base\AppController
         	$keyword = Yii::$app->request->post('keyword');
         	$this->setParameter('keyword', $keyword);
         	
+        	$session['tables'] = [];
+        	
         	$this->clearCriteria();
         	$this->setCriteria('', 'title', 'like', $keyword);
         	$this->setCriteria('OR', 'abstract', 'like', $keyword);
@@ -215,8 +217,6 @@ class ArticleSearchResultController extends base\AppController
 		    			(SELECT min(t2.lang_id)
 		    					FROM ctt_articles t2 {$table}
 		    					WHERE t2.id=ctt_articles.id {$on}
-		    					AND ctt_article_authors.article_id=t2.id
-		    					AND ctt_article_authors.author_id=ctt_authors.id
 		    					AND ({$where})
 		    					GROUP BY t2.id)";
     	
@@ -252,8 +252,6 @@ class ArticleSearchResultController extends base\AppController
     			(SELECT min(t2.lang_id)
     					FROM ctt_articles t2 {$table}
     					WHERE t2.id=ctt_articles.id {$on}
-    					AND ctt_article_authors.article_id=t2.id
-    					AND ctt_article_authors.author_id=ctt_authors.id
     					AND ({$where})
     					GROUP BY t2.id) {$limit}";
     	

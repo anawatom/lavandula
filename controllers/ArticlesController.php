@@ -70,9 +70,13 @@ class ArticlesController extends base\AppController
     {
 
     	$connection = Yii::$app->db;
-    	 
+    	
+    	$this->setParameter('languages', $this->getLanguages());
+    	
     	$data = $connection
-    	->createCommand('SELECT ctt_articles.*, ctt_publishers.name as publisher FROM ctt_articles, ctt_publishers where ctt_articles.publisher_id=ctt_publishers.id and ctt_articles.status = :status and ctt_articles.id = :id',
+    	->createCommand('SELECT ctt_articles.*, ctt_publishers.name as publisher, ctt_publishers.address as publisher_address, ctt_issues.publish_date 
+FROM ctt_articles, ctt_publishers, ctt_issues
+where ctt_articles.publisher_id=ctt_publishers.id and ctt_articles.issue_id=ctt_issues.id and ctt_articles.status = :status and ctt_articles.id = :id',
     			[
     					'status' => 'A',
     					'id' => $id
@@ -87,6 +91,14 @@ class ArticlesController extends base\AppController
     					'id' => $id
     			])->queryAll();
     	$this->setParameter('references', $references);
+    	 
+    	$citeds = $connection
+    	->createCommand('SELECT * FROM `ctt_article_references` where status=:status and ref_article_id=:id',
+    			[
+    					'status' => 'A',
+    					'id' => $id
+    			])->queryAll();
+    	$this->setParameter('citeds', $citeds);
     			 
     	return $this->cRender('public_view');
     	

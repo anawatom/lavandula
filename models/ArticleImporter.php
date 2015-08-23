@@ -29,9 +29,9 @@ class ArticleImporter extends Model
     public $documenttype_id;
     public $docsource_id;
     public $title_en;
-    public $abbrev_title_en;
+    // public $abbrev_title_en;
     public $title_local;
-    public $abbrev_title_local;
+    // public $abbrev_title_local;
     public $author_keyword_en;
     public $author_keyword_local;
     public $abstract_en;
@@ -41,7 +41,7 @@ class ArticleImporter extends Model
     public $doi;
     public $link;
     public $funding;
-    public $correspondence;
+    // public $correspondence;
     public $sponsors;
     public $codenid;
     public $pubmedid;
@@ -62,45 +62,13 @@ class ArticleImporter extends Model
      */
     public function rules()
     {
-        // return [
-        //         [['lang_id',
-        //         'documenttype_id',
-        //         'docsource_id',
-        //         'title_en',
-        //         'abbrev_title_en',
-        //         'title_local',
-        //         'abbrev_title_local',
-        //         'author_keyword_en',
-        //         'author_keyword_local',
-        //         'abstract_en',
-        //         'abstract_local',
-        //         'authors',
-        //         'doi',
-        //         'link',
-        //         'funding',
-        //         'correspondence',
-        //         'sponsors',
-        //         'codenid',
-        //         'pubmedid',
-        //         'subjectarea_class',
-        //         'journal_id',
-        //         'journal',
-        //         'issue_id',
-        //         'year',
-        //         'volume',
-        //         'year_no',
-        //         'artnumber',
-        //         'page_start',
-        //         'page_end',
-        //         'page_count'], 'integer'],
-        // ];
         return [
                 [['id',
                     'lang_id',
                     'documenttype_id',
                     'docsource_id',
                     'title_en',
-                    'abbrev_title_en',
+                    // 'abbrev_title_en',
                     'author_keyword_en',
                     'abstract_en',
                     'title_local',
@@ -123,8 +91,8 @@ class ArticleImporter extends Model
                     'pubmedid'], 'integer'],
                 [['title_en',
                     'title_local',
-                    'abbrev_title_en',
-                    'abbrev_title_local',
+                    // 'abbrev_title_en',
+                    // 'abbrev_title_local',
                     'author_keyword_en',
                     'author_keyword_local',
                     'abstract_en',
@@ -135,7 +103,7 @@ class ArticleImporter extends Model
                     'doi',
                     'link',
                     'funding',
-                    'correspondence',
+                    // 'correspondence',
                     'sponsors',
                     'authors',
                     'subjectarea_class',
@@ -151,9 +119,9 @@ class ArticleImporter extends Model
             'documenttype_id' => Yii::t('app/ctt_article', 'Documenttype'),
             'docsource_id' => Yii::t('app/article_importer', 'Docsource'),
             'title_en' => Yii::t('app/article_importer', 'Title En'),
-            'abbrev_title_en' => Yii::t('app/article_importer', 'Abbrev Title En'),
+            // 'abbrev_title_en' => Yii::t('app/article_importer', 'Abbrev Title En'),
             'title_local' => Yii::t('app/article_importer', 'Title Local'),
-            'abbrev_title_local' => Yii::t('app/article_importer', 'Abbrev Title Local'),
+            // 'abbrev_title_local' => Yii::t('app/article_importer', 'Abbrev Title Local'),
             'author_keyword_en' => Yii::t('app/article_importer', 'Author Keyword En'),
             'author_keyword_local' => Yii::t('app/article_importer', 'Author Keyword Local'),
             'abstract_en' => Yii::t('app/article_importer', 'Abstract En'),
@@ -162,7 +130,7 @@ class ArticleImporter extends Model
             'doi' => Yii::t('app/ctt_article', 'Doi'),
             'link' => Yii::t('app/ctt_article', 'Link'),
             'funding' => Yii::t('app/ctt_article', 'Funding'),
-            'correspondence' => Yii::t('app/ctt_article', 'Correspondence'),
+            // 'correspondence' => Yii::t('app/ctt_article', 'Correspondence'),
             'sponsors' => Yii::t('app/ctt_article', 'Sponsors'),
             'codenid' => Yii::t('app/ctt_article', 'Codenid'),
             'pubmedid' => Yii::t('app/ctt_article', 'Pubmedid'),
@@ -184,16 +152,16 @@ class ArticleImporter extends Model
     {
         try {
             if ($this->title_en &&
-                $this->abbrev_title_en &&
+                // $this->abbrev_title_en &&
                 $this->author_keyword_en &&
                 $this->abstract_en) {
                 $this->saveDataByLange('en');
             } else {
                 // TODO: Need to validate from frontend
-                throw new Exception('\"Title EN\", \"Abbrev Title En\", \"Author Keyword En\", \"Abstract En\": can\'t be blank.');
+                throw new Exception('\"Title EN\", \"Author Keyword En\", \"Abstract En\": can\'t be blank.');
             }
             if ($this->title_local &&
-                $this->abbrev_title_local &&
+                // $this->abbrev_title_local &&
                 $this->author_keyword_local &&
                 $this->abstract_local) {
                 $this->saveDataByLange('local');
@@ -236,12 +204,12 @@ class ArticleImporter extends Model
         $cttArticle->documenttype =CttStaticdataDocumenttypes::findOne($this->documenttype_id)->name;
         if ($lang == 'en') {
             $cttArticle->title = $this->title_en;
-            $cttArticle->abbrev_title = $this->abbrev_title_en;
+            // $cttArticle->abbrev_title = $this->abbrev_title_en;
             $cttArticle->author_keyword = $this->author_keyword_en;
             $cttArticle->abstract = $this->abstract_en;
         } else if ($lang == 'local') {
             $cttArticle->title = $this->title_local;
-            $cttArticle->abbrev_title = $this->abbrev_title_local;
+            // $cttArticle->abbrev_title = $this->abbrev_title_local;
             $cttArticle->author_keyword = $this->author_keyword_local;
             $cttArticle->abstract = $this->abstract_local;
         }
@@ -269,7 +237,7 @@ class ArticleImporter extends Model
         $cttArticle->doi = $this->doi;
         $cttArticle->link = $this->link;
         $cttArticle->funding = $this->funding;
-        $cttArticle->correspondence = $this->correspondence;
+        // $cttArticle->correspondence = $this->correspondence;
         $cttArticle->sponsors = $this->sponsors;
         $cttArticle->codenid = $this->codenid;
         $cttArticle->pubmedid = $this->pubmedid;

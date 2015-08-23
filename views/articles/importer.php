@@ -73,9 +73,9 @@ div.cke_show_borders{
 																]
 												]) ?>
 						<?= $form->field($model, 'title_en') ?>
-						<?= $form->field($model, 'abbrev_title_en') ?>
+						<?php // $form->field($model, 'abbrev_title_en') ?>
 						<?= $form->field($model, 'title_local') ?>
-						<?= $form->field($model, 'abbrev_title_local') ?>
+						<?php // $form->field($model, 'abbrev_title_local') ?>
 						<?= $form->field($model, 'author_keyword_en') ?>
 						<?= $form->field($model, 'author_keyword_local') ?>
 						<?= $form->field($model, 'abstract_en')
@@ -138,7 +138,7 @@ div.cke_show_borders{
 								]) ?>
 						</div>
 						<?= $form->field($model, 'funding') ?>
-						<?= $form->field($model, 'correspondence') ?>
+						<?php // $form->field($model, 'correspondence') ?>
 						<?= $form->field($model, 'sponsors') ?>
 						<?= $form->field($model, 'codenid') ?>
 						<?= $form->field($model, 'pubmedid') ?>

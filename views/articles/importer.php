@@ -260,7 +260,7 @@ div.cke_show_borders{
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
 				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-organization">Affi.</label>
+			<label class="control-label col-md-1" for="authors-organization">Org.</label>
 			<div class="col-md-7">
 				<div class="input-group">
 					<?php
@@ -352,25 +352,30 @@ div.cke_show_borders{
 			$this.closest('.authors-input-form-group').remove();
 		});
 
-		// Reinitialize select2
-		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
-				settings = $select2El.attr('data-krajee-select2');
-		settings = window[settings];
-		$select2El.select2(settings);
-
 		if (data) {
 			if (data.name) {
 				$authorsInputFormGroup
 				.find('input[name="ArticleImporter[authors][name][]"]')
 				.val(data.name);
 			}
+			if (data.organization) {
+				$authorsInputFormGroup
+				.find('select[name="ArticleImporter[authors][organization][]"]')
+				.val(data.organization);
+			}
 		}
+
+		// Reinitialize select2
+		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
+				settings = $select2El.attr('data-krajee-select2');
+		settings = window[settings];
+		$select2El.select2(settings);
 	}
 
 	$(function() {
 		if (authors) {
 			$.each(authors, function(key, value) {
-				addAuthorInput({name: value});
+				addAuthorInput(value);
 			});
 		} else {
 			addAuthorInput();

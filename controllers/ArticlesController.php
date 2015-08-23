@@ -17,6 +17,7 @@ use app\models\ArticleImporter;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataDocumenttypes;
 use app\models\CttStaticdataDocsources;
+use app\models\CttStaticdataAffiliations;
 use app\models\CttStaticdataOrganizations;
 use app\models\CttStaticdataSubjectareaClass;
 
@@ -208,6 +209,7 @@ class ArticlesController extends base\AppController
     public function actionImporter()
     {
         try {
+            $currentUser = Yii::$app->user->getIdentity();
             $postData = Yii::$app->request->post();
             $model = new ArticleImporter();
             $renderParams = [
@@ -219,7 +221,6 @@ class ArticlesController extends base\AppController
                                 'cttStaticdataOrganizations' => CttStaticdataOrganizations::getOrganizationList(),
                                 'cttJournals' => CttJournals::getJournalList()
                             ];
-
             $transaction = Yii::$app->db->beginTransaction();
             // TODO: Need to refactor later
             if (isset($postData['action']) && $postData['action'] == 'metadataextractor') {
@@ -227,16 +228,83 @@ class ArticlesController extends base\AppController
                 $xml = simplexml_load_file('web/assets/29205-tag.xml');
                 $model->docsource_id = ['1', '2'];
                 $model->title_local = strip_tags($xml->metadata->{'title-local'});
-                $model->abbrev_title_local = strip_tags($xml->metadata->{'title-local'});
                 $model->title_en = strip_tags($xml->metadata->{'title-eng'});
-                $model->abbrev_title_en = strip_tags($xml->metadata->{'title-eng'});
-                $authors_array = [];
+                // authors
+                $author_name_array = [];
                 $authors = $xml->metadata->authors->children();
                 $count_authors = count($authors);
                 for ($i = 0; $i < $count_authors; $i++ ) {
-                    $authors_array[$i] = strip_tags((string) $authors[$i]);
+                    $author_name_array[$i] = strip_tags((string) $authors[$i]);
                 }
-                $model->authors =  $authors_array;
+                // $model->authors['name'] =  $authors_array;
+                /* ************** */
+                // affiliations
+                $organizations_array = [];
+                $affiliations = $xml->metadata->affiliations->children();
+                $count_affiliations = count($affiliations);
+                for ($i = 0; $i < $count_affiliations; $i++ ) {
+                    $affiliation_name = strip_tags((string) $affiliations[$i]);
+
+                    // ctt_affiliations
+                    $cttStaticdataAffiliations = CttStaticdataAffiliations::find()
+                                                    ->where(['name' => $affiliation_name])
+                                                    ->one();
+                    if (empty($cttStaticdataAffiliations)) {
+                        $cttStaticdataAffiliations = new CttStaticdataAffiliations();
+                        $cttStaticdataAffiliations->id = $cttStaticdataAffiliations->getId();
+                        $cttStaticdataAffiliations->lang_id = '1';
+                        // TODO: Need to pull from database
+                        $cttStaticdataAffiliations->lang = 'English';
+                        $cttStaticdataAffiliations->name = $affiliation_name;
+                        // TODO: Need to pull from database
+                        $cttStaticdataAffiliations->status = 'A';
+                        $cttStaticdataAffiliations->created_by = $currentUser->email;
+                        $cttStaticdataAffiliations->modified_by = $currentUser->email;
+                        if (!$cttStaticdataAffiliations->save()) {
+                            ErrorHelper::throwActiveRecordError($cttStaticdataAffiliations->errors);
+                        }
+                    }
+
+                    // ctt_organizations
+                    $cttStaticdataOrganizations = CttStaticdataOrganizations::find()
+                                                        ->where(['affiliation_id' => $cttStaticdataAffiliations->id])
+                                                        ->one();
+                    if (empty($cttStaticdataOrganizations)) {
+                        $cttStaticdataOrganizations = new CttStaticdataOrganizations();
+                        $cttStaticdataOrganizations->id = $cttStaticdataOrganizations->getId();
+                        $cttStaticdataOrganizations->lang_id = '1';
+                        // TODO: Need to pull from database
+                        $cttStaticdataOrganizations->lang = 'English';
+                        $cttStaticdataOrganizations->affiliation_id = $cttStaticdataAffiliations->id;
+                        $cttStaticdataOrganizations->name = $affiliation_name;
+                        $cttStaticdataOrganizations->name_full = $affiliation_name;
+                        // TODO: Need to pull from database
+                        $cttStaticdataOrganizations->status = 'A';
+                        $cttStaticdataOrganizations->created_by = $currentUser->email;
+                        $cttStaticdataOrganizations->modified_by = $currentUser->email;
+                        if (!$cttStaticdataOrganizations->save()) {
+                            ErrorHelper::throwActiveRecordError($cttStaticdataOrganizations->errors);
+                        }
+                    }
+
+                    $organizations_array[$i] = $cttStaticdataOrganizations->id;
+                }
+                $transaction->commit();
+                // $model->authors['org'] =  $organizations_array;
+                /* ************** */
+                // format data
+                $format_author_data = [];
+                $count_author_name = count($author_name_array);
+                for ($i = 0; $i < $count_author_name; $i++) {
+                    $format_author_data[$i]['name'] = $author_name_array[$i];
+                    $organization = '';
+                    if (isset($organizations_array[$i])) {
+                        $organization = $organizations_array[$i];
+                    }
+                    $format_author_data[$i]['organization'] = $organization;
+                }
+                $model->authors = $format_author_data;
+                /* ********************** */
                 $model->abstract_local = strip_tags($xml->{'abstract-local'});
                 $model->abstract_en = strip_tags($xml->{'abstract-eng'});
                 $model->author_keyword_local = strip_tags($xml->{'keyword-local'});
@@ -246,7 +314,6 @@ class ArticlesController extends base\AppController
 
                 return $this->render('importer', $renderParams);
             } else if ($postData) {
-                $currentUser = Yii::$app->user->getIdentity();
 
                 $model->load($postData);
                 $model->created_by = $currentUser->email;

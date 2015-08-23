@@ -17,6 +17,7 @@ use app\models\ArticleImporter;
 use app\models\CttStaticdataLanguages;
 use app\models\CttStaticdataDocumenttypes;
 use app\models\CttStaticdataDocsources;
+use app\models\CttStaticdataOrganizations;
 use app\models\CttStaticdataSubjectareaClass;
 
 /**
@@ -215,6 +216,7 @@ class ArticlesController extends base\AppController
                                 'cttStaticdataDocumenttypes' => CttStaticdataDocumenttypes::getDocumenttypeList(),
                                 'cttStaticdataDocsources' => CttStaticdataDocsources::getDocsourceList(),
                                 'cttStaticdataSubjectareaClass' => CttStaticdataSubjectareaClass::getSubjectareaClassList(),
+                                'cttStaticdataOrganizations' => CttStaticdataOrganizations::getOrganizationList(),
                                 'cttJournals' => CttJournals::getJournalList()
                             ];
 
@@ -223,15 +225,6 @@ class ArticlesController extends base\AppController
             if (isset($postData['action']) && $postData['action'] == 'metadataextractor') {
 
                 $xml = simplexml_load_file('web/assets/29205-tag.xml');
-                // $sampleXML = [
-                //     'title_local' => $xml->metadata->{'title-local'},
-                //     'title_eng' => $xml->metadata->{'title-eng'},
-                //     'authors' => $xml->metadata->{'authors'},
-                //     'abstract_local' => $xml->metadata->{'abstract-local'},
-                //     'abstract_eng' => $xml->metadata->{'abstract-eng'},
-                //     'keyword_local' => $xml->metadata->{'keyword-local'},
-                //     'keyword_eng' => $xml->metadata->{'keyword-eng'},
-                // ];
                 $model->docsource_id = ['1', '2'];
                 $model->title_local = strip_tags($xml->metadata->{'title-local'});
                 $model->abbrev_title_local = strip_tags($xml->metadata->{'title-local'});

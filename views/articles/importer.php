@@ -254,21 +254,48 @@ div.cke_show_borders{
 
 <div id="authors_template" class="hidden">
 	<div class="form-group authors-input-form-group">
-		<div class="col-md-12 content-right">
-			<a class="remove-row-button">[-]</a>
-		</div>
 		<div class=" field-authors-name col-md-12">
 			<label class="control-label col-md-1" for="authors-name">Name</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
-				<div class="help-block help-block-error "></div>
+				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-organization">Org.</label>
-			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors][organization][]" value="">
-				<div class="help-block help-block-error "></div>
+			<label class="control-label col-md-1" for="authors-organization">Affi.</label>
+			<div class="col-md-7">
+				<div class="input-group">
+					<?php
+						echo Select2::widget([
+									'model' => $model,
+									'name' => 'ArticleImporter[authors][organization][]',
+									'data' => ArrayHelper::map($cttStaticdataOrganizations, 'id', 'name_full'),
+									'options' => [
+													'class' => 'form-control'
+												],
+									'pluginOptions' => [
+										'allowClear' => true
+									],
+									'addon' => [
+												'append' => [
+													'content' => Html::button('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',
+																				[
+																					'class' => 'btn btn-primary',
+																					'title' => 'Add Affiliation',
+																					'data-toggle' => 'tooltip'
+																				]),
+													'asButton' => true
+												]
+									]
+								]);
+					?>
+				</div>
+				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
+			<div class="col-md-1 content-right">
+				<a class="btn btn-danger remove-row-button">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</a>
+			</div>
+			<!-- <label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][affiliation][]" value="">
 				<div class="help-block help-block-error "></div>
@@ -277,7 +304,7 @@ div.cke_show_borders{
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][address][]" value="">
 				<div class="help-block help-block-error "></div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -324,6 +351,12 @@ div.cke_show_borders{
 			var $this = $(this);
 			$this.closest('.authors-input-form-group').remove();
 		});
+
+		// Reinitialize select2
+		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
+				settings = $select2El.attr('data-krajee-select2');
+		settings = window[settings];
+		$select2El.select2(settings);
 
 		if (data) {
 			if (data.name) {

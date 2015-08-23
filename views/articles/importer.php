@@ -73,9 +73,9 @@ div.cke_show_borders{
 																]
 												]) ?>
 						<?= $form->field($model, 'title_en') ?>
-						<?= $form->field($model, 'abbrev_title_en') ?>
+						<?php // $form->field($model, 'abbrev_title_en') ?>
 						<?= $form->field($model, 'title_local') ?>
-						<?= $form->field($model, 'abbrev_title_local') ?>
+						<?php // $form->field($model, 'abbrev_title_local') ?>
 						<?= $form->field($model, 'author_keyword_en') ?>
 						<?= $form->field($model, 'author_keyword_local') ?>
 						<?= $form->field($model, 'abstract_en')
@@ -138,7 +138,7 @@ div.cke_show_borders{
 								]) ?>
 						</div>
 						<?= $form->field($model, 'funding') ?>
-						<?= $form->field($model, 'correspondence') ?>
+						<?php // $form->field($model, 'correspondence') ?>
 						<?= $form->field($model, 'sponsors') ?>
 						<?= $form->field($model, 'codenid') ?>
 						<?= $form->field($model, 'pubmedid') ?>
@@ -254,21 +254,54 @@ div.cke_show_borders{
 
 <div id="authors_template" class="hidden">
 	<div class="form-group authors-input-form-group">
-		<div class="col-md-12 content-right">
-			<a class="remove-row-button">[-]</a>
-		</div>
 		<div class=" field-authors-name col-md-12">
+			<label class="control-label col-md-2" for="authors-name">Main Author</label>
+			<div class="col-md-1">
+				<input type="hidden" class="" name="ArticleImporter[authors][main_author][]" value="20">
+				<input type="checkbox" class="main-author-checkbox" data-check="10" data-uncheck="20">
+				<div class="help-block help-block-error"></div>
+			</div>
 			<label class="control-label col-md-1" for="authors-name">Name</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
-				<div class="help-block help-block-error "></div>
+				<div class="help-block help-block-error"></div>
 			</div>
 			<label class="control-label col-md-1" for="authors-organization">Org.</label>
-			<div class="col-md-2">
-				<input type="text" class="form-control" name="ArticleImporter[authors][organization][]" value="">
-				<div class="help-block help-block-error "></div>
+			<div class="col-md-4">
+				<div class="input-group">
+					<?php
+						echo Select2::widget([
+									'model' => $model,
+									'name' => 'ArticleImporter[authors][organization][]',
+									'data' => ArrayHelper::map($cttStaticdataOrganizations, 'id', 'name_full'),
+									'options' => [
+													'class' => 'form-control'
+												],
+									'pluginOptions' => [
+										'allowClear' => true
+									],
+									'addon' => [
+												'append' => [
+													'content' => Html::button('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',
+																				[
+																					'class' => 'btn btn-primary',
+																					'title' => 'Add Affiliation',
+																					'data-toggle' => 'tooltip'
+																				]),
+													'asButton' => true
+												]
+									]
+								]);
+					?>
+				</div>
+				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
+			<div class="col-md-1 content-right">
+				<a class="btn btn-danger remove-row-button">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</a>
+			</div>
+			<!-- <label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][affiliation][]" value="">
 				<div class="help-block help-block-error "></div>
@@ -277,7 +310,7 @@ div.cke_show_borders{
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][address][]" value="">
 				<div class="help-block help-block-error "></div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -318,11 +351,28 @@ div.cke_show_borders{
 		var $authorsInputFormGroup = $authorsInputContainer
 										.append($authorsTemplate.html())
 										.find('.authors-input-form-group:last');
+		// listening events.
 		$authorsInputFormGroup
 		.find('.remove-row-button')
 		.on('click', function() {
 			var $this = $(this);
 			$this.closest('.authors-input-form-group').remove();
+		});
+		$authorsInputFormGroup
+		.find('.main-author-checkbox')
+		.on('change', function() {
+			var $this = $(this),
+				value;
+
+			if ($this.is(':checked')) {
+				value = $this.attr('data-check');
+			} else {
+				value = $this.attr('data-uncheck');
+			}
+
+			$(this).parent()
+			.find('input[name="ArticleImporter[authors][main_author][]"]')
+			.val(value);
 		});
 
 		if (data) {
@@ -331,13 +381,24 @@ div.cke_show_borders{
 				.find('input[name="ArticleImporter[authors][name][]"]')
 				.val(data.name);
 			}
+			if (data.organization) {
+				$authorsInputFormGroup
+				.find('select[name="ArticleImporter[authors][organization][]"]')
+				.val(data.organization);
+			}
 		}
+
+		// Reinitialize select2
+		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
+				settings = $select2El.attr('data-krajee-select2');
+		settings = window[settings];
+		$select2El.select2(settings);
 	}
 
 	$(function() {
 		if (authors) {
 			$.each(authors, function(key, value) {
-				addAuthorInput({name: value});
+				addAuthorInput(value);
 			});
 		} else {
 			addAuthorInput();

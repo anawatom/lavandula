@@ -15,6 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $lang
  * @property integer $affiliation_id
  * @property string $name
+ * @property string $name_full
  * @property string $alias
  * @property string $address
  * @property string $status
@@ -62,7 +63,7 @@ class CttStaticdataOrganizations extends ActiveRecord
             [['id', 'lang_id', 'affiliation_id'], 'integer'],
             [['created_dtm', 'modified_dtm'], 'safe'],
             [['lang', 'created_by', 'modified_by'], 'string', 'max' => 45],
-            [['name', 'alias'], 'string', 'max' => 200],
+            [['name', 'name_full', 'alias'], 'string', 'max' => 200],
             [['address'], 'string', 'max' => 500],
             [['status'], 'string', 'max' => 1]
         ];
@@ -79,6 +80,7 @@ class CttStaticdataOrganizations extends ActiveRecord
             'lang' => Yii::t('app/backend', 'Lang'),
             'affiliation_id' => Yii::t('app/ctt_staticdata_organization', 'Affiliation ID'),
             'name' => Yii::t('app/ctt_staticdata_organization', 'Name'),
+            'name_full' => Yii::t('app/ctt_staticdata_organization', 'Name Full'),
             'alias' => Yii::t('app/ctt_staticdata_organization', 'Alias'),
             'address' => Yii::t('app/ctt_staticdata_organization', 'Address'),
             'status' => Yii::t('app/backend', 'Status'),
@@ -101,6 +103,16 @@ class CttStaticdataOrganizations extends ActiveRecord
         }
 
         return $id;
+    }
+
+    public static function getOrganizationList()
+    {
+        return self::find()
+                ->where('lang_id = (select min(lang_id)
+                        from ctt_staticdata_organizations t2
+                        where t2.id = ctt_staticdata_organizations.id
+                        group by id)')
+                ->all();
     }
 
     /**

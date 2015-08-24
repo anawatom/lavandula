@@ -10,7 +10,7 @@
 .panel-heading {
 	border-radius: 0px;
 }
-.nav-tabs {
+.content-container .nav-tabs {
 	margin-bottom: 30px;
 }
 /* End Override Bootstrap */

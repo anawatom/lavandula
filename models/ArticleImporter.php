@@ -140,7 +140,7 @@ class ArticleImporter extends Model
             'issue_id' => Yii::t('app/ctt_article', 'Issue ID'),
             'year' => Yii::t('app/ctt_article', 'Year'),
             'volume' => Yii::t('app/ctt_article', 'Volume'),
-            'year_no' => Yii::t('app/ctt_article', 'Year No'),
+            'year_no' => Yii::t('app/ctt_article', 'No'),
             'artnumber' => Yii::t('app/ctt_article', 'Artnumber'),
             'page_start' => Yii::t('app/ctt_article', 'Page Start'),
             'page_end' => Yii::t('app/ctt_article', 'Page End'),

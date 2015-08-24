@@ -234,6 +234,9 @@ div.cke_show_borders{
 						//	]) ?>
 						<div class="form-group field-articleimporter-authors">
 							<div class="col-md-12 authors-input-container"></div>
+							<div>
+								<textarea class="form-control" rows="10"><?php print_r($xml_authors); print_r($xml_affiliations); ?></textarea>
+							</div>
 							<div class="col-md-12">
 								<a class="btn btn-primary add-author-button">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -243,7 +246,10 @@ div.cke_show_borders{
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="reference">
-						Reference section
+						<div class="col-md-12 references-input-container"></div>
+						<div>
+							<textarea class="form-control"  rows="20"><?php print_r($xml_references) ?></textarea>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-offset-4 col-md-4">
@@ -257,6 +263,7 @@ div.cke_show_borders{
 		</div>
 	</div>
 </div>
+
 <?php ActiveForm::end(); ?>
 
 <div id="authors_template" class="hidden">
@@ -273,7 +280,7 @@ div.cke_show_borders{
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
 				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-organization">Org.</label>
+			<label class="control-label col-md-1" for="authors-organization">Affi.</label>
 			<div class="col-md-4">
 				<div class="input-group">
 					<?php
@@ -316,6 +323,8 @@ div.cke_show_borders{
 					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 				</a>
 			</div>
+			
+			
 			<!-- <label class="control-label col-md-1" for="authors-affiliation">Affi.</label>
 			<div class="col-md-2">
 				<input type="text" class="form-control" name="ArticleImporter[authors][affiliation][]" value="">
@@ -327,6 +336,16 @@ div.cke_show_borders{
 				<div class="help-block help-block-error "></div>
 			</div> -->
 		</div>
+	</div>
+</div>
+
+<div id="references_template" class="hidden">
+	<div class="form-group references-input-form-group">
+		<div class="row">AAAAA</div>
+		<div class="row">AAAAA</div>
+		<div class="row">AAAAA</div>
+		<div class="row">AAAAA</div>
+		<div class="row">AAAAA</div>
 	</div>
 </div>
 

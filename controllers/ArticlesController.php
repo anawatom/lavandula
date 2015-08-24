@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\components\FlashMessage;
@@ -82,7 +83,10 @@ class ArticlesController extends base\AppController
     	$data = $connection
     	->createCommand('SELECT ctt_articles.*, ctt_publishers.name as publisher, ctt_publishers.address as publisher_address, ctt_issues.publish_date 
 FROM ctt_articles, ctt_publishers, ctt_issues
-where ctt_articles.publisher_id=ctt_publishers.id and ctt_articles.issue_id=ctt_issues.id and ctt_articles.status = :status and ctt_articles.id = :id',
+where ctt_articles.publisher_id=ctt_publishers.id 
+    			and ctt_articles.issue_id=ctt_issues.id 
+    			and ctt_articles.status = :status 
+    			and ctt_articles.id = :id',
     			[
     					'status' => 'A',
     					'id' => $id
@@ -241,13 +245,53 @@ where ctt_articles.publisher_id=ctt_publishers.id and ctt_articles.issue_id=ctt_
 
             // TODO: Need to refactor later
             if (isset($postData['action']) && $postData['action'] == 'metadataextractor') {
+            	
+            	$isLocal = true;
+            	if($isLocal){
+            		$xml = simplexml_load_file('web/assets/agricultural-science-tag.xml');
+//             		$xml = simplexml_load_file('web/assets/elsiver1-tag.xml');
+            	}else{
+	            	$uploads_dir = 'ThaiPDFEx';
+	            	if(empty($_FILES["uploadFile"]["error"])){
+	            		$tmp_name = $_FILES["uploadFile"]["tmp_name"];
+	            		$name = $_FILES["uploadFile"]["name"];
+	            		if(!move_uploaded_file($tmp_name, "$uploads_dir/$name")){
+	            			throw new Exception("Can't upload file");
+	            		}
+	            	}
+	            	
+	            	$template_name = $postData['template'];
+	            	if(empty($template_name)) throw new Exception("Require Template Name");
+	            	
+	            	$file = "$uploads_dir/{$_FILES['uploadFile']['name']}";
+	            	$info = pathinfo($file);
+	            	$file_name =  basename($file,'.'.$info['extension']);
+	            	
+	            	$request = "file={$_FILES['uploadFile']['name']}&template={$template_name}";
+	            	$urlWithoutProtocol = "http://122.155.175.5/~chinnawat/ThaiPDFEx/process.php?".$request ;
+	            	$isRequestHeader = FALSE;
+	            	$ch = curl_init();
+	            	curl_setopt($ch, CURLOPT_URL, $urlWithoutProtocol);
+	            	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	            	$productivity = curl_exec($ch);
+	            	curl_close($ch);
+	            	
+// 	            	print_r($productivity);
+	            	
+	            	$xml = simplexml_load_file("ThaiPDFEx/{$file_name}-tag.xml");
+            	}
 
-                $xml = simplexml_load_file('web/assets/29205-tag.xml');
-                $model->docsource_id = ['1', '2'];
+                
+                $model->docsource_id = ['1'];
                 $model->title_local = strip_tags($xml->metadata->{'title-local'});
                 $model->title_en = strip_tags($xml->metadata->{'title-eng'});
+//                 print_r($xml->references);
+                $renderParams['xml_references'] = $xml->references->asXML();
+                
                 // authors
                 $author_name_array = [];
+//                 print_r($xml->metadata->authors->asXML());
+                $renderParams['xml_authors'] = $xml->metadata->authors->asXML();
                 $authors = $xml->metadata->authors->children();
                 $count_authors = count($authors);
                 for ($i = 0; $i < $count_authors; $i++ ) {
@@ -257,9 +301,13 @@ where ctt_articles.publisher_id=ctt_publishers.id and ctt_articles.issue_id=ctt_
                 /* ************** */
                 // affiliations
                 $organizations_array = [];
+                $renderParams['xml_affiliations'] = $xml->metadata->affiliations->asXML();
                 $affiliations = $xml->metadata->affiliations->children();
                 $count_affiliations = count($affiliations);
+//                 print_r($xml->metadata->affiliations[0]->affiliation->{'secondary-affiliation'});
+//                 print_r($xml->metadata->affiliations);
                 for ($i = 0; $i < $count_affiliations; $i++ ) {
+//                 	print_r($affiliations[$i]);
                     $affiliation_name = strip_tags((string) $affiliations[$i]);
 
                     // ctt_affiliations

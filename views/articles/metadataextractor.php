@@ -18,6 +18,7 @@ div.row label{
 <?php $form = ActiveForm::begin([
 	'action' => ['/articles/importer'],
 	'method' => 'post',
+	'options' => ['enctype' => 'multipart/form-data'],
 	'layout' => 'horizontal',
 	'fieldConfig' => [
 	'template' => "{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
@@ -55,15 +56,19 @@ div.row label{
 							</div>
 							<div class="col-md-4">
 								<select name="template" class="form-control">
-									<option value="">Journal Of Community Development Research</option>
-									<option value="">Journal Of Community Development Research2</option>
+									<option value="agricultural-science-template.xml">Agricultural Science</option>
+									<option value="humanities-social-sciences-template.xml">Humanities Social Science</option>
+									<option value="kku-template.xml">Khonkhan University</option>
+									<option value="lampang-rajabhat-university-journal-template.xml">Lampang Rajabhat University Journal</option>
+									<option value="elsiver-template.xml">Elsiver</option>
+									<option value="medical-association-template.xml">Medical Association</option>
 								</select>
 							</div>
 						</div>
 						<div class="row custom1">
 							<div class="col-md-12 center-content">
 								<input type="hidden" name="action" value="metadataextractor" />
-								<button class="btn-success">Submit</button>
+								<button class="btn btn-success">Submit</button>
 							</div>
 						</div>
 					</div>

@@ -460,6 +460,7 @@ div.cke_show_borders{
 					$modal.find('input[name="organization_name"]').val(organizationName);
 
 					if (authorsData) {
+						// http://stackoverflow.com/questions/1187451/how-to-print-pretty-xml-in-javascript
 						$modal.find('#originalData')
 							.removeClass('hidden')
 							.text(authorsData[$authorsInputFormGroup.attr('data-authors-input-form-group-index')].organization.original_data);
@@ -558,8 +559,8 @@ div.cke_show_borders{
 											affiliation_lang_id: $this.find('input[name="affiliation_lang_id"]').val()
 										});
 
-
 						alert(data.message);
+						$('#editOrgAff').modal('hide');
 					} else {
 						alert(data.message);
 					}

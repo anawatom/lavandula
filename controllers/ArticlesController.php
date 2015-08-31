@@ -248,7 +248,7 @@ where ctt_articles.publisher_id=ctt_publishers.id
             	
             	$isLocal = true;
             	if($isLocal){
-            		$xml = simplexml_load_file('web/assets/agricultural-science-tag.xml');
+            		$xml = simplexml_load_file('web/assets/humanities-social-sciences-tag.xml');
 //             		$xml = simplexml_load_file('web/assets/elsiver1-tag.xml');
             	}else{
 	            	$uploads_dir = 'ThaiPDFEx';

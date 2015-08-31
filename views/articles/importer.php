@@ -234,9 +234,11 @@ div.cke_show_borders{
 						//	]) ?>
 						<div class="form-group field-articleimporter-authors">
 							<div class="col-md-12 authors-input-container"></div>
-							<div>
-								<textarea class="form-control" rows="10"><?php print_r($xml_authors); print_r($xml_affiliations); ?></textarea>
-							</div>
+							<?php if (isset($xml_authors) && isset($xml_affiliations)) : ?>
+								<div>
+									<textarea class="form-control" rows="10"><?php print_r($xml_authors); print_r($xml_affiliations); ?></textarea>
+								</div>
+							<?php endif ?>
 							<div class="col-md-12">
 								<a class="btn btn-primary add-author-button">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -247,9 +249,11 @@ div.cke_show_borders{
 					</div>
 					<div role="tabpanel" class="tab-pane" id="reference">
 						<div class="col-md-12 references-input-container"></div>
-						<div>
-							<textarea class="form-control"  rows="20"><?php print_r($xml_references) ?></textarea>
-						</div>
+						<?php if (isset($xml_references)) : ?>
+							<div>
+								<textarea class="form-control"  rows="20"><?php print_r($xml_references) ?></textarea>
+							</div>
+						<?php endif ?>
 					</div>
 				</div>
 				<div class="col-md-offset-4 col-md-4">

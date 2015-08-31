@@ -278,6 +278,10 @@
 			<!-- End Footer -->
 		</div>
 		<script type="text/javascript">
+			$(function() {
+				// Initialize a tooltip
+				$('[data-toggle="tooltip"]').tooltip();
+			});
 		</script>
 		<?php $this->endBody() ?>
 	</body>

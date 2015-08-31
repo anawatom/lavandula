@@ -228,7 +228,7 @@ where ctt_articles.publisher_id=ctt_publishers.id
 
     public function actionImporter()
     {
-        try {
+        // try {
             $currentUser = Yii::$app->user->getIdentity();
             $postData = Yii::$app->request->post();
             $model = new ArticleImporter();
@@ -307,54 +307,74 @@ where ctt_articles.publisher_id=ctt_publishers.id
 //                 print_r($xml->metadata->affiliations[0]->affiliation->{'secondary-affiliation'});
 //                 print_r($xml->metadata->affiliations);
                 for ($i = 0; $i < $count_affiliations; $i++ ) {
-//                 	print_r($affiliations[$i]);
-                    $affiliation_name = strip_tags((string) $affiliations[$i]);
+                    $affiliation_name = strip_tags((string) $affiliations[$i]->{'main-affiliation'});
+                    $organization_name = strip_tags((string) $affiliations[$i]->{'secondary-affiliation'});
+                    $cttStaticdataAffiliations = null;
+                    $cttStaticdataOrganizations = null;
 
                     // ctt_affiliations
-                    $cttStaticdataAffiliations = CttStaticdataAffiliations::find()
+                    if (!empty($affiliation_name)) {
+                        $cttStaticdataAffiliations = CttStaticdataAffiliations::find()
                                                     ->where(['name' => $affiliation_name])
                                                     ->one();
-                    if (empty($cttStaticdataAffiliations)) {
-                        $cttStaticdataAffiliations = new CttStaticdataAffiliations();
-                        $cttStaticdataAffiliations->id = $cttStaticdataAffiliations->getId();
-                        $cttStaticdataAffiliations->lang_id = '1';
-                        // TODO: Need to pull from database
-                        $cttStaticdataAffiliations->lang = 'English';
-                        $cttStaticdataAffiliations->name = $affiliation_name;
-                        // TODO: Need to pull from database
-                        $cttStaticdataAffiliations->status = 'A';
-                        $cttStaticdataAffiliations->created_by = $currentUser->email;
-                        $cttStaticdataAffiliations->modified_by = $currentUser->email;
-                        if (!$cttStaticdataAffiliations->save()) {
-                            ErrorHelper::throwActiveRecordError($cttStaticdataAffiliations->errors);
+                        if (empty($cttStaticdataAffiliations)) {
+                            $cttStaticdataAffiliations = new CttStaticdataAffiliations();
+                            $cttStaticdataAffiliations->id = $cttStaticdataAffiliations->getId();
+                            $cttStaticdataAffiliations->lang_id = '1';
+                            // TODO: Need to pull from database
+                            $cttStaticdataAffiliations->lang = 'English';
+                            $cttStaticdataAffiliations->name = $affiliation_name;
+                            // TODO: Need to pull from database
+                            $cttStaticdataAffiliations->status = 'A';
+                            $cttStaticdataAffiliations->created_by = $currentUser->email;
+                            $cttStaticdataAffiliations->modified_by = $currentUser->email;
+                            if (!$cttStaticdataAffiliations->save()) {
+                                ErrorHelper::throwActiveRecordError($cttStaticdataAffiliations->errors);
+                            }
                         }
                     }
 
                     // ctt_organizations
-                    $cttStaticdataOrganizations = CttStaticdataOrganizations::find()
-                                                        ->where(['affiliation_id' => $cttStaticdataAffiliations->id])
-                                                        ->one();
-                    if (empty($cttStaticdataOrganizations)) {
-                        $cttStaticdataOrganizations = new CttStaticdataOrganizations();
-                        $cttStaticdataOrganizations->id = $cttStaticdataOrganizations->getId();
-                        $cttStaticdataOrganizations->lang_id = '1';
-                        // TODO: Need to pull from database
-                        $cttStaticdataOrganizations->lang = 'English';
-                        $cttStaticdataOrganizations->affiliation_id = $cttStaticdataAffiliations->id;
-                        $cttStaticdataOrganizations->name = $affiliation_name;
-                        $cttStaticdataOrganizations->name_full = $affiliation_name;
-                        // TODO: Need to pull from database
-                        $cttStaticdataOrganizations->status = 'A';
-                        $cttStaticdataOrganizations->created_by = $currentUser->email;
-                        $cttStaticdataOrganizations->modified_by = $currentUser->email;
-                        if (!$cttStaticdataOrganizations->save()) {
-                            ErrorHelper::throwActiveRecordError($cttStaticdataOrganizations->errors);
+                    if (!empty($affiliation_name) && !empty($organization_name)) {
+                        $cttStaticdataOrganizations = CttStaticdataOrganizations::find()
+                                                            ->where([
+                                                                        'affiliation_id' => $cttStaticdataAffiliations->id,
+                                                                        'name' => $organization_name
+                                                                    ])
+                                                            ->one();
+                        if (empty($cttStaticdataOrganizations)) {
+                            $cttStaticdataOrganizations = new CttStaticdataOrganizations();
+                            $cttStaticdataOrganizations->id = $cttStaticdataOrganizations->getId();
+                            $cttStaticdataOrganizations->lang_id = '1';
+                            // TODO: Need to pull from database
+                            $cttStaticdataOrganizations->lang = 'English';
+                            $cttStaticdataOrganizations->affiliation_id = $cttStaticdataAffiliations->id;
+                            $cttStaticdataOrganizations->name = $organization_name;
+                            $cttStaticdataOrganizations->name_full = $organization_name;
+                            // TODO: Need to pull from database
+                            $cttStaticdataOrganizations->status = 'A';
+                            $cttStaticdataOrganizations->created_by = $currentUser->email;
+                            $cttStaticdataOrganizations->modified_by = $currentUser->email;
+                            if (!$cttStaticdataOrganizations->save()) {
+                                ErrorHelper::throwActiveRecordError($cttStaticdataOrganizations->errors);
+                            }
                         }
                     }
 
                     $organizations_array[$i] = [
-                                                    'id' => $cttStaticdataOrganizations->id,
-                                                    'name' => $cttStaticdataOrganizations->name_full
+                                                    'id' => isset($cttStaticdataOrganizations)
+                                                                ? $cttStaticdataOrganizations->id
+                                                                : '',
+                                                    'name' => isset($cttStaticdataOrganizations)
+                                                                ? $cttStaticdataOrganizations->name_full
+                                                                : '',
+                                                    'affiliation_id' => isset($cttStaticdataAffiliations)
+                                                                    ? $cttStaticdataAffiliations->id
+                                                                    : '',
+                                                    'affiliation_lang_id' => isset($cttStaticdataAffiliations)
+                                                                    ? $cttStaticdataAffiliations->lang_id
+                                                                    : '',
+                                                    'original_data' => $affiliations[$i]->asXML()
                                                 ];
                 }
                 $transaction->commit();
@@ -392,12 +412,12 @@ where ctt_articles.publisher_id=ctt_publishers.id
             } else {
                 return $this->render('importer', $renderParams);
             }
-        }
+        // }
         // TODO: Need for covering more exception like Database Exception – yii\db\Exception
-        catch (Exception $e) {
-            $transaction->rollback();
-            ErrorHelper::handlerError($e, ['importer']);
-        }
+        // catch (Exception $e) {
+            // $transaction->rollback();
+            // ErrorHelper::handlerError($e, ['importer']);
+        // }
     }
 
     public function actionImporterSubmit(){
@@ -412,7 +432,7 @@ where ctt_articles.publisher_id=ctt_publishers.id
         $out = ['results' => ['id' => '', 'text' => 'aaaa']];
         if (!is_null($q)) {
             $query = new Query;
-            $query->select('id, name_full AS text')
+            $query->select('id, lang_id, affiliation_id, name_full AS text')
                 ->from('ctt_staticdata_organizations')
                 ->where('lang_id = (select min(lang_id)
                         from ctt_staticdata_organizations t2
@@ -431,6 +451,76 @@ where ctt_articles.publisher_id=ctt_publishers.id
             $out['results'] = ['id' => $id, 'text' => CttStaticdataOrganizations::find($id)->name_full];
         }
         return $out;
+    }
+
+    public function actionGetAffiliation($id, $lang_id)
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $data = CttStaticdataAffiliations::find()->where([
+                                                            'id' => $id,
+                                                            'lang_id' => $lang_id
+                                                            ])->one();
+
+            return $data;
+        }
+    }
+
+    public function actionUpdateOrgAff()
+    {
+        if (Yii::$app->request->isAjax && Yii::$app->request->post()) {
+            try {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                $result = [];
+                $affiliation_id = Yii::$app->request->post('affiliation_id');
+                $affiliation_lang_id = Yii::$app->request->post('affiliation_lang_id');
+                $affiliation_name = Yii::$app->request->post('affiliation_name');
+                $organization_id = Yii::$app->request->post('organization_id');
+                $organization_name = Yii::$app->request->post('organization_name');
+
+                $transaction = Yii::$app->db->beginTransaction();
+
+                $cttStaticdataOrganization = CttStaticdataOrganizations::findOne($organization_id);
+                if (!empty($cttStaticdataOrganization)) {
+                    $cttStaticdataOrganization->name_full = $organization_name;
+                    if (!$cttStaticdataOrganization->save()) {
+                        throw new Exception($cttStaticdataOrganization->errors);
+                    }
+                } else {
+                     throw new Exception('Organization ID is not correctly.');
+                }
+
+                $cttStaticdataAffiliation = CttStaticdataAffiliations::find()
+                                                ->where([
+                                                            'id' => $affiliation_id,
+                                                            'lang_id' => $affiliation_lang_id
+                                                        ])
+                                                ->one();
+                if (!empty($cttStaticdataAffiliation)) {
+                    $cttStaticdataAffiliation->name = $affiliation_name;
+                    if (!$cttStaticdataAffiliation->save()) {
+                        throw new Exception($cttStaticdataAffiliation->errors);
+                    }
+                } else {
+                    throw new Exception('Affiliation ID is not correctly.');
+                }
+
+                $transaction->commit();
+
+                $result['flag'] = true;
+                $result['message'] = 'Save data completed.';
+            } catch (Exception $e) {
+                $transaction->rollback();
+
+                Yii::trace($e->getMessage(), 'debug');
+                $result['flag'] = false;
+                $result['message'] = 'Save data failed.';
+            }
+
+            return $result;
+        }
     }
 
     /**

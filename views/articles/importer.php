@@ -272,7 +272,7 @@ div.cke_show_borders{
 
 <div id="authors_template" class="hidden">
 	<div class="form-group authors-input-form-group">
-		<div class=" field-authors-name col-md-12">
+		<div class="field-authors-name col-md-12">
 			<label class="control-label col-md-2" for="authors-name">Main Author</label>
 			<div class="col-md-1">
 				<input type="hidden" class="" name="ArticleImporter[authors][main_author][]" value="20">
@@ -284,7 +284,7 @@ div.cke_show_borders{
 				<input type="text" class="form-control" name="ArticleImporter[authors][name][]" value="">
 				<div class="help-block help-block-error"></div>
 			</div>
-			<label class="control-label col-md-1" for="authors-organization">Affi.</label>
+			<label class="control-label col-md-1" for="authors-organization">Org.</label>
 			<div class="col-md-4">
 				<div class="input-group">
 					<?php
@@ -302,17 +302,22 @@ div.cke_show_borders{
 											'dataType' => 'json',
 											'data' => new JsExpression('function(params) { return {q:params.term}; }')
 										],
-										// 'escapeMarkup' => new JsExpression('function(markup) { return markup; }'),
-										// 'templateResult' => new JsExpression('function(data) { return data.name_full; }'),
-										// 'templateSelection' => new JsExpression('function(data) { return data.name_full; }'),
+										'templateSelection' => new JsExpression('function(params) {
+											$(params.element).attr("data-affiliation-id", params.affiliation_id)
+															.attr("data-affiliation-lang-id", params.lang_id);
+											return params.text;
+										}'),
 									],
 									'addon' => [
 												'append' => [
-													'content' => Html::button('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',
+													'content' => Html::button('<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>',
 																				[
-																					'class' => 'btn btn-primary',
-																					'title' => 'Add Affiliation',
-																					'data-toggle' => 'tooltip'
+																					'class' => 'edit-org-aff-button btn btn-primary',
+																					'title' => 'Edit',
+																					'data' => [
+																						'toggle' => 'tooltip',
+																						'placement' => 'top',
+																					]
 																				]),
 													'asButton' => true
 												]
@@ -343,6 +348,10 @@ div.cke_show_borders{
 	</div>
 </div>
 
+<!-- modal #editOrgAff -->
+<?= $this->render('_modal_org_aff', []); ?>
+<!-- End modal #editOrgAff -->
+
 <div id="references_template" class="hidden">
 	<div class="form-group references-input-form-group">
 		<div class="row">AAAAA</div>
@@ -354,7 +363,7 @@ div.cke_show_borders{
 </div>
 
 <script type="text/javascript">
-	var authors = <?= json_encode($model->authors) ?>;
+	var authorsData = <?= json_encode($model->authors) ?>;
 // 	var exampleContainer = document.getElementById('example');
 	
 // 	if (exampleContainer.innerHTML.trim().length == 0) {
@@ -389,6 +398,8 @@ div.cke_show_borders{
 		var $authorsInputFormGroup = $authorsInputContainer
 										.append($authorsTemplate.html())
 										.find('.authors-input-form-group:last');
+		$authorsInputFormGroup.attr('data-authors-input-form-group-index', $authorsInputContainer.find('.authors-input-form-group').length);
+
 		// listening events.
 		$authorsInputFormGroup
 		.find('.remove-row-button')
@@ -412,6 +423,63 @@ div.cke_show_borders{
 			.find('input[name="ArticleImporter[authors][main_author][]"]')
 			.val(value);
 		});
+		$authorsInputFormGroup
+		.find('.edit-org-aff-button')
+		.on('click', function() {
+			var $authorsInputFormGroup =$(this)
+										.closest('.authors-input-form-group'),
+				$selectedOrganization = $authorsInputFormGroup
+										.find('select[name="ArticleImporter[authors][organization][]"] option:selected'),
+				affiliationId = $selectedOrganization.attr('data-affiliation-id'),
+				affiliationLangId = $selectedOrganization.attr('data-affiliation-lang-id'),
+				organizationId = $selectedOrganization.val(),
+				organizationName = $.trim($selectedOrganization.text()),
+				$modal = $('#editOrgAff');
+
+			$modal.find('input').val('');
+			$modal.find('input[type="text"]').prop('readonly', true);
+
+			if (affiliationId) {
+				$modal.find('.loading-container').show();
+				$modal.modal('show');
+
+				$.ajax({
+					method: 'GET',
+					url: '<?= Url::to(['get-affiliation']); ?>',
+					data: {
+								id: affiliationId,
+								lang_id: affiliationLangId
+							}
+				})
+				.done(function(data, textStatus, jqXHR) {
+					$modal.find('input[name="authors_input_form_group_index"]').val($authorsInputFormGroup.attr('data-authors-input-form-group-index'));
+					$modal.find('input[name="affiliation_id"]').val(data.id);
+					$modal.find('input[name="affiliation_lang_id"]').val(data.lang_id);
+					$modal.find('input[name="affiliation_name"]').val(data.name);
+					$modal.find('input[name="organization_id"]').val(organizationId);
+					$modal.find('input[name="organization_name"]').val(organizationName);
+
+					if (authorsData) {
+						$modal.find('#originalData')
+							.removeClass('hidden')
+							.text(authorsData[$authorsInputFormGroup.attr('data-authors-input-form-group-index')].organization.original_data);
+					} else {
+						$modal.find('#originalData')
+							.addClass('hidden');
+					}
+
+					$modal.find('.loading-container').hide();
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+					alert('Get affiliation data failed.');
+
+					$modal.find('.loading-container').hide();
+					$modal.modal('hide');
+				});
+			} else {
+				alert('Please select Org.');
+			}
+		});
 
 		if (data) {
 			if (data.name) {
@@ -420,22 +488,28 @@ div.cke_show_borders{
 				.val(data.name);
 			}
 			if (data.organization) {
-				$authorsInputFormGroup
-				.find('select[name="ArticleImporter[authors][organization][]"]')
-				.html('<option value="'+data.organization.id+'">'+data.organization.name+'</option>');
+				reInitSelect2($authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
+								data.organization);
 			}
 		}
 
-		// Reinitialize select2
-		var $select2El = $authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'),
-			settings = $select2El.attr('data-krajee-select2');
+		reInitSelect2($authorsInputFormGroup.find('select[name="ArticleImporter[authors][organization][]"]'), null);
+	}
+
+	function reInitSelect2($element, data) {
+		var settings = $element.attr('data-krajee-select2');
+
+		if (data) {
+			$element.html('<option value="' + data.id + '" data-affiliation-id="' + data.affiliation_id + '" data-affiliation-lang-id="' + data.affiliation_lang_id + '">' + data.name + '</option>');
+		}
+
 		settings = window[settings];
-		$select2El.select2(settings);
+		$element.select2(settings);
 	}
 
 	$(function() {
-		if (authors) {
-			$.each(authors, function(key, value) {
+		if (authorsData) {
+			$.each(authorsData, function(key, value) {
 				addAuthorInput(value);
 			});
 		} else {
@@ -445,5 +519,59 @@ div.cke_show_borders{
 		$('.add-author-button').on('click', function() {
 			addAuthorInput();
 		});
-	})
+
+		// Modal Edit Org./Aff.
+		$('#editAffButton').on('click', function() {
+			$(this)
+				.closest('.form-group')
+				.find('input[name="affiliation_name"]')
+				.prop('readonly', function(index, value) {
+					return !value;
+				});
+		});
+		$('#editOrgButton').on('click', function() {
+			$(this)
+				.closest('.form-group')
+				.find('input[name="organization_name"]')
+				.prop('readonly', function(index, value) {
+					return !value;
+				});
+		});
+		$('#formEditOrgAff')
+		.on('beforeSubmit', function(event) {
+			var $this = $(this);
+			if (!$this.find('input[name="affiliation_name"]').prop('readonly')
+					|| !$this.find('input[name="organization_name"]').prop('readonly')) {
+				$.ajax({
+					type: 'POST',
+					url: $this.attr('action'),
+					data: $this.serialize(),
+				})
+				.done(function(data, textStatus, jqXHR) {
+					if (data.flag) {
+						reInitSelect2($('.authors-input-form-group[data-authors-input-form-group-index="' + $this.find('input[name="authors_input_form_group_index"]').val() + '"]')
+										.find('select[name="ArticleImporter[authors][organization][]"]'),
+										{
+											id: $this.find('input[name="organization_id"]').val(),
+											name: $this.find('input[name="organization_name"]').val(),
+											affiliation_id:  $this.find('input[name="affiliation_id"]').val(),
+											affiliation_lang_id: $this.find('input[name="affiliation_lang_id"]').val()
+										});
+
+
+						alert(data.message);
+					} else {
+						alert(data.message);
+					}
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+					alert('Save data failed.');
+				});
+			} else {
+				alert('Please click to edit data.');
+			}
+			return false;
+		});
+		/** ******************************* */
+	});
 </script>
